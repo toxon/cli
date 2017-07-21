@@ -75,8 +75,7 @@ private
     menu_width  = Curses.stdscr.maxx / 5
     peers_width = Curses.stdscr.maxx / 4
 
-    @menu = Widgets::Menu.new 0, 0, menu_width, Curses.stdscr.maxy
-
+    @menu  = Widgets::Menu.new  0,          0, menu_width,  Curses.stdscr.maxy
     @peers = Widgets::Peers.new menu_width, 0, peers_width, Curses.stdscr.maxy
   end
 
