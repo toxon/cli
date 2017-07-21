@@ -138,7 +138,7 @@ class Search
   end
 
   def putc(c)
-    @text += c
+    @text = "#{text[0...cursor_pos]}#{c}#{text[cursor_pos..-1]}"
     @cursor_pos += 1
     update
   end
