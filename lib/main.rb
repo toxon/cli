@@ -81,6 +81,10 @@ private
     case event
     when /[a-zA-Z0-9 _-]/
       @search.putc event
+    when Curses::Key::HOME
+      @search.home
+    when Curses::Key.const_get(:END)
+      @search.end
     when Curses::Key::BACKSPACE
       @search.backspace
     when Curses::Key::UP
@@ -133,6 +137,14 @@ class Search
     @text += c
     @cursor_pos += 1
     update
+  end
+
+  def home
+    @cursor_pos = 0
+  end
+
+  def end
+    @cursor_pos = @text.length
   end
 
   def backspace
