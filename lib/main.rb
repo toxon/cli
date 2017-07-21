@@ -101,6 +101,11 @@ private
 
   def handle(char)
     case char
+    when Curses::Key::SLEFT
+      @messenger.trigger Events::Window::Left.new
+    when Curses::Key::SRIGHT
+      @messenger.trigger Events::Window::Right.new
+
     when Curses::Key::UP
       @messenger.trigger Events::Panel::Up.new
     when Curses::Key::DOWN
