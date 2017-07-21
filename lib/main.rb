@@ -15,7 +15,7 @@ require 'widgets/messenger'
 require 'widgets/menu'
 
 require 'widgets/peers'
-require 'widgets/list'
+require 'widgets/peers/list'
 require 'widgets/search'
 
 require 'widgets/chat'
