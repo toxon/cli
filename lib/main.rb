@@ -70,7 +70,7 @@ private
   end
 
   def initials
-    menu_width  = Curses.stdscr.maxx / 6
+    menu_width  = Curses.stdscr.maxx / 5
     peers_width = Curses.stdscr.maxx / 3
 
     @menu = Widgets::Menu.new 0, 0, menu_width, Curses.stdscr.maxy
