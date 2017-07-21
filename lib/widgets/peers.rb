@@ -7,8 +7,8 @@ module Widgets
     def initialize(x, y, width, height)
       @focused = false
 
-      @search = Widgets::Search.new x, y,     width, 1
-      @list   = List.new            x, y + 1, width, height - 1
+      @search = Search.new x, y,     width, 1
+      @list   = List.new   x, y + 1, width, height - 1
     end
 
     def render
