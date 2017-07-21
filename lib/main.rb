@@ -3,6 +3,7 @@
 require 'thread'
 require 'curses'
 
+require 'widgets/menu'
 require 'widgets/peers'
 
 class Main
@@ -68,7 +69,12 @@ private
   end
 
   def initials
-    @peers = Widgets::Peers.new 0, 0, Curses.stdscr.maxx / 3, Curses.stdscr.maxy
+    menu_width  = Curses.stdscr.maxx / 6
+    peers_width = Curses.stdscr.maxx / 3
+
+    # @menu = Widgets::Menu.new 0, 0, menu_width, Curses.stdscr.maxy
+
+    @peers = Widgets::Peers.new menu_width, 0, peers_width, Curses.stdscr.maxy
   end
 
   def render
