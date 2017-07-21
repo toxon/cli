@@ -5,6 +5,7 @@ require 'curses'
 
 require 'widgets/menu'
 require 'widgets/peers'
+require 'widgets/chat'
 require 'widgets/search'
 require 'widgets/list'
 
@@ -74,9 +75,15 @@ private
   def initials
     menu_width  = Curses.stdscr.maxx / 5
     peers_width = Curses.stdscr.maxx / 4
+    chat_width  = Curses.stdscr.maxx - menu_width - peers_width
 
-    @menu  = Widgets::Menu.new  0,          0, menu_width,  Curses.stdscr.maxy
-    @peers = Widgets::Peers.new menu_width, 0, peers_width, Curses.stdscr.maxy
+    menu_left  = 0
+    peers_left = menu_width
+    chat_left  = menu_width + peers_width
+
+    @menu  = Widgets::Menu.new  menu_left,  0, menu_width,  Curses.stdscr.maxy
+    @peers = Widgets::Peers.new peers_left, 0, peers_width, Curses.stdscr.maxy
+    @chat  = Widgets::Chat.new  chat_left,  0, chat_width,  Curses.stdscr.maxy
   end
 
   def render
@@ -84,6 +91,7 @@ private
 
     @menu.render
     @peers.render
+    @chat.render
 
     Curses.refresh
   end
