@@ -15,12 +15,12 @@ require 'widgets/messenger'
 require 'widgets/menu'
 
 require 'widgets/peers'
-require 'widgets/search'
 require 'widgets/list'
+require 'widgets/search'
 
 require 'widgets/chat'
-require 'widgets/chat/new_message'
 require 'widgets/chat/history'
+require 'widgets/chat/new_message'
 
 class Main
   def self.inherited(_base)
