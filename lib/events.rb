@@ -11,6 +11,13 @@ module Events
   module Text
     class Base; end
 
+    class Left      < Base; end
+    class Right     < Base; end
+    class Home      < Base; end
+    class End       < Base; end
+    class Backspace < Base; end
+    class Delete    < Base; end
+
     class Putc < Base
       attr_reader :char
 
@@ -19,12 +26,5 @@ module Events
         @char = char.freeze
       end
     end
-
-    class Left      < Base; end
-    class Right     < Base; end
-    class Home      < Base; end
-    class End       < Base; end
-    class Backspace < Base; end
-    class Delete    < Base; end
   end
 end
