@@ -14,6 +14,7 @@ module Widgets
       @height = height
 
       @message = NewMessage.new x, y + height - 1, width, 1
+      @history = History.new    x, y,              width, history_height
 
       @focused = false
 
@@ -26,11 +27,12 @@ module Widgets
       end
     end
 
-    def log_height
+    def history_height
       height - 1
     end
 
     def render
+      @history.render
       @message.render
 
       offset = 0
@@ -42,7 +44,7 @@ module Widgets
 
         offset = render_message offset, time, name, text
 
-        break if offset >= log_height
+        break if offset >= history_height
       end
     end
 
@@ -78,6 +80,8 @@ module Widgets
 
     def trigger(event)
       case event
+      when Events::Panel::Base
+        @history.trigger event
       when Events::Text::Base
         @message.trigger event
       end
@@ -85,6 +89,7 @@ module Widgets
 
     def focused=(value)
       @focused = !!value
+      @history.focused = focused
       @message.focused = focused
     end
   end

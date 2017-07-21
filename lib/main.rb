@@ -20,6 +20,7 @@ require 'widgets/list'
 
 require 'widgets/chat'
 require 'widgets/chat/new_message'
+require 'widgets/chat/history'
 
 class Main
   def self.inherited(_base)
