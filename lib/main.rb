@@ -44,6 +44,7 @@ private
     Curses.init_pair 1, Curses::COLOR_WHITE, Curses::COLOR_BLACK
     Curses.init_pair 2, Curses::COLOR_BLACK, Curses::COLOR_WHITE
     Curses.init_pair 3, Curses::COLOR_BLUE,  Curses::COLOR_BLACK
+    Curses.init_pair 4, Curses::COLOR_BLACK, Curses::COLOR_BLUE
 
     initials
   end
@@ -100,7 +101,7 @@ private
 end
 
 class Search
-  attr_reader :x, :y, :width, :height, :text
+  attr_reader :x, :y, :width, :height, :text, :cursor_pos
 
   def initialize(x, y, width, height)
     @x = x
@@ -108,20 +109,44 @@ class Search
     @width = width
     @height = height
     @text = ''
+    @cursor_pos = 0
   end
 
   def render
-    Curses.attron Curses.color_pair 3
     Curses.setpos x, y
-    Curses.addstr text
+
+    before_cursor = text[0...cursor_pos]
+    under_cursor  = text[cursor_pos]
+    after_cursor  = text[cursor_pos..-1]
+
+    Curses.attron Curses.color_pair 3
+    Curses.addstr before_cursor
+
+    Curses.attron Curses.color_pair 4
+    Curses.addstr under_cursor || ' '
+
+    Curses.attron Curses.color_pair 3
+    Curses.addstr after_cursor
   end
 
   def append(c)
     @text += c
+    @cursor_pos += 1
+    update
   end
 
   def backspace
     @text = text[0...-1]
+    @cursor_pos -= 1
+    update
+  end
+
+  def update
+    if @cursor_pos.negative?
+      @cursor_pos = 0
+    elsif @cursor_pos > @text.length
+      @cursor_pos = @text.length
+    end
   end
 end
 
