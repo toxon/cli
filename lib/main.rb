@@ -68,7 +68,7 @@ private
   end
 
   def initials
-    @peers = Widgets::Peers.new 0, 0, Curses.stdscr.maxx / 2, Curses.stdscr.maxy
+    @peers = Widgets::Peers.new 0, 0, Curses.stdscr.maxx / 3, Curses.stdscr.maxy
   end
 
   def render
