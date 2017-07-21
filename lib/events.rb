@@ -2,12 +2,16 @@
 
 module Events
   module Panel
-    class Up; end
-    class Down; end
+    class Base; end
+
+    class Up < Base; end
+    class Down < Base; end
   end
 
   module Text
-    class Putc
+    class Base; end
+
+    class Putc < Base
       attr_reader :char
 
       def initialize(char)
@@ -16,11 +20,11 @@ module Events
       end
     end
 
-    class Left; end
-    class Right; end
-    class Home; end
-    class End; end
-    class Backspace; end
-    class Delete; end
+    class Left < Base; end
+    class Right < Base; end
+    class Home < Base; end
+    class End < Base; end
+    class Backspace < Base; end
+    class Delete < Base; end
   end
 end
