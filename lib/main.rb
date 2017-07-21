@@ -80,6 +80,8 @@ private
     case event
     when /[a-zA-Z0-9 _-]/
       @search.append event
+    when Curses::Key::BACKSPACE
+      @search.backspace
     when Curses::Key::UP
       @list.up
     when Curses::Key::DOWN
@@ -116,6 +118,10 @@ class Search
 
   def append(c)
     @text += c
+  end
+
+  def backspace
+    @text = text[0...-1]
   end
 end
 
