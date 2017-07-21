@@ -2,8 +2,10 @@
 
 module Widgets
   class List
-    attr_reader :x, :y, :width, :height, :active, :top, :items
+    attr_reader :x, :y, :width, :height
     attr_accessor :focused
+
+    attr_reader :active, :top, :items
 
     def initialize(x, y, width, height)
       @x = x
@@ -12,10 +14,10 @@ module Widgets
       @width  = width
       @height = height
 
+      @focused = false
+
       @active = 0
       @top    = 0
-
-      @focused = false
 
       @items = 1.upto(height - 1 + 10).map do
         Faker::Name.name
