@@ -5,6 +5,8 @@ require 'curses'
 
 require 'widgets/menu'
 require 'widgets/peers'
+require 'widgets/search'
+require 'widgets/list'
 
 class Main
   def self.inherited(_base)

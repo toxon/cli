@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'widgets/search'
-require 'widgets/list'
-
 module Widgets
   class Peers
     def initialize(x, y, width, height)
