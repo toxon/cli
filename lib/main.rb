@@ -65,11 +65,11 @@ private
   end
 
   def initials
-    @search = Search.new 0, 0, Curses.stdscr.maxx, 1
+    @search = Search.new 1, 1, Curses.stdscr.maxx - 2, 1
 
     @list = List.new(
-      0, 1,
-      Curses.stdscr.maxx, Curses.stdscr.maxy - 1,
+      1, 2,
+      Curses.stdscr.maxx - 2, Curses.stdscr.maxy - 3,
       1.upto(Curses.stdscr.maxy - 1 + 10).map do
         ['Qwe'].*(3 * (1 + rand(10))).join(' ')
       end
