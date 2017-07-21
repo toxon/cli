@@ -3,6 +3,7 @@
 module Widgets
   class List
     attr_reader :x, :y, :width, :height, :active, :top, :items
+    attr_accessor :focused
 
     def initialize(x, y, width, height)
       @x = x
@@ -14,6 +15,8 @@ module Widgets
       @active = 0
       @top    = 0
 
+      @focused = false
+
       @items = 1.upto(height - 1 + 10).map do
         Faker::Name.name
       end
@@ -23,7 +26,7 @@ module Widgets
       items[top...(top + height)].each_with_index.each do |item, offset|
         index = top + offset
 
-        if index == active
+        if index == active && focused
           Curses.attron Curses.color_pair 2
         else
           Curses.attron Curses.color_pair 1

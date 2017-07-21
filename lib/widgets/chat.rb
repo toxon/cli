@@ -3,6 +3,7 @@
 module Widgets
   class Chat
     attr_reader :x, :y, :width, :height
+    attr_accessor :focused
     attr_reader :messages
 
     def initialize(x, y, width, height)
@@ -11,6 +12,8 @@ module Widgets
 
       @width  = width
       @height = height
+
+      @focused = false
 
       @messages = 1.upto(100).map do
         {
@@ -64,5 +67,7 @@ module Widgets
 
       offset + 1 + lines
     end
+
+    def trigger(event); end
   end
 end

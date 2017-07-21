@@ -3,6 +3,7 @@
 module Widgets
   class Search
     attr_reader :x, :y, :width, :height, :text, :cursor_pos
+    attr_accessor :focused
 
     def initialize(x, y, width, height)
       @x = x
@@ -11,6 +12,7 @@ module Widgets
       @height = height
       @text = ''
       @cursor_pos = 0
+      @focused = false
     end
 
     def render
@@ -28,7 +30,7 @@ module Widgets
       Curses.attron Curses.color_pair 3
       Curses.addstr before_cursor
 
-      Curses.attron Curses.color_pair 4
+      Curses.attron Curses.color_pair 4 if focused
       Curses.addstr under_cursor
 
       Curses.attron Curses.color_pair 3

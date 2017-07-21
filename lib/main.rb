@@ -88,6 +88,8 @@ private
 
     @menu      = Widgets::Menu.new      menu_left,      0, menu_width,      Curses.stdscr.maxy
     @messenger = Widgets::Messenger.new messenger_left, 0, messenger_width, Curses.stdscr.maxy
+
+    @messenger.focused = true
   end
 
   def render

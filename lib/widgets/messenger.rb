@@ -3,6 +3,7 @@
 module Widgets
   class Messenger
     attr_reader :x, :y, :width, :height
+    attr_reader :focused, :focus
 
     def initialize(x, y, width, height)
       @x = x
@@ -19,6 +20,9 @@ module Widgets
 
       @peers = Widgets::Peers.new x + peers_left, y, peers_width, height
       @chat  = Widgets::Chat.new  x + chat_left,  y, chat_width,  height
+
+      @focused = false
+      @focus = @peers
     end
 
     def render
@@ -27,7 +31,33 @@ module Widgets
     end
 
     def trigger(event)
-      @peers.trigger event
+      case event
+      when Events::Window::Left
+        left
+      when Events::Window::Right
+        right
+      else
+        @focus.trigger event
+      end
+    end
+
+    def left
+      self.focus = @peers
+    end
+
+    def right
+      self.focus = @chat
+    end
+
+    def focused=(value)
+      @focused = !!value
+      focus.focused = focused
+    end
+
+    def focus=(child)
+      focus.focused = false
+      @focus = child
+      focus.focused = true if focused
     end
   end
 end
