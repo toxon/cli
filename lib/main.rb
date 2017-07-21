@@ -80,7 +80,7 @@ private
   def handle(event)
     case event
     when /[a-zA-Z0-9 _-]/
-      @search.append event
+      @search.putc event
     when Curses::Key::BACKSPACE
       @search.backspace
     when Curses::Key::UP
@@ -129,7 +129,7 @@ class Search
     Curses.addstr after_cursor
   end
 
-  def append(c)
+  def putc(c)
     @text += c
     @cursor_pos += 1
     update
