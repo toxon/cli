@@ -63,9 +63,31 @@ private
     end
   end
 
-  def initials; end
+  def initials
+    @items = 1.upto(Curses.stdscr.maxy + 10).map do
+      ['Qwe'].*(3 * (1 + rand(10))).join(' ')
+    end
+
+    @top = 0
+    @active = 0
+  end
 
   def handle(event); end
 
-  def render; end
+  def render
+    Curses.clear
+
+    @items[@top...(@top + Curses.stdscr.maxy)].each_with_index do |item, index|
+      if index == @active
+        Curses.attron Curses.color_pair 2
+      else
+        Curses.attron Curses.color_pair 1
+      end
+
+      Curses.setpos index, 0
+      Curses.addstr item.ljust Curses.stdscr.maxx
+    end
+
+    Curses.refresh
+  end
 end
