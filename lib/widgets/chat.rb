@@ -24,6 +24,10 @@ module Widgets
       end
     end
 
+    def log_height
+      height - 2
+    end
+
     def render
       offset = 0
 
@@ -34,7 +38,7 @@ module Widgets
 
         offset = render_message offset, time, name, text
 
-        break if offset >= height
+        break if offset >= log_height
       end
     end
 
