@@ -72,7 +72,16 @@ private
     @active = 0
   end
 
-  def handle(event); end
+  def handle(event)
+    case event
+    when Curses::Key::UP
+      @active -= 1
+      @active = @items.count - 1 if @active.negative?
+    when Curses::Key::DOWN
+      @active += 1
+      @active = 0 if @active >= @items.count
+    end
+  end
 
   def render
     Curses.clear
