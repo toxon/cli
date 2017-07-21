@@ -2,20 +2,13 @@
 
 module Widgets
   class Chat
-    attr_reader :x, :y, :width, :height
     attr_reader :focused
 
     def initialize(x, y, width, height)
-      @x = x
-      @y = y
-
-      @width  = width
-      @height = height
-
-      @message = NewMessage.new x, y + height - 1, width, 1
-      @history = History.new    x, y,              width, height - 1
-
       @focused = false
+
+      @history = History.new    x, y,              width, height - 1
+      @message = NewMessage.new x, y + height - 1, width, 1
     end
 
     def render
