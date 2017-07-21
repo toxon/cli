@@ -43,6 +43,7 @@ private
 
     Curses.init_pair 1, Curses::COLOR_WHITE, Curses::COLOR_BLACK
     Curses.init_pair 2, Curses::COLOR_BLACK, Curses::COLOR_WHITE
+    Curses.init_pair 3, Curses::COLOR_BLUE,  Curses::COLOR_BLACK
 
     initials
   end
@@ -64,6 +65,8 @@ private
   end
 
   def initials
+    @search = Search.new 0, 0, Curses.stdscr.maxx, 1
+
     @list = List.new(
       0, 1,
       Curses.stdscr.maxx, Curses.stdscr.maxy - 1,
@@ -85,13 +88,28 @@ private
   def render
     Curses.clear
 
-    Curses.attron Curses.color_pair 1
-    Curses.setpos 0, 0
-    Curses.addstr "items: #{@list.items.count}, height: #{@list.height}, active: #{@list.active}, top: #{@list.top}"
-
+    @search.render
     @list.render
 
     Curses.refresh
+  end
+end
+
+class Search
+  attr_reader :x, :y, :width, :height, :text
+
+  def initialize(x, y, width, height)
+    @x = x
+    @y = y
+    @width = width
+    @height = height
+    @text = 'test test test...'
+  end
+
+  def render
+    Curses.attron Curses.color_pair 3
+    Curses.setpos x, y
+    Curses.addstr text
   end
 end
 
