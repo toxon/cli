@@ -43,13 +43,17 @@ private
 
     Curses.init_pair 1, Curses::COLOR_WHITE, Curses::COLOR_BLACK
     Curses.init_pair 2, Curses::COLOR_BLACK, Curses::COLOR_WHITE
+
+    initials
   end
 
   def after_loop
     Curses.close_screen
   end
 
-  def before_iteration; end
+  def before_iteration
+    render
+  end
 
   def after_iteration
     loop do
@@ -59,5 +63,9 @@ private
     end
   end
 
+  def initials; end
+
   def handle(event); end
+
+  def render; end
 end
