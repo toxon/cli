@@ -14,15 +14,9 @@ module Widgets
 
     def trigger(event)
       case event
-      when Events::Panel::Up, Events::Panel::Down
+      when Events::Panel::Base
         @list.trigger event
-      when Events::Text::Putc,
-           Events::Text::Left,
-           Events::Text::Right,
-           Events::Text::Home,
-           Events::Text::End,
-           Events::Text::Backspace,
-           Events::Text::Delete
+      when Events::Text::Base
         @search.trigger event
       end
     end
