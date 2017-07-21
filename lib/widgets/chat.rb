@@ -36,17 +36,21 @@ module Widgets
     end
 
     def render_message(offset, time, name, text)
-      Curses.attron Curses.color_pair 1
       Curses.setpos y + offset, x
 
       info_length = time.length + 1 + name.length + 2
       head_length = width - info_length
       head = text[0...head_length]
 
+      Curses.attron Curses.color_pair 6
       Curses.addstr time
       Curses.addstr ' '
+      Curses.attron Curses.color_pair 7
+      Curses.attron Curses::A_BOLD
       Curses.addstr name
       Curses.addstr ': '
+      Curses.attroff Curses::A_BOLD
+      Curses.attron Curses.color_pair 1
       Curses.addstr head
 
       tail_length = [0, text.length - head_length].max
