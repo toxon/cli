@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 module Events
+  module Window
+    class Base; end
+
+    class Left  < Base; end
+    class Right < Base; end
+  end
+
   module Panel
     class Base; end
 
