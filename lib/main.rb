@@ -80,6 +80,15 @@ private
     )
   end
 
+  def render
+    Curses.clear
+
+    @search.render
+    @list.render
+
+    Curses.refresh
+  end
+
   def handle(event)
     case event
     when /[a-zA-Z0-9 _-]/
@@ -101,14 +110,5 @@ private
     when Curses::Key::DOWN
       @list.down
     end
-  end
-
-  def render
-    Curses.clear
-
-    @search.render
-    @list.render
-
-    Curses.refresh
   end
 end
