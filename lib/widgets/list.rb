@@ -37,17 +37,21 @@ module Widgets
 
     def up
       @active -= 1
-      @active = items.count - 1 if active.negative?
       update
     end
 
     def down
       @active += 1
-      @active = 0 if active >= items.count
       update
     end
 
     def update
+      if active.negative?
+        @active = items.count - 1
+      elsif active >= items.count
+        @active = 0
+      end
+
       if active < top
         @top = active
       elsif active >= top + height
