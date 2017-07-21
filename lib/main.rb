@@ -64,7 +64,9 @@ private
   end
 
   def initials
-    @items = 1.upto(Curses.stdscr.maxy + 10).map do
+    @height = Curses.stdscr.maxy - 1
+
+    @items = 1.upto(@height + 10).map do
       ['Qwe'].*(3 * (1 + rand(10))).join(' ')
     end
 
@@ -86,14 +88,18 @@ private
   def render
     Curses.clear
 
-    @items.each_with_index.to_a[@top...(@top + Curses.stdscr.maxy)].each do |item, index|
+    Curses.attron Curses.color_pair 1
+    Curses.setpos 0, 0
+    Curses.addstr "items: #{@items.count}, height: #@height, active: #@active, top: #@top"
+
+    @items.each_with_index.to_a[@top...(@top + @height)].each do |item, index|
       if index == @active
         Curses.attron Curses.color_pair 2
       else
         Curses.attron Curses.color_pair 1
       end
 
-      Curses.setpos index, 0
+      Curses.setpos 1 + index, 0
       Curses.addstr "#{index}: #{item}".ljust Curses.stdscr.maxx
     end
 
