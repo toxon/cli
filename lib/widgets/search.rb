@@ -55,7 +55,7 @@ module Widgets
       @cursor_pos = 0
     end
 
-    def end
+    def endk
       @cursor_pos = @text.length
     end
 

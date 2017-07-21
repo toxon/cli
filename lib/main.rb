@@ -3,8 +3,7 @@
 require 'thread'
 require 'curses'
 
-require 'widgets/search'
-require 'widgets/list'
+require 'widgets/peers'
 
 class Main
   def self.inherited(_base)
@@ -69,22 +68,13 @@ private
   end
 
   def initials
-    @search = Widgets::Search.new 0, 0, Curses.stdscr.maxx, 1
-
-    @list = Widgets::List.new(
-      0, 1,
-      Curses.stdscr.maxx, Curses.stdscr.maxy - 1,
-      1.upto(Curses.stdscr.maxy - 1 + 10).map do
-        ['Qwe'].*(3 * (1 + rand(15))).join(' ')
-      end
-    )
+    @peers = Widgets::Peers.new 0, 0, Curses.stdscr.maxx / 2, Curses.stdscr.maxy
   end
 
   def render
     Curses.clear
 
-    @search.render
-    @list.render
+    @peers.render
 
     Curses.refresh
   end
@@ -92,23 +82,23 @@ private
   def handle(event)
     case event
     when /[a-zA-Z0-9 _-]/
-      @search.putc event
+      @peers.putc event
     when Curses::Key::LEFT
-      @search.left
+      @peers.left
     when Curses::Key::RIGHT
-      @search.right
+      @peers.right
     when Curses::Key::HOME
-      @search.home
-    when Curses::Key.const_get(:END)
-      @search.end
+      @peers.home
+    when Curses::Key::END
+      @peers.endk
     when Curses::Key::BACKSPACE
-      @search.backspace
+      @peers.backspace
     when Curses::Key::DC
-      @search.delete
+      @peers.delete
     when Curses::Key::UP
-      @list.up
+      @peers.up
     when Curses::Key::DOWN
-      @list.down
+      @peers.down
     end
   end
 end
