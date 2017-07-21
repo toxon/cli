@@ -5,6 +5,7 @@ require 'curses'
 
 require 'faker'
 
+require 'widgets/messenger'
 require 'widgets/menu'
 require 'widgets/peers'
 require 'widgets/chat'
@@ -77,25 +78,21 @@ private
   end
 
   def initials
-    menu_width  = Curses.stdscr.maxx / 5
-    peers_width = Curses.stdscr.maxx / 4
-    chat_width  = Curses.stdscr.maxx - menu_width - peers_width
+    menu_width      = Curses.stdscr.maxx / 5
+    messenger_width = Curses.stdscr.maxx - menu_width
 
-    menu_left  = 0
-    peers_left = menu_width
-    chat_left  = menu_width + peers_width
+    menu_left      = 0
+    messenger_left = menu_width
 
-    @menu  = Widgets::Menu.new  menu_left,  0, menu_width,  Curses.stdscr.maxy
-    @peers = Widgets::Peers.new peers_left, 0, peers_width, Curses.stdscr.maxy
-    @chat  = Widgets::Chat.new  chat_left,  0, chat_width,  Curses.stdscr.maxy
+    @menu      = Widgets::Menu.new      menu_left,      0, menu_width,      Curses.stdscr.maxy
+    @messenger = Widgets::Messenger.new messenger_left, 0, messenger_width, Curses.stdscr.maxy
   end
 
   def render
     Curses.clear
 
     @menu.render
-    @peers.render
-    @chat.render
+    @messenger.render
 
     Curses.refresh
   end
@@ -103,23 +100,23 @@ private
   def handle(event)
     case event
     when /[a-zA-Z0-9 _-]/
-      @peers.putc event
+      @messenger.putc event
     when Curses::Key::LEFT
-      @peers.left
+      @messenger.left
     when Curses::Key::RIGHT
-      @peers.right
+      @messenger.right
     when Curses::Key::HOME
-      @peers.home
+      @messenger.home
     when Curses::Key::END
-      @peers.endk
+      @messenger.endk
     when Curses::Key::BACKSPACE
-      @peers.backspace
+      @messenger.backspace
     when Curses::Key::DC
-      @peers.delete
+      @messenger.delete
     when Curses::Key::UP
-      @peers.up
+      @messenger.up
     when Curses::Key::DOWN
-      @peers.down
+      @messenger.down
     end
   end
 end
