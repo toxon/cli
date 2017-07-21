@@ -78,6 +78,8 @@ private
 
   def handle(event)
     case event
+    when /[a-zA-Z0-9 _-]/
+      @search.append event
     when Curses::Key::UP
       @list.up
     when Curses::Key::DOWN
@@ -103,13 +105,17 @@ class Search
     @y = y
     @width = width
     @height = height
-    @text = 'test test test...'
+    @text = ''
   end
 
   def render
     Curses.attron Curses.color_pair 3
     Curses.setpos x, y
     Curses.addstr text
+  end
+
+  def append(c)
+    @text += c
   end
 end
 
