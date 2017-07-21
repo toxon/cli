@@ -7,6 +7,9 @@ require 'faker'
 
 require 'events'
 
+# Basic
+require 'widgets/text'
+
 require 'widgets/messenger'
 require 'widgets/menu'
 require 'widgets/peers'
