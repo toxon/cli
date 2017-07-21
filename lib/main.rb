@@ -101,6 +101,11 @@ private
 
   def handle(char)
     case char
+    when Curses::Key::UP
+      @messenger.trigger Events::Panel::Up.new
+    when Curses::Key::DOWN
+      @messenger.trigger Events::Panel::Down.new
+
     when /[a-zA-Z0-9 ]/
       @messenger.trigger Events::Text::Putc.new char
     when Curses::Key::LEFT
@@ -115,10 +120,6 @@ private
       @messenger.trigger Events::Text::Backspace.new
     when Curses::Key::DC
       @messenger.trigger Events::Text::Delete.new
-    when Curses::Key::UP
-      @messenger.trigger Events::Panel::Up.new
-    when Curses::Key::DOWN
-      @messenger.trigger Events::Panel::Down.new
     end
   end
 end
