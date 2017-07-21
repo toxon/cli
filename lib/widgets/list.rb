@@ -15,7 +15,7 @@ module Widgets
       @top    = 0
 
       @items = 1.upto(height - 1 + 10).map do
-        ['Qwe'].*(3 * (1 + rand(15))).join(' ')
+        Faker::Name.name
       end
     end
 

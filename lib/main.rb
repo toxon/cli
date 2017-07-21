@@ -3,6 +3,8 @@
 require 'thread'
 require 'curses'
 
+require 'faker'
+
 require 'widgets/menu'
 require 'widgets/peers'
 require 'widgets/chat'
