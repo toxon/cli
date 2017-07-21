@@ -6,7 +6,7 @@ module Widgets
       'Foo menu item',
       'Bar Car menu item',
       'Hello, World!',
-    ]
+    ].freeze
 
     attr_reader :x, :y, :width, :height
 
