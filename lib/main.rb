@@ -19,7 +19,7 @@ require 'widgets/search'
 require 'widgets/list'
 
 require 'widgets/chat'
-require 'widgets/message'
+require 'widgets/chat/new_message'
 
 class Main
   def self.inherited(_base)

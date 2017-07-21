@@ -13,7 +13,7 @@ module Widgets
       @width  = width
       @height = height
 
-      @message = Widgets::Message.new x, y + height - 1, width, 1
+      @message = NewMessage.new x, y + height - 1, width, 1
 
       @focused = false
 

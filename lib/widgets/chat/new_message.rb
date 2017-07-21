@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Message < Text
+  class Chat
+    class NewMessage < Text
+    end
   end
 end
