@@ -19,7 +19,7 @@ module Widgets
 
       cut = text[start...start + total]
 
-      Curses.setpos x, y
+      Curses.setpos y, x
 
       before_cursor = cut[0...cursor_pos]
       under_cursor  = cut[cursor_pos] || ' '
