@@ -5,6 +5,8 @@ require 'curses'
 
 require 'faker'
 
+require 'events'
+
 require 'widgets/messenger'
 require 'widgets/menu'
 require 'widgets/peers'
@@ -97,26 +99,26 @@ private
     Curses.refresh
   end
 
-  def handle(event)
-    case event
-    when /[a-zA-Z0-9 _-]/
-      @messenger.putc event
+  def handle(char)
+    case char
+    when /[a-zA-Z0-9 ]/
+      @messenger.trigger Events::Text::Putc.new char
     when Curses::Key::LEFT
-      @messenger.left
+      @messenger.trigger Events::Text::Left.new
     when Curses::Key::RIGHT
-      @messenger.right
+      @messenger.trigger Events::Text::Right.new
     when Curses::Key::HOME
-      @messenger.home
+      @messenger.trigger Events::Text::Home.new
     when Curses::Key::END
-      @messenger.endk
+      @messenger.trigger Events::Text::End.new
     when Curses::Key::BACKSPACE
-      @messenger.backspace
+      @messenger.trigger Events::Text::Backspace.new
     when Curses::Key::DC
-      @messenger.delete
+      @messenger.trigger Events::Text::Delete.new
     when Curses::Key::UP
-      @messenger.up
+      @messenger.trigger Events::Panel::Up.new
     when Curses::Key::DOWN
-      @messenger.down
+      @messenger.trigger Events::Panel::Down.new
     end
   end
 end

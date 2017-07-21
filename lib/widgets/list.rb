@@ -40,6 +40,15 @@ module Widgets
       end
     end
 
+    def trigger(event)
+      case event
+      when Events::Panel::Up
+        up
+      when Events::Panel::Down
+        down
+      end
+    end
+
     def up
       @active -= 1
       update

@@ -35,6 +35,25 @@ module Widgets
       Curses.addstr after_cursor
     end
 
+    def trigger(event)
+      case event
+      when Events::Text::Putc
+        putc event.char
+      when Events::Text::Left
+        left
+      when Events::Text::Right
+        right
+      when Events::Text::Home
+        home
+      when Events::Text::End
+        endk
+      when Events::Text::Backspace
+        backspace
+      when Events::Text::Delete
+        delete
+      end
+    end
+
     def putc(c)
       @text = "#{text[0...cursor_pos]}#{c}#{text[cursor_pos..-1]}"
       @cursor_pos += 1

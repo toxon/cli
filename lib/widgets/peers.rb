@@ -12,40 +12,19 @@ module Widgets
       @list.render
     end
 
-    def putc(event)
-      @search.putc event
-    end
-
-    def left
-      @search.left
-    end
-
-    def right
-      @search.right
-    end
-
-    def home
-      @search.home
-    end
-
-    def endk
-      @search.endk
-    end
-
-    def backspace
-      @search.backspace
-    end
-
-    def delete
-      @search.delete
-    end
-
-    def up
-      @list.up
-    end
-
-    def down
-      @list.down
+    def trigger(event)
+      case event
+      when Events::Panel::Up, Events::Panel::Down
+        @list.trigger event
+      when Events::Text::Putc,
+           Events::Text::Left,
+           Events::Text::Right,
+           Events::Text::Home,
+           Events::Text::End,
+           Events::Text::Backspace,
+           Events::Text::Delete
+        @search.trigger event
+      end
     end
   end
 end

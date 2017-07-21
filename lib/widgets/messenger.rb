@@ -26,40 +26,8 @@ module Widgets
       @chat.render
     end
 
-    def putc(event)
-      @peers.putc event
-    end
-
-    def left
-      @peers.left
-    end
-
-    def right
-      @peers.right
-    end
-
-    def home
-      @peers.home
-    end
-
-    def endk
-      @peers.endk
-    end
-
-    def backspace
-      @peers.backspace
-    end
-
-    def delete
-      @peers.delete
-    end
-
-    def up
-      @peers.up
-    end
-
-    def down
-      @peers.down
+    def trigger(event)
+      @peers.trigger event
     end
   end
 end
