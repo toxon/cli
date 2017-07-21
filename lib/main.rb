@@ -120,14 +120,14 @@ class Search
     Curses.setpos x, y
 
     before_cursor = text[0...cursor_pos]
-    under_cursor  = text[cursor_pos]
-    after_cursor  = text[cursor_pos..-1]
+    under_cursor  = text[cursor_pos] || ' '
+    after_cursor  = text[(1 + cursor_pos)..-1] || ''
 
     Curses.attron Curses.color_pair 3
     Curses.addstr before_cursor
 
     Curses.attron Curses.color_pair 4
-    Curses.addstr under_cursor || ' '
+    Curses.addstr under_cursor
 
     Curses.attron Curses.color_pair 3
     Curses.addstr after_cursor
