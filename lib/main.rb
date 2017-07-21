@@ -168,7 +168,7 @@ class Search
 
   def backspace
     return unless cursor_pos.positive?
-    @text = text[0...-1]
+    @text = "#{text[0...(cursor_pos - 1)]}#{text[cursor_pos..-1]}"
     @cursor_pos -= 1
     update
   end
