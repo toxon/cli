@@ -4,7 +4,7 @@ module Events
   module Panel
     class Base; end
 
-    class Up < Base; end
+    class Up   < Base; end
     class Down < Base; end
   end
 
@@ -20,11 +20,11 @@ module Events
       end
     end
 
-    class Left < Base; end
-    class Right < Base; end
-    class Home < Base; end
-    class End < Base; end
+    class Left      < Base; end
+    class Right     < Base; end
+    class Home      < Base; end
+    class End       < Base; end
     class Backspace < Base; end
-    class Delete < Base; end
+    class Delete    < Base; end
   end
 end
