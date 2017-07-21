@@ -21,7 +21,7 @@ module Widgets
     def render
       ITEMS.each_with_index do |item, index|
         Curses.attron Curses.color_pair 5
-        Curses.setpos y + index * 3 + 1, 2
+        Curses.setpos 2 + y + index * 4, 2
         Curses.addstr item
       end
     end
