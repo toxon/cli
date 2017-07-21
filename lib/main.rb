@@ -121,11 +121,16 @@ class Search
   end
 
   def render
+    total = width - 1
+    start = [0, cursor_pos - total].max
+
+    cut = text[start...start + total]
+
     Curses.setpos x, y
 
-    before_cursor = text[0...cursor_pos]
-    under_cursor  = text[cursor_pos] || ' '
-    after_cursor  = text[(1 + cursor_pos)..-1] || ''
+    before_cursor = cut[0...cursor_pos]
+    under_cursor  = cut[cursor_pos] || ' '
+    after_cursor  = cut[(1 + cursor_pos)..-1] || ''
 
     Curses.attron Curses.color_pair 3
     Curses.addstr before_cursor
