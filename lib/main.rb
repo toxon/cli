@@ -91,6 +91,8 @@ private
       @search.end
     when Curses::Key::BACKSPACE
       @search.backspace
+    when Curses::Key::DC
+      @search.delete
     when Curses::Key::UP
       @list.up
     when Curses::Key::DOWN
@@ -171,6 +173,11 @@ class Search
     @text = "#{text[0...(cursor_pos - 1)]}#{text[cursor_pos..-1]}"
     @cursor_pos -= 1
     update
+  end
+
+  def delete
+    return if cursor_pos > text.length
+    @text = "#{text[0...cursor_pos]}#{text[(cursor_pos + 1)..-1]}"
   end
 
   def update
