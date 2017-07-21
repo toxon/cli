@@ -92,14 +92,16 @@ private
     Curses.setpos 0, 0
     Curses.addstr "items: #{@items.count}, height: #@height, active: #@active, top: #@top"
 
-    @items.each_with_index.to_a[@top...(@top + @height)].each do |item, index|
+    @items[@top...(@top + @height)].each_with_index.each do |item, offset|
+      index = @top + offset
+
       if index == @active
         Curses.attron Curses.color_pair 2
       else
         Curses.attron Curses.color_pair 1
       end
 
-      Curses.setpos 1 + index, 0
+      Curses.setpos 1 + offset, 0
       Curses.addstr "#{index}: #{item}".ljust Curses.stdscr.maxx
     end
 
