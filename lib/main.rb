@@ -64,30 +64,21 @@ private
   end
 
   def initials
-    @height = Curses.stdscr.maxy - 1
-
-    @items = 1.upto(@height + 10).map do
-      ['Qwe'].*(3 * (1 + rand(10))).join(' ')
-    end
-
-    @top = 0
-    @active = 0
+    @list = List.new(
+      0, 1,
+      Curses.stdscr.maxx, Curses.stdscr.maxy - 1,
+      1.upto(Curses.stdscr.maxy - 1 + 10).map do
+        ['Qwe'].*(3 * (1 + rand(10))).join(' ')
+      end
+    )
   end
 
   def handle(event)
     case event
     when Curses::Key::UP
-      @active -= 1
-      @active = @items.count - 1 if @active.negative?
+      @list.up
     when Curses::Key::DOWN
-      @active += 1
-      @active = 0 if @active >= @items.count
-    end
-
-    if @active < @top
-      @top = @active
-    elsif @active >= @top + @height
-      @top = @active - @height + 1
+      @list.down
     end
   end
 
@@ -96,8 +87,28 @@ private
 
     Curses.attron Curses.color_pair 1
     Curses.setpos 0, 0
-    Curses.addstr "items: #{@items.count}, height: #@height, active: #@active, top: #@top"
+    Curses.addstr "items: #{@list.items.count}, height: #{@list.height}, active: #{@list.active}, top: #{@list.top}"
 
+    @list.render
+
+    Curses.refresh
+  end
+end
+
+class List
+  attr_reader :items, :height, :active, :top
+
+  def initialize(x, y, width, height, items)
+    @x = x
+    @y = y
+    @width = width
+    @height = height
+    @active = 0
+    @top = 0
+    @items = Array(items)
+  end
+
+  def render
     @items[@top...(@top + @height)].each_with_index.each do |item, offset|
       index = @top + offset
 
@@ -107,10 +118,28 @@ private
         Curses.attron Curses.color_pair 1
       end
 
-      Curses.setpos 1 + offset, 0
-      Curses.addstr "#{index}: #{item}".ljust Curses.stdscr.maxx
+      Curses.setpos @y + offset, @x
+      Curses.addstr "#{index}: #{item}".ljust @width
     end
+  end
 
-    Curses.refresh
+  def up
+    @active -= 1
+    @active = @items.count - 1 if @active.negative?
+    update
+  end
+
+  def down
+    @active += 1
+    @active = 0 if @active >= @items.count
+    update
+  end
+
+  def update
+    if @active < @top
+      @top = @active
+    elsif @active >= @top + @height
+      @top = @active - @height + 1
+    end
   end
 end
