@@ -48,6 +48,7 @@ private
     Curses.init_pair 2, Curses::COLOR_BLACK, Curses::COLOR_WHITE
     Curses.init_pair 3, Curses::COLOR_BLUE,  Curses::COLOR_BLACK
     Curses.init_pair 4, Curses::COLOR_BLACK, Curses::COLOR_BLUE
+    Curses.init_pair 5, Curses::COLOR_BLACK, Curses::COLOR_CYAN
 
     initials
   end
@@ -72,7 +73,7 @@ private
     menu_width  = Curses.stdscr.maxx / 6
     peers_width = Curses.stdscr.maxx / 3
 
-    # @menu = Widgets::Menu.new 0, 0, menu_width, Curses.stdscr.maxy
+    @menu = Widgets::Menu.new 0, 0, menu_width, Curses.stdscr.maxy
 
     @peers = Widgets::Peers.new menu_width, 0, peers_width, Curses.stdscr.maxy
   end
@@ -80,6 +81,7 @@ private
   def render
     Curses.clear
 
+    @menu.render
     @peers.render
 
     Curses.refresh
