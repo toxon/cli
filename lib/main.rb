@@ -81,6 +81,10 @@ private
     case event
     when /[a-zA-Z0-9 _-]/
       @search.putc event
+    when Curses::Key::LEFT
+      @search.left
+    when Curses::Key::RIGHT
+      @search.right
     when Curses::Key::HOME
       @search.home
     when Curses::Key.const_get(:END)
@@ -135,6 +139,16 @@ class Search
 
   def putc(c)
     @text += c
+    @cursor_pos += 1
+    update
+  end
+
+  def left
+    @cursor_pos -= 1
+    update
+  end
+
+  def right
     @cursor_pos += 1
     update
   end
