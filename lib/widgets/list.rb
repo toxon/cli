@@ -7,10 +7,13 @@ module Widgets
     def initialize(x, y, width, height, items)
       @x = x
       @y = y
-      @width = width
+
+      @width  = width
       @height = height
+
       @active = 0
-      @top = 0
+      @top    = 0
+
       @items = Array(items)
     end
 
