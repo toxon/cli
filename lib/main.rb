@@ -149,7 +149,13 @@ class List
       end
 
       Curses.setpos y + offset, x
-      Curses.addstr "#{index}: #{item}".ljust width
+
+      s = "#{index}: #{item}"
+      if s.length <= width
+        Curses.addstr s.ljust width
+      else
+        Curses.addstr "#{s[0...width - 3]}..."
+      end
     end
   end
 
