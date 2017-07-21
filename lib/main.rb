@@ -83,6 +83,12 @@ private
       @active += 1
       @active = 0 if @active >= @items.count
     end
+
+    if @active < @top
+      @top = @active
+    elsif @active >= @top + @height
+      @top = @active - @height + 1
+    end
   end
 
   def render
