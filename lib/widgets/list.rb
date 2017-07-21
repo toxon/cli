@@ -4,7 +4,7 @@ module Widgets
   class List
     attr_reader :x, :y, :width, :height, :active, :top, :items
 
-    def initialize(x, y, width, height, items)
+    def initialize(x, y, width, height)
       @x = x
       @y = y
 
@@ -14,7 +14,9 @@ module Widgets
       @active = 0
       @top    = 0
 
-      @items = Array(items)
+      @items = 1.upto(height - 1 + 10).map do
+        ['Qwe'].*(3 * (1 + rand(15))).join(' ')
+      end
     end
 
     def render

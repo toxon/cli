@@ -3,15 +3,8 @@
 module Widgets
   class Peers
     def initialize(x, y, width, height)
-      @search = Widgets::Search.new x, y, width, 1
-
-      @list = Widgets::List.new(
-        x, y + 1,
-        width, height - 1,
-        1.upto(height - 1 + 10).map do
-          ['Qwe'].*(3 * (1 + rand(15))).join(' ')
-        end
-      )
+      @search = Widgets::Search.new x, y,     width, 1
+      @list   = Widgets::List.new   x, y + 1, width, height - 1
     end
 
     def render
