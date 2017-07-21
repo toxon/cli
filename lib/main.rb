@@ -69,11 +69,11 @@ private
   end
 
   def initials
-    @search = Widgets::Search.new 1, 1, Curses.stdscr.maxx - 2, 1
+    @search = Widgets::Search.new 0, 0, Curses.stdscr.maxx, 1
 
     @list = Widgets::List.new(
-      1, 2,
-      Curses.stdscr.maxx - 2, Curses.stdscr.maxy - 3,
+      0, 1,
+      Curses.stdscr.maxx, Curses.stdscr.maxy - 1,
       1.upto(Curses.stdscr.maxy - 1 + 10).map do
         ['Qwe'].*(3 * (1 + rand(15))).join(' ')
       end
