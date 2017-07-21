@@ -86,7 +86,7 @@ private
   def render
     Curses.clear
 
-    @items[@top...(@top + Curses.stdscr.maxy)].each_with_index do |item, index|
+    @items.each_with_index.to_a[@top...(@top + Curses.stdscr.maxy)].each do |item, index|
       if index == @active
         Curses.attron Curses.color_pair 2
       else
@@ -94,7 +94,7 @@ private
       end
 
       Curses.setpos index, 0
-      Curses.addstr item.ljust Curses.stdscr.maxx
+      Curses.addstr "#{index}: #{item}".ljust Curses.stdscr.maxx
     end
 
     Curses.refresh
