@@ -11,11 +11,14 @@ require 'events'
 require 'widgets/text'
 
 require 'widgets/messenger'
+
 require 'widgets/menu'
 require 'widgets/peers'
 require 'widgets/chat'
+
 require 'widgets/search'
 require 'widgets/list'
+require 'widgets/message'
 
 class Main
   def self.inherited(_base)

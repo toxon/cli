@@ -3,7 +3,7 @@
 module Widgets
   class Chat
     attr_reader :x, :y, :width, :height
-    attr_accessor :focused
+    attr_reader :focused
     attr_reader :messages
 
     def initialize(x, y, width, height)
@@ -12,6 +12,8 @@ module Widgets
 
       @width  = width
       @height = height
+
+      @message = Widgets::Message.new x, y + height - 1, width, 1
 
       @focused = false
 
@@ -25,10 +27,12 @@ module Widgets
     end
 
     def log_height
-      height - 2
+      height - 1
     end
 
     def render
+      @message.render
+
       offset = 0
 
       messages.each do |msg|
@@ -72,6 +76,16 @@ module Widgets
       offset + 1 + lines
     end
 
-    def trigger(event); end
+    def trigger(event)
+      case event
+      when Events::Text::Base
+        @message.trigger event
+      end
+    end
+
+    def focused=(value)
+      @focused = !!value
+      @message.focused = focused
+    end
   end
 end
