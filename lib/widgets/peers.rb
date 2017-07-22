@@ -1,19 +1,16 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Peers
-    attr_reader :focused
-
+  class Peers < VPanel
     def initialize(x, y, width, height)
-      @focused = false
+      super
 
       @list   = List.new   x, y + 1, width, height - 1
       @search = Search.new x, y,     width, 1
     end
 
-    def render
-      @list.render
-      @search.render
+    def children
+      [@list, @search]
     end
 
     def trigger(event)

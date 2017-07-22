@@ -9,6 +9,7 @@ require 'events'
 
 # Basic
 require 'widgets/text'
+require 'widgets/v_panel'
 
 require 'widgets/messenger'
 

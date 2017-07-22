@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Chat
-    attr_reader :focused
-
+  class Chat < VPanel
     def initialize(x, y, width, height)
-      @focused = false
+      super
 
       info_height    = 4
       message_height = 1
@@ -20,10 +18,8 @@ module Widgets
       @message = NewMessage.new x, y + message_top, width, message_height
     end
 
-    def render
-      @info.render
-      @history.render
-      @message.render
+    def children
+      [@info, @history, @message]
     end
 
     def trigger(event)
