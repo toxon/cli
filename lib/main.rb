@@ -93,8 +93,6 @@ private
   end
 
   def render
-    Curses.clear
-
     @menu.render
     @messenger.render
 
