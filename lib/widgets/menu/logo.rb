@@ -4,7 +4,7 @@ module Widgets
   class Menu < Base
     class Logo < Base
       LOGO = <<~END.lines.map { |s| s.gsub(/\n$/, '') }
-         _________ _  _ ___  _   _
+         _____ ___ _  _ ___  _   _
         |_   _/ _ \\ \\/ / _ \\| \\ | |
           | || | | \\  / | | |  \\| |
           | || |_| /  \\ |_| | |\\  |
