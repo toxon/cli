@@ -86,14 +86,8 @@ private
   end
 
   def initials
-    menu_width      = Curses.stdscr.maxx / 5
-    messenger_width = Curses.stdscr.maxx - menu_width
-
-    menu_left      = 0
-    messenger_left = menu_width
-
-    @menu      = Widgets::Menu.new      menu_left,      0, menu_width,      Curses.stdscr.maxy
-    @messenger = Widgets::Messenger.new messenger_left, 0, messenger_width, Curses.stdscr.maxy
+    @menu      = Widgets::Menu.new      0,           0, nil,                              Curses.stdscr.maxy
+    @messenger = Widgets::Messenger.new @menu.width, 0, Curses.stdscr.maxx - @menu.width, Curses.stdscr.maxy
 
     @messenger.focused = true
   end
