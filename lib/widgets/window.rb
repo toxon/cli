@@ -10,8 +10,8 @@ module Widgets
       @messenger = Widgets::Messenger.new(
         0,
         0,
-        Curses.stdscr.maxx - @menu.width,
-        Curses.stdscr.maxy,
+        width - @menu.width,
+        height,
       )
 
       self.focus = @messenger
