@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Widgets
-  class VPanel < Base
+  class VPanel < Container
     def draw
       children.each(&:render)
     end

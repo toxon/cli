@@ -11,6 +11,9 @@ require 'style'
 # Basic
 require 'widgets/base'
 require 'widgets/text'
+
+# Basic containers
+require 'widgets/container'
 require 'widgets/v_panel'
 
 require 'widgets/messenger'

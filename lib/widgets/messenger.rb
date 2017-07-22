@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Messenger < Base
+  class Messenger < Container
     attr_reader :focus
 
     def initialize(x, y, width, height)
