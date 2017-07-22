@@ -106,6 +106,9 @@ private
 
   def handle(char)
     case char
+    when "\t".ord
+      window.trigger Events::Tab.new
+
     when Curses::Key::SLEFT
       window.trigger Events::Window::Left.new
     when Curses::Key::SRIGHT

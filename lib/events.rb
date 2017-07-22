@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Events
+  class Tab; end
+
   module Window
     class Base; end
 
