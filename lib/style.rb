@@ -11,6 +11,7 @@ class Style
   end
 
   def initialize
+    Curses.init_pair logo_id,           logo_color,           logo_bg
     Curses.init_pair text_id,           text_color,           text_bg
     Curses.init_pair selection_id,      selection_color,      selection_bg
     Curses.init_pair editing_text_id,   editing_text_color,   editing_text_bg
@@ -20,6 +21,13 @@ class Style
     Curses.init_pair message_author_id, message_author_color, message_author_bg
     Curses.init_pair online_mark_id,    online_mark_color,    online_mark_bg
     Curses.init_pair peer_info_name_id, peer_info_name_color, peer_info_name_bg
+  end
+
+  def logo
+    Curses.attron logo_attr
+    yield
+  ensure
+    Curses.attroff logo_attr
   end
 
   def text
@@ -87,6 +95,10 @@ class Style
 
 private
 
+  def logo_attr
+    Curses.color_pair(logo_id) | Curses::A_BOLD
+  end
+
   def text_attr
     Curses.color_pair text_id
   end
@@ -123,6 +135,10 @@ private
     Curses.color_pair(peer_info_name_id) | Curses::A_BOLD
   end
 
+  def logo_id
+    @logo_id ||= self.class.counter
+  end
+
   def text_id
     @text_id ||= self.class.counter
   end
@@ -157,6 +173,14 @@ private
 
   def peer_info_name_id
     @peer_info_name_id ||= self.class.counter
+  end
+
+  def logo_color
+    Curses::COLOR_BLUE
+  end
+
+  def logo_bg
+    Curses::COLOR_BLACK
   end
 
   def text_color

@@ -19,9 +19,11 @@ module Widgets
       end
 
       def draw
-        LOGO.each_with_index do |s, index|
-          Curses.setpos y + index, x
-          Curses.addstr " #{s}"
+        Style.default.logo do
+          LOGO.each_with_index do |s, index|
+            Curses.setpos y + index, x
+            Curses.addstr " #{s}"
+          end
         end
       end
     end
