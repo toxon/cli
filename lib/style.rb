@@ -1,19 +1,130 @@
 # frozen_string_literal: true
 
 class Style
-  def self.counter
-    @counter ||= 0
-    @counter += 1
+  class << self
+    attr_accessor :default
+
+    def counter
+      @counter ||= 0
+      @counter += 1
+    end
   end
 
   def initialize
-    Curses.init_pair self.class.counter, text_color,           text_bg
-    Curses.init_pair self.class.counter, selection_color,      selection_bg
-    Curses.init_pair self.class.counter, editing_text_color,   editing_text_bg
-    Curses.init_pair self.class.counter, cursor_color,         cursor_bg
-    Curses.init_pair self.class.counter, menu_item_color,      menu_item_bg
-    Curses.init_pair self.class.counter, message_time_color,   message_time_bg
-    Curses.init_pair self.class.counter, message_author_color, message_author_bg
+    Curses.init_pair text_id,           text_color,           text_bg
+    Curses.init_pair selection_id,      selection_color,      selection_bg
+    Curses.init_pair editing_text_id,   editing_text_color,   editing_text_bg
+    Curses.init_pair cursor_id,         cursor_color,         cursor_bg
+    Curses.init_pair menu_item_id,      menu_item_color,      menu_item_bg
+    Curses.init_pair message_time_id,   message_time_color,   message_time_bg
+    Curses.init_pair message_author_id, message_author_color, message_author_bg
+  end
+
+  def text
+    Curses.attron text_attr
+    yield
+  ensure
+    Curses.attroff text_attr
+  end
+
+  def selection
+    Curses.attron selection_attr
+    yield
+  ensure
+    Curses.attroff selection_attr
+  end
+
+  def editing_text
+    Curses.attron editing_text_attr
+    yield
+  ensure
+    Curses.attroff editing_text_attr
+  end
+
+  def cursor
+    Curses.attron cursor_attr
+    yield
+  ensure
+    Curses.attroff cursor_attr
+  end
+
+  def menu_item
+    Curses.attron menu_item_attr
+    yield
+  ensure
+    Curses.attroff menu_item_attr
+  end
+
+  def message_time
+    Curses.attron message_time_attr
+    yield
+  ensure
+    Curses.attroff message_time_attr
+  end
+
+  def message_author
+    Curses.attron message_author_attr
+    yield
+  ensure
+    Curses.attroff message_author_attr
+  end
+
+private
+
+  def text_attr
+    Curses.color_pair text_id
+  end
+
+  def selection_attr
+    Curses.color_pair selection_id
+  end
+
+  def editing_text_attr
+    Curses.color_pair editing_text_id
+  end
+
+  def cursor_attr
+    Curses.color_pair cursor_id
+  end
+
+  def menu_item_attr
+    Curses.color_pair menu_item_id
+  end
+
+  def message_time_attr
+    Curses.color_pair message_time_id
+  end
+
+  def message_author_attr
+    Curses.color_pair(message_author_id) | Curses::A_BOLD
+  end
+
+  def text_id
+    @text_id ||= self.class.counter
+  end
+
+  def selection_id
+    @selection_id ||= self.class.counter
+  end
+
+  def editing_text_id
+    @editing_text_id ||= self.class.counter
+  end
+
+  def cursor_id
+    @cursor_id ||= self.class.counter
+  end
+
+  def menu_item_id
+    @menu_item_id ||= self.class.counter
+  end
+
+  def message_time_id
+    @message_time_id ||= self.class.counter
+  end
+
+  def message_author_id
+    @message_author_id ||= self.class.counter
   end
 
   def text_color

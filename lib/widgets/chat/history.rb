@@ -38,16 +38,20 @@ module Widgets
         head_length = width - info_length
         head = text[0...head_length]
 
-        Curses.attron Curses.color_pair 6
-        Curses.addstr time
+        Style.default.message_time do
+          Curses.addstr time
+        end
+
         Curses.addstr ' '
-        Curses.attron Curses.color_pair 7
-        Curses.attron Curses::A_BOLD
-        Curses.addstr name
-        Curses.addstr ': '
-        Curses.attroff Curses::A_BOLD
-        Curses.attron Curses.color_pair 1
-        Curses.addstr head
+
+        Style.default.message_author do
+          Curses.addstr name
+          Curses.addstr ': '
+        end
+
+        Style.default.text do
+          Curses.addstr head
+        end
 
         tail_length = [0, text.length - head_length].max
         tail = text[head_length..-1]

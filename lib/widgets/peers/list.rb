@@ -20,19 +20,15 @@ module Widgets
         items[top...(top + height)].each_with_index.each do |item, offset|
           index = top + offset
 
-          if index == active && focused
-            Curses.attron Curses.color_pair 2
-          else
-            Curses.attron Curses.color_pair 1
-          end
+          Style.default.public_send(index == active && focused ? :selection : :text) do
+            Curses.setpos y + offset, x
 
-          Curses.setpos y + offset, x
-
-          s = "#{index}: #{item}"
-          if s.length <= width
-            Curses.addstr s.ljust width
-          else
-            Curses.addstr "#{s[0...width - 3]}..."
+            s = "#{index}: #{item}"
+            if s.length <= width
+              Curses.addstr s.ljust width
+            else
+              Curses.addstr "#{s[0...width - 3]}..."
+            end
           end
         end
       end

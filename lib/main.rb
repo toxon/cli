@@ -64,7 +64,8 @@ private
     Curses.timeout = 0 # non-blocking input
     Curses.stdscr.keypad = true
 
-    style
+    Style.default = Style.new
+
     initials
   end
 
@@ -82,10 +83,6 @@ private
       break if event.nil?
       handle event
     end
-  end
-
-  def style
-    @style ||= Style.new
   end
 
   def initials

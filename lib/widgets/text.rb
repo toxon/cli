@@ -23,14 +23,17 @@ module Widgets
       under_cursor  = cut[cursor_pos] || ' '
       after_cursor  = cut[(1 + cursor_pos)..-1] || ''
 
-      Curses.attron Curses.color_pair 3
-      Curses.addstr before_cursor
+      Style.default.editing_text do
+        Curses.addstr before_cursor
+      end
 
-      Curses.attron Curses.color_pair 4 if focused
-      Curses.addstr under_cursor
+      Style.default.public_send focused ? :cursor : :editing_text do
+        Curses.addstr under_cursor
+      end
 
-      Curses.attron Curses.color_pair 3
-      Curses.addstr after_cursor
+      Style.default.editing_text do
+        Curses.addstr after_cursor
+      end
     end
 
     def trigger(event)
