@@ -9,6 +9,8 @@ module Widgets
         'Hello, World!',
       ].freeze
 
+      SIDE_PADDING = 3
+
       def draw
         ITEMS.each_with_index do |item, index|
           draw_item index, item
@@ -17,14 +19,14 @@ module Widgets
 
       def draw_item(index, name)
         Style.default.menu_item do
-          setpos 3, 4 * index + 0
-          Curses.addstr ' ' * (width - 6)
+          setpos SIDE_PADDING, 4 * index + 0
+          Curses.addstr ' ' * (width - 2 * SIDE_PADDING)
 
-          setpos 3, 4 * index + 1
-          Curses.addstr " #{name}".ljust width - 6
+          setpos SIDE_PADDING, 4 * index + 1
+          Curses.addstr " #{name}".ljust width - 2 * SIDE_PADDING
 
-          setpos 3, 4 * index + 2
-          Curses.addstr ' ' * (width - 6)
+          setpos SIDE_PADDING, 4 * index + 2
+          Curses.addstr ' ' * (width - 2 * SIDE_PADDING)
         end
       end
     end
