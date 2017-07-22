@@ -36,11 +36,10 @@ module Widgets
           Curses.addstr ' '
 
           Style.default.public_send(index == active && focused ? :selection : :text) do
-            s = "#{index}: #{item[:name]}"
-            if s.length <= width - 2
-              Curses.addstr s.ljust width - 2
+            if item[:name].length <= width - 2
+              Curses.addstr item[:name].ljust width - 2
             else
-              Curses.addstr "#{s[0...width - 5]}..."
+              Curses.addstr "#{item[:name][0...width - 5]}..."
             end
           end
         end
