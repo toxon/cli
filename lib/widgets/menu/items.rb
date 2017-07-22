@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Menu < Base
+  class Menu < Container
     class Items < Base
       ITEMS = [
         'Foo menu item',

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Menu < Base
+  class Menu < Container
     class Logo < Base
       LOGO = [
         '  _____ ___ _  _ ___  _   _  ',

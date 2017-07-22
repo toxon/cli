@@ -13,19 +13,12 @@ module Widgets
       self.focus = @messenger
     end
 
+    def children
+      [@menu, @messenger]
+    end
+
     def trigger(event)
       focus.trigger event
-    end
-
-    def draw
-      @menu.render
-      @messenger.render
-    end
-
-    def focus=(value)
-      focus.focused = false if focus
-      @focus = value
-      focus.focused = true
     end
   end
 end

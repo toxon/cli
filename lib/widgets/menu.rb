@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Menu < Base
+  class Menu < Container
     def initialize(x, y, _width, height)
       super x, y, Logo::WIDTH, height
 
@@ -9,9 +9,8 @@ module Widgets
       @items = Items.new x, @logo.height, @logo.width, nil
     end
 
-    def draw
-      @logo.render
-      @items.render
+    def children
+      [@logo, @items]
     end
   end
 end
