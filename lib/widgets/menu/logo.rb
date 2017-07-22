@@ -10,6 +10,8 @@ module Widgets
         '   | || |_| /  \ |_| | |\  | ',
         '   |_| \___/_/\_\___/|_| \_| ',
         '                             ',
+        '        Version 0.0.0        ',
+        '                             ',
       ].freeze
 
       WIDTH  = LOGO.first.length
