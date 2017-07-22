@@ -16,6 +16,8 @@ require 'widgets/text'
 require 'widgets/container'
 require 'widgets/v_panel'
 
+require 'widgets/window'
+
 require 'widgets/messenger'
 
 require 'widgets/menu'
@@ -70,8 +72,6 @@ private
     Curses.stdscr.keypad = true
 
     Style.default = Style.new
-
-    initials
   end
 
   def after_loop
@@ -90,46 +90,46 @@ private
     end
   end
 
-  def initials
-    @menu      = Widgets::Menu.new      0,           0, nil,                              Curses.stdscr.maxy
-    @messenger = Widgets::Messenger.new @menu.width, 0, Curses.stdscr.maxx - @menu.width, Curses.stdscr.maxy
-
-    @messenger.focused = true
+  def window
+    @window ||= Widgets::Window.new(
+      0,
+      0,
+      Curses.stdscr.maxx,
+      Curses.stdscr.maxy,
+    )
   end
 
   def render
-    @menu.render
-    @messenger.render
-
+    window.render
     Curses.refresh
   end
 
   def handle(char)
     case char
     when Curses::Key::SLEFT
-      @messenger.trigger Events::Window::Left.new
+      window.trigger Events::Window::Left.new
     when Curses::Key::SRIGHT
-      @messenger.trigger Events::Window::Right.new
+      window.trigger Events::Window::Right.new
 
     when Curses::Key::UP
-      @messenger.trigger Events::Panel::Up.new
+      window.trigger Events::Panel::Up.new
     when Curses::Key::DOWN
-      @messenger.trigger Events::Panel::Down.new
+      window.trigger Events::Panel::Down.new
 
     when /[a-zA-Z0-9 ]/
-      @messenger.trigger Events::Text::Putc.new char
+      window.trigger Events::Text::Putc.new char
     when Curses::Key::LEFT
-      @messenger.trigger Events::Text::Left.new
+      window.trigger Events::Text::Left.new
     when Curses::Key::RIGHT
-      @messenger.trigger Events::Text::Right.new
+      window.trigger Events::Text::Right.new
     when Curses::Key::HOME
-      @messenger.trigger Events::Text::Home.new
+      window.trigger Events::Text::Home.new
     when Curses::Key::END
-      @messenger.trigger Events::Text::End.new
+      window.trigger Events::Text::End.new
     when Curses::Key::BACKSPACE
-      @messenger.trigger Events::Text::Backspace.new
+      window.trigger Events::Text::Backspace.new
     when Curses::Key::DC
-      @messenger.trigger Events::Text::Delete.new
+      window.trigger Events::Text::Delete.new
     end
   end
 end
