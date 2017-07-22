@@ -24,5 +24,9 @@ module Widgets
     def draw
       raise NotImplementedError, "#{self.class}#draw"
     end
+
+    def setpos(x, y)
+      Curses.setpos y, x
+    end
   end
 end

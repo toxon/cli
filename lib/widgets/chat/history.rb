@@ -32,7 +32,7 @@ module Widgets
       end
 
       def draw_message(offset, time, name, text)
-        Curses.setpos y + offset, x
+        setpos x, y + offset
 
         info_length = time.length + 1 + name.length + 2
         head_length = width - info_length
@@ -58,7 +58,7 @@ module Widgets
         lines = (tail_length / width.to_f).ceil
 
         1.upto lines do |line|
-          Curses.setpos y + offset + line, x
+          setpos x, y + offset + line
           Curses.addstr tail[(width * (line - 1))...(width * line)]
         end
 

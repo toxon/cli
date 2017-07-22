@@ -21,13 +21,13 @@ module Widgets
 
       ITEMS.each_with_index do |item, index|
         Style.default.menu_item do
-          Curses.setpos 0 + list_y + index * 4, 2
+          setpos 2, 0 + list_y + index * 4
           Curses.addstr ' ' * (width - 4)
 
-          Curses.setpos 1 + list_y + index * 4, 2
+          setpos 2, 1 + list_y + index * 4
           Curses.addstr " #{item}".ljust width - 4
 
-          Curses.setpos 2 + list_y + index * 4, 2
+          setpos 2, 2 + list_y + index * 4
           Curses.addstr ' ' * (width - 4)
         end
       end

@@ -13,7 +13,7 @@ module Widgets
       end
 
       def draw
-        Curses.setpos y, x
+        setpos x, y
         Style.default.online_mark do
           Curses.addstr '[Online]'
         end
@@ -22,7 +22,7 @@ module Widgets
           Curses.addstr name
         end
 
-        Curses.setpos y + 1, x
+        setpos x, y + 1
         Curses.addstr 'Public key: '
         Curses.addstr public_key
       end
