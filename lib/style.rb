@@ -19,6 +19,7 @@ class Style
     Curses.init_pair message_time_id,   message_time_color,   message_time_bg
     Curses.init_pair message_author_id, message_author_color, message_author_bg
     Curses.init_pair online_mark_id,    online_mark_color,    online_mark_bg
+    Curses.init_pair peer_info_name_id, peer_info_name_color, peer_info_name_bg
   end
 
   def text
@@ -77,6 +78,13 @@ class Style
     Curses.attroff online_mark_attr
   end
 
+  def peer_info_name
+    Curses.attron peer_info_name_attr
+    yield
+  ensure
+    Curses.attroff peer_info_name_attr
+  end
+
 private
 
   def text_attr
@@ -111,6 +119,10 @@ private
     Curses.color_pair online_mark_id
   end
 
+  def peer_info_name_attr
+    Curses.color_pair(peer_info_name_id) | Curses::A_BOLD
+  end
+
   def text_id
     @text_id ||= self.class.counter
   end
@@ -141,6 +153,10 @@ private
 
   def online_mark_id
     @online_mark_id ||= self.class.counter
+  end
+
+  def peer_info_name_id
+    @peer_info_name_id ||= self.class.counter
   end
 
   def text_color
@@ -204,6 +220,14 @@ private
   end
 
   def online_mark_bg
+    Curses::COLOR_BLACK
+  end
+
+  def peer_info_name_color
+    Curses::COLOR_WHITE
+  end
+
+  def peer_info_name_bg
     Curses::COLOR_BLACK
   end
 end

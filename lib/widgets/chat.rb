@@ -5,7 +5,7 @@ module Widgets
     def initialize(x, y, width, height)
       super
 
-      info_height    = 4
+      info_height    = 2
       message_height = 1
       history_height = height - info_height - message_height
 
