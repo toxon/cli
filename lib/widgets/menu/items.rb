@@ -11,16 +11,20 @@ module Widgets
 
       def draw
         ITEMS.each_with_index do |item, index|
-          Style.default.menu_item do
-            setpos 2, 4 * index + 0
-            Curses.addstr ' ' * (width - 4)
+          draw_item index, item
+        end
+      end
 
-            setpos 2, 4 * index + 1
-            Curses.addstr " #{item}".ljust width - 4
+      def draw_item(index, name)
+        Style.default.menu_item do
+          setpos 2, 4 * index + 0
+          Curses.addstr ' ' * (width - 4)
 
-            setpos 2, 4 * index + 2
-            Curses.addstr ' ' * (width - 4)
-          end
+          setpos 2, 4 * index + 1
+          Curses.addstr " #{name}".ljust width - 4
+
+          setpos 2, 4 * index + 2
+          Curses.addstr ' ' * (width - 4)
         end
       end
     end
