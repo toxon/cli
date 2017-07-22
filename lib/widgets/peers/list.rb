@@ -12,18 +12,21 @@ module Widgets
         @top    = 0
 
         @items = 1.upto(height - 1 + 10).map do
-          Faker::Name.name
+          {
+            name: Faker::Name.name,
+          }
         end
       end
 
       def render
         items[top...(top + height)].each_with_index.each do |item, offset|
           index = top + offset
+          name = item[:name]
 
           Style.default.public_send(index == active && focused ? :selection : :text) do
             Curses.setpos y + offset, x
 
-            s = "#{index}: #{item}"
+            s = "#{index}: #{name}"
             if s.length <= width
               Curses.addstr s.ljust width
             else
