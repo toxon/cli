@@ -12,7 +12,7 @@ module Widgets
         @public_key = SecureRandom.hex 32
       end
 
-      def render
+      def draw
         Curses.setpos y, x
         Style.default.online_mark do
           Curses.addstr '[Online]'

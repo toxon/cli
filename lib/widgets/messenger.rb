@@ -19,7 +19,7 @@ module Widgets
       @focus = @peers
     end
 
-    def render
+    def draw
       @peers.render
       @chat.render
     end

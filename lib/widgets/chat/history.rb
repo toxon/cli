@@ -17,7 +17,7 @@ module Widgets
         end
       end
 
-      def render
+      def draw
         offset = 0
 
         messages.each do |msg|
@@ -25,13 +25,13 @@ module Widgets
           name = msg[:name]
           text = msg[:text]
 
-          offset = render_message offset, time, name, text
+          offset = draw_message offset, time, name, text
 
           break if offset >= height
         end
       end
 
-      def render_message(offset, time, name, text)
+      def draw_message(offset, time, name, text)
         Curses.setpos y + offset, x
 
         info_length = time.length + 1 + name.length + 2

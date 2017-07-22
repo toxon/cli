@@ -19,7 +19,7 @@ module Widgets
         end
       end
 
-      def render
+      def draw
         items[top...(top + height)].each_with_index.each do |item, offset|
           index = top + offset
 

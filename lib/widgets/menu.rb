@@ -23,7 +23,7 @@ module Widgets
       super x, y, LOGO_WIDTH + 2 * SIDE_PADDING, height
     end
 
-    def render
+    def draw
       LOGO.each_with_index do |s, index|
         Curses.setpos y + index, SIDE_PADDING
         Curses.addstr s

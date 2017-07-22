@@ -11,7 +11,7 @@ module Widgets
       @cursor_pos = 0
     end
 
-    def render
+    def draw
       total = width - 1
       start = [0, cursor_pos - total].max
 

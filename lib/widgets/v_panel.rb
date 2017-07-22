@@ -2,7 +2,7 @@
 
 module Widgets
   class VPanel < Base
-    def render
+    def draw
       children.each(&:render)
     end
 

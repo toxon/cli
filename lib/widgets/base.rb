@@ -18,7 +18,11 @@ module Widgets
     def trigger(event); end
 
     def render
-      raise NotImplementedError, "#{self.class}#render"
+      draw
+    end
+
+    def draw
+      raise NotImplementedError, "#{self.class}#draw"
     end
   end
 end
