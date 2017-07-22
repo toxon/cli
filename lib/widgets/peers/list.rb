@@ -23,7 +23,7 @@ module Widgets
         items[top...(top + height)].each_with_index.each do |item, offset|
           index = top + offset
 
-          setpos x, y + offset
+          setpos 0, offset
 
           if item[:online]
             Style.default.online_mark do

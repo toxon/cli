@@ -26,7 +26,7 @@ module Widgets
     end
 
     def setpos(x, y)
-      Curses.setpos y, x
+      Curses.setpos self.y + y, self.x + x
     end
   end
 end

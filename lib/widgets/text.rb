@@ -17,7 +17,7 @@ module Widgets
 
       cut = text[start...start + total]
 
-      setpos x, y
+      setpos 0, 0
 
       before_cursor = cut[0...cursor_pos]
       under_cursor  = cut[cursor_pos] || ' '
