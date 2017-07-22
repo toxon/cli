@@ -7,11 +7,21 @@ module Widgets
     def initialize(x, y, width, height)
       @focused = false
 
-      @history = History.new    x, y,              width, height - 1
-      @message = NewMessage.new x, y + height - 1, width, 1
+      info_height    = 4
+      message_height = 1
+      history_height = height - info_height - message_height
+
+      info_top    = 0
+      history_top = info_height
+      message_top = info_height + history_height
+
+      @info    = Info.new       x, y + info_top,    width, info_height
+      @history = History.new    x, y + history_top, width, history_height
+      @message = NewMessage.new x, y + message_top, width, message_height
     end
 
     def render
+      @info.render
       @history.render
       @message.render
     end
@@ -27,6 +37,7 @@ module Widgets
 
     def focused=(value)
       @focused = !!value
+      @info.focused    = focused
       @history.focused = focused
       @message.focused = focused
     end

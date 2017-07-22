@@ -19,6 +19,7 @@ require 'widgets/peers/list'
 require 'widgets/peers/search'
 
 require 'widgets/chat'
+require 'widgets/chat/info'
 require 'widgets/chat/history'
 require 'widgets/chat/new_message'
 
