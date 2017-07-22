@@ -2,8 +2,6 @@
 
 module Widgets
   class Window < Container
-    attr_reader :focus
-
     def initialize(x, y, width, height)
       super
 
@@ -15,10 +13,6 @@ module Widgets
 
     def children
       [@menu, @messenger]
-    end
-
-    def trigger(event)
-      focus.trigger event
     end
   end
 end

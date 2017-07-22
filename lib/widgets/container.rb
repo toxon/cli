@@ -4,6 +4,10 @@ module Widgets
   class Container < Base
     attr_reader :focus
 
+    def trigger(event)
+      focus.trigger event
+    end
+
     def draw
       children.each(&:render)
     end
@@ -16,6 +20,11 @@ module Widgets
       focus&.focused = false
       @focus = value
       focus.focused = true
+    end
+
+    def focused=(value)
+      super
+      focus.focused = focused
     end
   end
 end

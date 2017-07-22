@@ -39,10 +39,5 @@ module Widgets
     def right
       self.focus = @chat
     end
-
-    def focused=(value)
-      @focused = !!value
-      focus.focused = focused
-    end
   end
 end
