@@ -6,6 +6,7 @@ require 'curses'
 require 'faker'
 
 require 'events'
+require 'style'
 
 # Basic
 require 'widgets/base'
@@ -63,14 +64,7 @@ private
     Curses.timeout = 0 # non-blocking input
     Curses.stdscr.keypad = true
 
-    Curses.init_pair 1, Curses::COLOR_WHITE, Curses::COLOR_BLACK
-    Curses.init_pair 2, Curses::COLOR_BLACK, Curses::COLOR_WHITE
-    Curses.init_pair 3, Curses::COLOR_WHITE, Curses::COLOR_BLACK # editing text
-    Curses.init_pair 4, Curses::COLOR_BLACK, Curses::COLOR_GREEN # cursor
-    Curses.init_pair 5, Curses::COLOR_BLACK, Curses::COLOR_CYAN
-    Curses.init_pair 6, Curses::COLOR_CYAN,  Curses::COLOR_BLACK
-    Curses.init_pair 7, Curses::COLOR_GREEN, Curses::COLOR_BLACK
-
+    style
     initials
   end
 
@@ -88,6 +82,10 @@ private
       break if event.nil?
       handle event
     end
+  end
+
+  def style
+    @style ||= Style.new
   end
 
   def initials
