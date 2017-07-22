@@ -6,7 +6,7 @@ module Widgets
       super x, y, Logo::WIDTH, height
 
       @logo  = Logo.new  x, y,            nil,         nil
-      @items = Items.new x, @logo.height, @logo.width, nil
+      @items = Items.new x, @logo.height, @logo.width, height
 
       self.focus = @items
     end

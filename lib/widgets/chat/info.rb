@@ -15,16 +15,16 @@ module Widgets
       def draw
         setpos 0, 0
         Style.default.online_mark do
-          Curses.addstr '[Online]'
+          addstr '[Online]'
         end
-        Curses.addstr ' '
+        addstr ' '
         Style.default.peer_info_name do
-          Curses.addstr name
+          addstr name
         end
 
         setpos 0, 1
-        Curses.addstr 'Public key: '
-        Curses.addstr public_key
+        addstr 'Public key: '
+        addstr public_key
       end
     end
   end

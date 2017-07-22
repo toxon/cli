@@ -27,19 +27,19 @@ module Widgets
 
           if item[:online]
             Style.default.online_mark do
-              Curses.addstr '*'
+              addstr '*'
             end
           else
-            Curses.addstr 'o'
+            addstr 'o'
           end
 
-          Curses.addstr ' '
+          addstr ' '
 
           Style.default.public_send(index == active && focused ? :selection : :text) do
             if item[:name].length <= width - 2
-              Curses.addstr item[:name].ljust width - 2
+              addstr item[:name].ljust width - 2
             else
-              Curses.addstr "#{item[:name][0...width - 5]}..."
+              addstr "#{item[:name][0...width - 5]}..."
             end
           end
         end

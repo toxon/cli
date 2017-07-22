@@ -39,18 +39,18 @@ module Widgets
         head = text[0...head_length]
 
         Style.default.message_time do
-          Curses.addstr time
+          addstr time
         end
 
-        Curses.addstr ' '
+        addstr ' '
 
         Style.default.message_author do
-          Curses.addstr name
-          Curses.addstr ': '
+          addstr name
+          addstr ': '
         end
 
         Style.default.text do
-          Curses.addstr head
+          addstr head
         end
 
         tail_length = [0, text.length - head_length].max
@@ -59,7 +59,7 @@ module Widgets
 
         1.upto lines do |line|
           setpos 0, offset + line
-          Curses.addstr tail[(width * (line - 1))...(width * line)]
+          addstr tail[(width * (line - 1))...(width * line)]
         end
 
         offset + 1 + lines

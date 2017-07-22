@@ -24,15 +24,15 @@ module Widgets
       after_cursor  = cut[(1 + cursor_pos)..-1] || ''
 
       Style.default.editing_text do
-        Curses.addstr before_cursor
+        addstr before_cursor
       end
 
       Style.default.public_send focused ? :cursor : :editing_text do
-        Curses.addstr under_cursor
+        addstr under_cursor
       end
 
       Style.default.editing_text do
-        Curses.addstr after_cursor
+        addstr after_cursor
       end
     end
 

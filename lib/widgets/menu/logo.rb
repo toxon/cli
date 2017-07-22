@@ -25,7 +25,7 @@ module Widgets
         Style.default.logo do
           LOGO.each_with_index do |s, index|
             setpos 0, index
-            Curses.addstr s
+            addstr s
           end
         end
       end

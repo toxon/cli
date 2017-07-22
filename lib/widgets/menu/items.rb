@@ -37,13 +37,13 @@ module Widgets
       def draw_item(index, name)
         Style.default.public_send(index == active ? :active_menu_item : :menu_item) do
           setpos SIDE_PADDING, 4 * index + 0
-          Curses.addstr ' ' * (width - 2 * SIDE_PADDING)
+          addstr ' ' * (width - 2 * SIDE_PADDING)
 
           setpos SIDE_PADDING, 4 * index + 1
-          Curses.addstr " #{name}".ljust width - 2 * SIDE_PADDING
+          addstr " #{name}".ljust width - 2 * SIDE_PADDING
 
           setpos SIDE_PADDING, 4 * index + 2
-          Curses.addstr ' ' * (width - 2 * SIDE_PADDING)
+          addstr ' ' * (width - 2 * SIDE_PADDING)
         end
       end
 
