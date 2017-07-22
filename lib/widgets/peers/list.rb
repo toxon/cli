@@ -14,6 +14,7 @@ module Widgets
         @items = 1.upto(height - 1 + 10).map do
           {
             name: Faker::Name.name,
+            online: [false, true].sample,
           }
         end
       end
@@ -21,16 +22,25 @@ module Widgets
       def render
         items[top...(top + height)].each_with_index.each do |item, offset|
           index = top + offset
-          name = item[:name]
+
+          Curses.setpos y + offset, x
+
+          if item[:online]
+            Style.default.online_mark do
+              Curses.addstr '*'
+            end
+          else
+            Curses.addstr 'o'
+          end
+
+          Curses.addstr ' '
 
           Style.default.public_send(index == active && focused ? :selection : :text) do
-            Curses.setpos y + offset, x
-
-            s = "#{index}: #{name}"
-            if s.length <= width
-              Curses.addstr s.ljust width
+            s = "#{index}: #{item[:name]}"
+            if s.length <= width - 2
+              Curses.addstr s.ljust width - 2
             else
-              Curses.addstr "#{s[0...width - 3]}..."
+              Curses.addstr "#{s[0...width - 5]}..."
             end
           end
         end

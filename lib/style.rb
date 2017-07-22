@@ -18,6 +18,7 @@ class Style
     Curses.init_pair menu_item_id,      menu_item_color,      menu_item_bg
     Curses.init_pair message_time_id,   message_time_color,   message_time_bg
     Curses.init_pair message_author_id, message_author_color, message_author_bg
+    Curses.init_pair online_mark_id,    online_mark_color,    online_mark_bg
   end
 
   def text
@@ -69,6 +70,13 @@ class Style
     Curses.attroff message_author_attr
   end
 
+  def online_mark
+    Curses.attron online_mark_attr
+    yield
+  ensure
+    Curses.attroff online_mark_attr
+  end
+
 private
 
   def text_attr
@@ -99,6 +107,10 @@ private
     Curses.color_pair(message_author_id) | Curses::A_BOLD
   end
 
+  def online_mark_attr
+    Curses.color_pair online_mark_id
+  end
+
   def text_id
     @text_id ||= self.class.counter
   end
@@ -125,6 +137,10 @@ private
 
   def message_author_id
     @message_author_id ||= self.class.counter
+  end
+
+  def online_mark_id
+    @online_mark_id ||= self.class.counter
   end
 
   def text_color
@@ -180,6 +196,14 @@ private
   end
 
   def message_author_bg
+    Curses::COLOR_BLACK
+  end
+
+  def online_mark_color
+    Curses::COLOR_GREEN
+  end
+
+  def online_mark_bg
     Curses::COLOR_BLACK
   end
 end
