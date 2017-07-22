@@ -1,22 +1,12 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Menu
+  class Menu < Base
     ITEMS = [
       'Foo menu item',
       'Bar Car menu item',
       'Hello, World!',
     ].freeze
-
-    attr_reader :x, :y, :width, :height
-
-    def initialize(x, y, width, height)
-      @x = x
-      @y = y
-
-      @width  = width
-      @height = height
-    end
 
     def render
       ITEMS.each_with_index do |item, index|

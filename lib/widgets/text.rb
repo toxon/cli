@@ -1,18 +1,14 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Text
-    attr_reader :x, :y, :width, :height, :text, :cursor_pos
-    attr_accessor :focused
+  class Text < Base
+    attr_reader :text, :cursor_pos
 
     def initialize(x, y, width, height)
-      @x = x
-      @y = y
-      @width = width
-      @height = height
+      super
+
       @text = ''
       @cursor_pos = 0
-      @focused = false
     end
 
     def render

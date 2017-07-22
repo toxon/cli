@@ -1,21 +1,12 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Chat
-    class History
-      attr_reader :x, :y, :width, :height
-      attr_accessor :focused
-
+  class Chat < VPanel
+    class History < Base
       attr_reader :messages
 
       def initialize(x, y, width, height)
-        @x = x
-        @y = y
-
-        @width  = width
-        @height = height
-
-        @focused = false
+        super
 
         @messages = 1.upto(100).map do
           {
@@ -69,8 +60,6 @@ module Widgets
 
         offset + 1 + lines
       end
-
-      def trigger(event); end
     end
   end
 end

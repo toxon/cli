@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Peers
+  class Peers < VPanel
     class Search < Text
     end
   end

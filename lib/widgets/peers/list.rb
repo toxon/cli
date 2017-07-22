@@ -1,21 +1,12 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Peers
-    class List
-      attr_reader :x, :y, :width, :height
-      attr_accessor :focused
-
+  class Peers < VPanel
+    class List < Base
       attr_reader :active, :top, :items
 
       def initialize(x, y, width, height)
-        @x = x
-        @y = y
-
-        @width  = width
-        @height = height
-
-        @focused = false
+        super
 
         @active = 0
         @top    = 0

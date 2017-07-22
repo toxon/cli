@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Chat
+  class Chat < VPanel
     class NewMessage < Text
     end
   end
