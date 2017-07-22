@@ -11,16 +11,17 @@ class Style
   end
 
   def initialize
-    Curses.init_pair logo_id,           logo_color,           logo_bg
-    Curses.init_pair text_id,           text_color,           text_bg
-    Curses.init_pair selection_id,      selection_color,      selection_bg
-    Curses.init_pair editing_text_id,   editing_text_color,   editing_text_bg
-    Curses.init_pair cursor_id,         cursor_color,         cursor_bg
-    Curses.init_pair menu_item_id,      menu_item_color,      menu_item_bg
-    Curses.init_pair message_time_id,   message_time_color,   message_time_bg
-    Curses.init_pair message_author_id, message_author_color, message_author_bg
-    Curses.init_pair online_mark_id,    online_mark_color,    online_mark_bg
-    Curses.init_pair peer_info_name_id, peer_info_name_color, peer_info_name_bg
+    Curses.init_pair logo_id,             logo_color,             logo_bg
+    Curses.init_pair text_id,             text_color,             text_bg
+    Curses.init_pair selection_id,        selection_color,        selection_bg
+    Curses.init_pair editing_text_id,     editing_text_color,     editing_text_bg
+    Curses.init_pair cursor_id,           cursor_color,           cursor_bg
+    Curses.init_pair menu_item_id,        menu_item_color,        menu_item_bg
+    Curses.init_pair active_menu_item_id, active_menu_item_color, active_menu_item_bg
+    Curses.init_pair message_time_id,     message_time_color,     message_time_bg
+    Curses.init_pair message_author_id,   message_author_color,   message_author_bg
+    Curses.init_pair online_mark_id,      online_mark_color,      online_mark_bg
+    Curses.init_pair peer_info_name_id,   peer_info_name_color,   peer_info_name_bg
   end
 
   def logo
@@ -63,6 +64,13 @@ class Style
     yield
   ensure
     Curses.attroff menu_item_attr
+  end
+
+  def active_menu_item
+    Curses.attron active_menu_item_attr
+    yield
+  ensure
+    Curses.attroff active_menu_item_attr
   end
 
   def message_time
@@ -119,6 +127,10 @@ private
     Curses.color_pair menu_item_id
   end
 
+  def active_menu_item_attr
+    Curses.color_pair active_menu_item_id
+  end
+
   def message_time_attr
     Curses.color_pair message_time_id
   end
@@ -157,6 +169,10 @@ private
 
   def menu_item_id
     @menu_item_id ||= self.class.counter
+  end
+
+  def active_menu_item_id
+    @active_menu_item_id ||= self.class.counter
   end
 
   def message_time_id
@@ -221,6 +237,14 @@ private
 
   def menu_item_bg
     Curses::COLOR_CYAN
+  end
+
+  def active_menu_item_color
+    Curses::COLOR_BLACK
+  end
+
+  def active_menu_item_bg
+    Curses::COLOR_BLUE
   end
 
   def message_time_color

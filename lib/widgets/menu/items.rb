@@ -11,6 +11,14 @@ module Widgets
 
       SIDE_PADDING = 3
 
+      attr_reader :active
+
+      def initialize(*)
+        super
+
+        @active = 0
+      end
+
       def draw
         ITEMS.each_with_index do |item, index|
           draw_item index, item
@@ -18,7 +26,7 @@ module Widgets
       end
 
       def draw_item(index, name)
-        Style.default.menu_item do
+        Style.default.public_send(index == active ? :active_menu_item : :menu_item) do
           setpos SIDE_PADDING, 4 * index + 0
           Curses.addstr ' ' * (width - 2 * SIDE_PADDING)
 
