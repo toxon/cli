@@ -7,6 +7,8 @@ module Widgets
 
       @logo  = Logo.new  x, y,            nil,         nil
       @items = Items.new x, @logo.height, @logo.width, nil
+
+      self.focus = @items
     end
 
     def children
