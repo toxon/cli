@@ -7,12 +7,7 @@ module Widgets
 
       @menu = Widgets::Menu.new 0, 0, nil, height
 
-      @messenger = Widgets::Messenger.new(
-        0,
-        0,
-        width - @menu.width,
-        height,
-      )
+      @messenger = Widgets::Messenger.new 0, 0, width - @menu.width, height
 
       self.focus = @messenger
 
