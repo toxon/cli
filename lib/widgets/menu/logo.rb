@@ -3,16 +3,17 @@
 module Widgets
   class Menu < Base
     class Logo < Base
-      LOGO = <<~END.lines.map { |s| s.gsub(/\n$/, '') }
-         _____ ___ _  _ ___  _   _
-        |_   _/ _ \\ \\/ / _ \\| \\ | |
-          | || | | \\  / | | |  \\| |
-          | || |_| /  \\ |_| | |\\  |
-          |_| \\___/_/\\_\\___/|_| \\_|
-      END
+      LOGO = [
+        '  _____ ___ _  _ ___  _   _  ',
+        ' |_   _/ _ \ \/ / _ \| \ | | ',
+        '   | || | | \  / | | |  \| | ',
+        '   | || |_| /  \ |_| | |\  | ',
+        '   |_| \___/_/\_\___/|_| \_| ',
+        '                             ',
+      ].freeze
 
-      WIDTH = LOGO.map(&:length).max + 2
-      HEIGHT = LOGO.length + 1
+      WIDTH  = LOGO.first.length
+      HEIGHT = LOGO.length
 
       def initialize(x, y, _width, _height)
         super x, y, WIDTH, HEIGHT
@@ -22,7 +23,7 @@ module Widgets
         Style.default.logo do
           LOGO.each_with_index do |s, index|
             Curses.setpos y + index, x
-            Curses.addstr " #{s}"
+            Curses.addstr s
           end
         end
       end
