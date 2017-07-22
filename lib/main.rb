@@ -16,6 +16,7 @@ require 'widgets/v_panel'
 require 'widgets/messenger'
 
 require 'widgets/menu'
+require 'widgets/menu/logo'
 
 require 'widgets/peers'
 require 'widgets/peers/list'

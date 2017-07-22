@@ -2,17 +2,6 @@
 
 module Widgets
   class Menu < Base
-    LOGO = <<~END.lines.map { |s| s.gsub(/\n$/, '') }
-      ____________  _____  _   _
-      |_   _/ _ \\ \\/ / _ \\| \\ | |
-        | || | | \\  / | | | \\ | |
-        | || |_| /  \\ |_| | |\\  |
-        |_| \\___/_/\\_\\___/|_| \\_|
-    END
-
-    LOGO_WIDTH = LOGO.map(&:length).max
-    SIDE_PADDING = 1
-
     ITEMS = [
       'Foo menu item',
       'Bar Car menu item',
@@ -20,16 +9,15 @@ module Widgets
     ].freeze
 
     def initialize(x, y, _width, height)
-      super x, y, LOGO_WIDTH + 2 * SIDE_PADDING, height
+      super x, y, Logo::WIDTH, height
+
+      @logo = Logo.new x, y, nil, nil
     end
 
     def draw
-      LOGO.each_with_index do |s, index|
-        Curses.setpos y + index, SIDE_PADDING
-        Curses.addstr s
-      end
+      @logo.draw
 
-      list_y = y + LOGO.count + 1
+      list_y = y + @logo.height
 
       ITEMS.each_with_index do |item, index|
         Style.default.menu_item do
