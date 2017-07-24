@@ -21,11 +21,7 @@ module Widgets
         offset = 0
 
         messages.each do |msg|
-          time = msg[:time].strftime '%H:%M:%S'
-          name = msg[:name]
-          text = msg[:text]
-
-          offset = draw_message offset, time, name, text
+          offset = draw_message offset, msg[:time].strftime('%H:%M:%S'), msg[:name], msg[:text]
 
           break if offset >= height
         end
