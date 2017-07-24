@@ -2,7 +2,7 @@
 
 module Widgets
   class Chat < VPanel
-    def initialize(x, y, width, height)
+    def initialize(parent, x, y, width, height)
       super
 
       info_height    = 2
@@ -13,9 +13,9 @@ module Widgets
       history_top = info_height
       message_top = info_height + history_height
 
-      @info    = Info.new       x, y + info_top,    width, info_height
-      @history = History.new    x, y + history_top, width, history_height
-      @message = NewMessage.new x, y + message_top, width, message_height
+      @info    = Info.new       self, x, y + info_top,    width, info_height
+      @history = History.new    self, x, y + history_top, width, history_height
+      @message = NewMessage.new self, x, y + message_top, width, message_height
     end
 
     def children

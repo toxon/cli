@@ -2,11 +2,14 @@
 
 module Widgets
   class Base
+    attr_reader :parent
     attr_reader :window
     attr_reader :width, :height
     attr_accessor :focused
 
-    def initialize(x, y, width, height)
+    def initialize(parent, x, y, width, height)
+      @parent = parent
+
       @window = Curses::Window.new height, width, y, x
 
       @width  = width

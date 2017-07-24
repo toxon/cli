@@ -17,8 +17,8 @@ module Widgets
       WIDTH  = LOGO.first.length
       HEIGHT = LOGO.length
 
-      def initialize(x, y, _width, _height)
-        super x, y, WIDTH, HEIGHT
+      def initialize(parent, x, y, _width, _height)
+        super parent, x, y, WIDTH, HEIGHT
       end
 
       def draw

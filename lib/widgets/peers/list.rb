@@ -5,7 +5,7 @@ module Widgets
     class List < Base
       attr_reader :active, :top, :items
 
-      def initialize(x, y, width, height)
+      def initialize(parent, x, y, width, height)
         super
 
         @active = 0

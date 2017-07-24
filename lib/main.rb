@@ -89,6 +89,7 @@ private
 
   def window
     @window ||= Widgets::Main.new(
+      nil,
       0,
       0,
       Curses.stdscr.maxx,

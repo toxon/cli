@@ -2,11 +2,11 @@
 
 module Widgets
   class Main < Container
-    def initialize(x, y, width, height)
+    def initialize(parent, x, y, width, height)
       super
 
-      @menu = Widgets::Menu.new x,               y, nil,                 height
-      @chat = Widgets::Chat.new x + @menu.width, y, width - @menu.width, height
+      @menu = Widgets::Menu.new self, x,               y, nil,                 height
+      @chat = Widgets::Chat.new self, x + @menu.width, y, width - @menu.width, height
 
       self.focus = @menu
     end

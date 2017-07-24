@@ -5,7 +5,7 @@ module Widgets
     class History < Base
       attr_reader :messages
 
-      def initialize(x, y, width, height)
+      def initialize(parent, x, y, width, height)
         super
 
         @messages = 1.upto(100).map do

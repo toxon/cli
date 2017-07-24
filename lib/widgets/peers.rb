@@ -2,11 +2,11 @@
 
 module Widgets
   class Peers < VPanel
-    def initialize(x, y, width, height)
+    def initialize(parent, x, y, width, height)
       super
 
-      @list   = List.new   x, y + 1, width, height - 1
-      @search = Search.new x, y,     width, 1
+      @list   = List.new   self, x, y + 1, width, height - 1
+      @search = Search.new self, x, y,     width, 1
     end
 
     def children

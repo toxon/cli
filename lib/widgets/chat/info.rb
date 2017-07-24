@@ -5,7 +5,7 @@ module Widgets
     class Info < Base
       attr_reader :name, :public_key
 
-      def initialize(x, y, width, height)
+      def initialize(parent, x, y, width, height)
         super
 
         @name = Faker::Name.name

@@ -4,7 +4,7 @@ module Widgets
   class Text < Base
     attr_reader :text, :cursor_pos
 
-    def initialize(x, y, width, height)
+    def initialize(parent, x, y, width, height)
       super
 
       @text = ''
