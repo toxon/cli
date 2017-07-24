@@ -22,7 +22,7 @@ module Widgets
       end
 
       def draw
-        Style.default.logo do
+        Style.default.logo window do
           LOGO.each_with_index do |s, index|
             setpos 0, index
             addstr s

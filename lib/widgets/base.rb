@@ -15,6 +15,10 @@ module Widgets
       @focused = false
     end
 
+    def window
+      Curses
+    end
+
     def trigger(event); end
 
     def render
@@ -26,11 +30,11 @@ module Widgets
     end
 
     def setpos(x, y)
-      Curses.setpos self.y + y, self.x + x
+      window.setpos self.y + y, self.x + x
     end
 
     def addstr(s)
-      Curses.addstr s
+      window.addstr s
     end
   end
 end

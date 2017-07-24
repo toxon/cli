@@ -23,15 +23,15 @@ module Widgets
       under_cursor  = cut[cursor_pos] || ' '
       after_cursor  = cut[(1 + cursor_pos)..-1] || ''
 
-      Style.default.editing_text do
+      Style.default.editing_text window do
         addstr before_cursor
       end
 
-      Style.default.public_send focused ? :cursor : :editing_text do
+      Style.default.public_send focused ? :cursor : :editing_text, window do
         addstr under_cursor
       end
 
-      Style.default.editing_text do
+      Style.default.editing_text window do
         addstr after_cursor
       end
     end

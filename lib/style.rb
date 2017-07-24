@@ -24,81 +24,81 @@ class Style
     Curses.init_pair peer_info_name_id,   peer_info_name_color,   peer_info_name_bg
   end
 
-  def logo
-    Curses.attron logo_attr
+  def logo(window)
+    window.attron logo_attr
     yield
   ensure
-    Curses.attroff logo_attr
+    window.attroff logo_attr
   end
 
-  def text
-    Curses.attron text_attr
+  def text(window)
+    window.attron text_attr
     yield
   ensure
-    Curses.attroff text_attr
+    window.attroff text_attr
   end
 
-  def selection
-    Curses.attron selection_attr
+  def selection(window)
+    window.attron selection_attr
     yield
   ensure
-    Curses.attroff selection_attr
+    window.attroff selection_attr
   end
 
-  def editing_text
-    Curses.attron editing_text_attr
+  def editing_text(window)
+    window.attron editing_text_attr
     yield
   ensure
-    Curses.attroff editing_text_attr
+    window.attroff editing_text_attr
   end
 
-  def cursor
-    Curses.attron cursor_attr
+  def cursor(window)
+    window.attron cursor_attr
     yield
   ensure
-    Curses.attroff cursor_attr
+    window.attroff cursor_attr
   end
 
-  def menu_item
-    Curses.attron menu_item_attr
+  def menu_item(window)
+    window.attron menu_item_attr
     yield
   ensure
-    Curses.attroff menu_item_attr
+    window.attroff menu_item_attr
   end
 
-  def active_menu_item
-    Curses.attron active_menu_item_attr
+  def active_menu_item(window)
+    window.attron active_menu_item_attr
     yield
   ensure
-    Curses.attroff active_menu_item_attr
+    window.attroff active_menu_item_attr
   end
 
-  def message_time
-    Curses.attron message_time_attr
+  def message_time(window)
+    window.attron message_time_attr
     yield
   ensure
-    Curses.attroff message_time_attr
+    window.attroff message_time_attr
   end
 
-  def message_author
-    Curses.attron message_author_attr
+  def message_author(window)
+    window.attron message_author_attr
     yield
   ensure
-    Curses.attroff message_author_attr
+    window.attroff message_author_attr
   end
 
-  def online_mark
-    Curses.attron online_mark_attr
+  def online_mark(window)
+    window.attron online_mark_attr
     yield
   ensure
-    Curses.attroff online_mark_attr
+    window.attroff online_mark_attr
   end
 
-  def peer_info_name
-    Curses.attron peer_info_name_attr
+  def peer_info_name(window)
+    window.attron peer_info_name_attr
     yield
   ensure
-    Curses.attroff peer_info_name_attr
+    window.attroff peer_info_name_attr
   end
 
 private

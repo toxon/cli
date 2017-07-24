@@ -14,11 +14,11 @@ module Widgets
 
       def draw
         setpos 0, 0
-        Style.default.online_mark do
+        Style.default.online_mark window do
           addstr '[Online]'
         end
         addstr ' '
-        Style.default.peer_info_name do
+        Style.default.peer_info_name window do
           addstr name
         end
 

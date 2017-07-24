@@ -38,18 +38,18 @@ module Widgets
         head_length = width - info_length
         head = text[0...head_length]
 
-        Style.default.message_time do
+        Style.default.message_time window do
           addstr time
         end
 
         addstr ' '
 
-        Style.default.message_author do
+        Style.default.message_author window do
           addstr name
           addstr ': '
         end
 
-        Style.default.text do
+        Style.default.text window do
           addstr head
         end
 

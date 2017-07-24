@@ -26,7 +26,7 @@ module Widgets
           setpos 0, offset
 
           if item[:online]
-            Style.default.online_mark do
+            Style.default.online_mark window do
               addstr '*'
             end
           else
@@ -35,7 +35,7 @@ module Widgets
 
           addstr ' '
 
-          Style.default.public_send(index == active && focused ? :selection : :text) do
+          Style.default.public_send(index == active && focused ? :selection : :text, window) do
             if item[:name].length <= width - 2
               addstr item[:name].ljust width - 2
             else
