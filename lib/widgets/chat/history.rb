@@ -10,6 +10,7 @@ module Widgets
 
         @messages = 1.upto(100).map do
           {
+            out:  rand <= 0.2,
             time: Faker::Time.forward,
             name: Faker::Name.name,
             text: Faker::Lorem.sentence.freeze,
@@ -21,13 +22,13 @@ module Widgets
         offset = 0
 
         messages.each do |msg|
-          offset = draw_message offset, msg[:time].strftime('%H:%M:%S'), msg[:name], msg[:text]
+          offset = draw_message offset, msg[:out], msg[:time].strftime('%H:%M:%S'), msg[:name], msg[:text]
 
           break if offset >= height
         end
       end
 
-      def draw_message(offset, time, name, text)
+      def draw_message(offset, out, time, name, text)
         setpos 0, offset
 
         Style.default.message_time window do
