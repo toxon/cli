@@ -22,7 +22,7 @@ module Widgets
         offset = 0
 
         messages.each do |msg|
-          offset = draw_message offset, msg[:out], msg[:time].strftime('%H:%M:%S'), msg[:name], msg[:text]
+          offset += draw_message offset, msg[:out], msg[:time].strftime('%H:%M:%S'), msg[:name], msg[:text]
 
           break if offset >= height
         end
@@ -48,7 +48,7 @@ module Widgets
           addstr text[(width * (line - 1))...(width * line)]
         end
 
-        offset + 1 + lines
+        1 + lines
       end
     end
   end
