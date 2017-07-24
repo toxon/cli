@@ -6,13 +6,13 @@ module Widgets
       super x, y, Logo::WIDTH, height
 
       @logo  = Logo.new  x, y,            nil,         nil
-      @items = Items.new x, @logo.height, @logo.width, height
+      @peers = Peers.new x, @logo.height, @logo.width, height - @logo.height
 
-      self.focus = @items
+      self.focus = @peers
     end
 
     def children
-      [@logo, @items]
+      [@logo, @peers]
     end
   end
 end
