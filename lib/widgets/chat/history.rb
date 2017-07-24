@@ -34,10 +34,6 @@ module Widgets
       def draw_message(offset, time, name, text)
         setpos 0, offset
 
-        info_length = time.length + 1 + name.length + 2
-        head_length = width - info_length
-        head = text[0...head_length]
-
         Style.default.message_time window do
           addstr time
         end
@@ -46,20 +42,13 @@ module Widgets
 
         Style.default.message_author window do
           addstr name
-          addstr ': '
         end
 
-        Style.default.text window do
-          addstr head
-        end
-
-        tail_length = [0, text.length - head_length].max
-        tail = text[head_length..-1]
-        lines = (tail_length / width.to_f).ceil
+        lines = (text.length / width.to_f).ceil
 
         1.upto lines do |line|
           setpos 0, offset + line
-          addstr tail[(width * (line - 1))...(width * line)]
+          addstr text[(width * (line - 1))...(width * line)]
         end
 
         offset + 1 + lines
