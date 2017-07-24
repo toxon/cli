@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Menu < Container
+  class Sidebar < Container
     def initialize(parent, x, y, _width, height)
       super parent, x, y, Logo::WIDTH, height
 

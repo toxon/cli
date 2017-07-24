@@ -15,7 +15,7 @@ require 'widgets/container'
 require 'widgets/v_panel'
 
 require 'widgets/main'
-require 'widgets/menu'
+require 'widgets/sidebar'
 require 'widgets/logo'
 
 require 'widgets/peers'

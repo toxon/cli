@@ -5,20 +5,20 @@ module Widgets
     def initialize(parent, x, y, width, height)
       super
 
-      @menu = Widgets::Menu.new self, x,               y, nil,                 height
-      @chat = Widgets::Chat.new self, x + @menu.width, y, width - @menu.width, height
+      @sidebar = Widgets::Sidebar.new self, x,                  y, nil,                    height
+      @chat    = Widgets::Chat.new    self, x + @sidebar.width, y, width - @sidebar.width, height
 
-      self.focus = @menu
+      self.focus = @sidebar
     end
 
     def children
-      [@menu, @chat]
+      [@sidebar, @chat]
     end
 
     def trigger(event)
       case event
       when Events::Window::Left
-        self.focus = @menu
+        self.focus = @sidebar
       when Events::Window::Right
         self.focus = @chat
       else
