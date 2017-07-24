@@ -5,14 +5,14 @@ module Widgets
     def initialize(parent, x, y, _width, height)
       super parent, x, y, Logo::WIDTH, height
 
-      @logo  = Logo.new  self, x, y,            nil,         nil
-      @peers = Peers.new self, x, @logo.height, @logo.width, height - @logo.height
+      @logo = Logo.new self, x, y,            nil,         nil
+      @menu = Menu.new self, x, @logo.height, @logo.width, height - @logo.height
 
-      self.focus = @peers
+      self.focus = @menu
     end
 
     def children
-      [@logo, @peers]
+      [@logo, @menu]
     end
   end
 end

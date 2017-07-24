@@ -17,10 +17,7 @@ require 'widgets/v_panel'
 require 'widgets/main'
 require 'widgets/sidebar'
 require 'widgets/logo'
-
-require 'widgets/peers'
-require 'widgets/peers/list'
-require 'widgets/peers/search'
+require 'widgets/menu'
 
 require 'widgets/chat'
 require 'widgets/chat/info'
