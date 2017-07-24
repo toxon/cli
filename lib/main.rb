@@ -19,7 +19,7 @@ require 'widgets/v_panel'
 require 'widgets/main'
 
 require 'widgets/menu'
-require 'widgets/menu/logo'
+require 'widgets/logo'
 
 require 'widgets/peers'
 require 'widgets/peers/list'
