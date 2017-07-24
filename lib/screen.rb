@@ -28,6 +28,8 @@ require 'widgets/chat/history'
 require 'widgets/chat/new_message'
 
 class Screen
+  attr_reader :window
+
   def initialize
     Curses.init_screen
     Curses.start_color
@@ -50,7 +52,7 @@ class Screen
   end
 
   def render
-    @window.render
+    window.render
     Curses.refresh
   end
 
@@ -60,7 +62,7 @@ class Screen
       break if ch.nil?
       event = create_event ch
       next if event.nil?
-      @window.trigger event
+      window.trigger event
     end
   end
 
