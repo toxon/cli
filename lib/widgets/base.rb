@@ -2,10 +2,13 @@
 
 module Widgets
   class Base
+    attr_reader :window
     attr_reader :x, :y, :width, :height
     attr_accessor :focused
 
     def initialize(x, y, width, height)
+      @window = Curses::Window.new height, width, y, x
+
       @x = x
       @y = y
 
@@ -15,14 +18,11 @@ module Widgets
       @focused = false
     end
 
-    def window
-      Curses
-    end
-
     def trigger(event); end
 
     def render
       draw
+      window.refresh
     end
 
     def draw
@@ -30,7 +30,7 @@ module Widgets
     end
 
     def setpos(x, y)
-      window.setpos self.y + y, self.x + x
+      window.setpos y, x
     end
 
     def addstr(s)
