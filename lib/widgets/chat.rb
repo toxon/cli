@@ -18,6 +18,21 @@ module Widgets
       @message = NewMessage.new self, x, y + message_top, width, message_height
     end
 
+    def props=(_value)
+      super
+      @info.props    = props[:info]
+      @history.props = props[:history]
+      @message.props = props[:new_message]
+    end
+
+    def focus
+      case props[:focus]
+      when :info        then @info
+      when :history     then @history
+      when :new_message then @message
+      end
+    end
+
     def children
       [@info, @history, @message]
     end
@@ -29,13 +44,6 @@ module Widgets
       when Events::Text::Base
         @message.trigger event
       end
-    end
-
-    def focused=(value)
-      @focused = !!value
-      @info.focused    = focused
-      @history.focused = focused
-      @message.focused = focused
     end
   end
 end

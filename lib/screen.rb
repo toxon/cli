@@ -48,6 +48,10 @@ class Screen
     Curses.close_screen
   end
 
+  def props=(value)
+    window.props = value
+  end
+
   def render
     window.render
     Curses.refresh

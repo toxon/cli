@@ -7,8 +7,19 @@ module Widgets
 
       @sidebar = Widgets::Sidebar.new self, x,                  y, nil,                    height
       @chat    = Widgets::Chat.new    self, x + @sidebar.width, y, width - @sidebar.width, height
+    end
 
-      self.focus = @sidebar
+    def focus
+      case props[:focus]
+      when :sidebar then @sidebar
+      when :chat    then @chat
+      end
+    end
+
+    def props=(_value)
+      super
+      @sidebar.props = props[:sidebar]
+      @chat.props    = props[:chat]
     end
 
     def children

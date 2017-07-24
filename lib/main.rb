@@ -12,6 +12,7 @@ class Main
     sidebar: {
       focus: :menu,
       menu: {
+        focused: true,
         active: 0,
         top: 0,
         items: 1.upto(Curses.stdscr.maxy).map do
@@ -20,18 +21,18 @@ class Main
             online: [false, true].sample,
           }
         end,
-      },
-    },
+      }.freeze,
+    }.freeze,
     chat: {
       focus: :new_message,
       info: {
         name: Faker::Name.name,
         public_key: SecureRandom.hex(32),
-      },
+      }.freeze,
       new_message: {
         text: '',
         cursor_pos: 0,
-      },
+      }.freeze,
       history: {
         messages: 1.upto(100).map do
           {
@@ -41,8 +42,8 @@ class Main
             text: Faker::Lorem.sentence,
           }
         end,
-      },
-    },
+      }.freeze,
+    }.freeze,
   }.freeze
 
   def self.inherited(_base)
@@ -84,6 +85,7 @@ private
   end
 
   def before_iteration
+    @screen.props = INITIAL_STATE
     @screen.render
   end
 

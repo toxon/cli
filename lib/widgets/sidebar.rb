@@ -7,8 +7,18 @@ module Widgets
 
       @logo = Logo.new self, x, y,            nil,         nil
       @menu = Menu.new self, x, @logo.height, @logo.width, height - @logo.height
+    end
 
-      self.focus = @menu
+    def focus
+      case props[:focus]
+      when :menu
+        @menu
+      end
+    end
+
+    def props=(_value)
+      super
+      @menu.props = props[:menu]
     end
 
     def children

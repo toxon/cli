@@ -5,7 +5,7 @@ module Widgets
     attr_reader :parent
     attr_reader :window
     attr_reader :width, :height
-    attr_accessor :focused
+    attr_reader :props
 
     def initialize(parent, x, y, width, height)
       @parent = parent
@@ -15,10 +15,20 @@ module Widgets
       @width  = width
       @height = height
 
-      @focused = false
+      @props = {}.freeze
     end
 
     def trigger(event); end
+
+    def props=(value)
+      raise TypeError,     "expected props to be a #{Hash}" unless value.is_a? Hash
+      raise ArgumentError, 'expected props to be frozen'    unless value.frozen?
+      @props = value
+    end
+
+    def focused
+      props[:focused]
+    end
 
     def render
       draw

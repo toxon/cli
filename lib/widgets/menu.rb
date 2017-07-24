@@ -2,20 +2,16 @@
 
 module Widgets
   class Menu < Base
-    attr_reader :active, :top, :items
+    def active
+      props[:active]
+    end
 
-    def initialize(parent, x, y, width, height)
-      super
+    def top
+      props[:top]
+    end
 
-      @active = 0
-      @top    = 0
-
-      @items = 1.upto(height - 1 + 10).map do
-        {
-          name: Faker::Name.name,
-          online: [false, true].sample,
-        }
-      end
+    def items
+      props[:items]
     end
 
     def draw

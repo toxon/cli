@@ -2,8 +2,6 @@
 
 module Widgets
   class Container < Base
-    attr_reader :focus
-
     def trigger(event)
       focus.trigger event
     end
@@ -12,19 +10,12 @@ module Widgets
       children.each(&:render)
     end
 
+    def focus
+      raise NotImplementedError, "#{self.class}#focus"
+    end
+
     def children
       raise NotImplementedError, "#{self.class}#children"
-    end
-
-    def focus=(value)
-      focus&.focused = false
-      @focus = value
-      focus.focused = true
-    end
-
-    def focused=(value)
-      super
-      focus.focused = focused
     end
   end
 end

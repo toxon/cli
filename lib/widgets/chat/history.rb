@@ -3,19 +3,8 @@
 module Widgets
   class Chat < VPanel
     class History < Base
-      attr_reader :messages
-
-      def initialize(parent, x, y, width, height)
-        super
-
-        @messages = 1.upto(100).map do
-          {
-            out:  rand <= 0.2,
-            time: Faker::Time.forward,
-            name: Faker::Name.name,
-            text: Faker::Lorem.sentence.freeze,
-          }
-        end
+      def messages
+        props[:messages]
       end
 
       def draw

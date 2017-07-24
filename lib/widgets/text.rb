@@ -2,13 +2,12 @@
 
 module Widgets
   class Text < Base
-    attr_reader :text, :cursor_pos
+    def text
+      props[:text]
+    end
 
-    def initialize(parent, x, y, width, height)
-      super
-
-      @text = ''
-      @cursor_pos = 0
+    def cursor_pos
+      props[:cursor_pos]
     end
 
     def draw
