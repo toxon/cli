@@ -10,7 +10,7 @@ module Widgets
     def initialize(parent, x, y, width, height)
       @parent = parent
 
-      @window = Curses::Window.new height, width, y, x
+      @window = parent ? parent.window.subwin(height, width, y, x) : Curses.stdscr
 
       @width  = width
       @height = height
