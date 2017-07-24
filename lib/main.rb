@@ -18,8 +18,6 @@ require 'widgets/v_panel'
 
 require 'widgets/main'
 
-require 'widgets/messenger'
-
 require 'widgets/menu'
 require 'widgets/menu/logo'
 require 'widgets/menu/items'
