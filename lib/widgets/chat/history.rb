@@ -28,7 +28,7 @@ module Widgets
         end
       end
 
-      def draw_message(offset, out, time, name, text)
+      def draw_message(offset, _out, time, name, text)
         setpos 0, offset
 
         Style.default.message_time window do
