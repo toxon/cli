@@ -20,7 +20,6 @@ require 'widgets/main'
 
 require 'widgets/menu'
 require 'widgets/menu/logo'
-require 'widgets/menu/items'
 
 require 'widgets/peers'
 require 'widgets/peers/list'
