@@ -5,14 +5,8 @@ module Widgets
     def initialize(x, y, width, height)
       super
 
-      menu_width = width / 4
-      chat_width = width - menu_width
-
-      menu_left = 0
-      chat_left = menu_width
-
-      @menu = Widgets::Menu.new x + menu_left, y, menu_width, height
-      @chat = Widgets::Chat.new x + chat_left, y, chat_width, height
+      @menu = Widgets::Menu.new x,               y, nil,                 height
+      @chat = Widgets::Chat.new x + @menu.width, y, width - @menu.width, height
 
       self.focus = @menu
     end
