@@ -16,7 +16,7 @@ require 'widgets/text'
 require 'widgets/container'
 require 'widgets/v_panel'
 
-require 'widgets/window'
+require 'widgets/main'
 
 require 'widgets/messenger'
 
@@ -91,7 +91,7 @@ private
   end
 
   def window
-    @window ||= Widgets::Window.new(
+    @window ||= Widgets::Main.new(
       0,
       0,
       Curses.stdscr.maxx,
