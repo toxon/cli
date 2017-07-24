@@ -7,6 +7,44 @@ require 'faker'
 require 'screen'
 
 class Main
+  INITIAL_STATE = {
+    focus: :sidebar,
+    sidebar: {
+      focus: :menu,
+      menu: {
+        active: 0,
+        top: 0,
+        items: 1.upto(Curses.stdscr.maxy).map do
+          {
+            name: Faker::Name.name,
+            online: [false, true].sample,
+          }
+        end,
+      },
+    },
+    chat: {
+      focus: :new_message,
+      info: {
+        name: Faker::Name.name,
+        public_key: SecureRandom.hex(32),
+      },
+      new_message: {
+        text: '',
+        cursor_pos: 0,
+      },
+      history: {
+        messages: 1.upto(100).map do
+          {
+            out: rand <= 0.2,
+            time: Faker::Time.forward,
+            name: Faker::Name.name,
+            text: Faker::Lorem.sentence,
+          }
+        end,
+      },
+    },
+  }.freeze
+
   def self.inherited(_base)
     raise "#{self} is final"
   end
