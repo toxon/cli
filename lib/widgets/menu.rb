@@ -14,6 +14,8 @@ module Widgets
   private
 
     def draw
+      return if props[:items].empty?
+
       props[:items][props[:top]...(props[:top] + props[:height])].each_with_index.each do |item, offset|
         index = props[:top] + offset
 

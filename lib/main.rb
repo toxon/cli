@@ -117,12 +117,7 @@ private
 
           active: 0,
           top: 0,
-          items: 1.upto(Curses.stdscr.maxy).map do
-            {
-              name: Faker::Name.name,
-              online: [false, true].sample,
-            }
-          end,
+          items: [],
         }.freeze,
       }.freeze,
 
