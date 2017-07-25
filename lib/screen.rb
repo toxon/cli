@@ -63,5 +63,32 @@ class Screen
 
 private
 
-  def create_event(ch); end
+  def create_event(char)
+    case char
+    when Curses::Key::SLEFT
+      Events::Window::Left.new
+    when Curses::Key::SRIGHT
+      Events::Window::Right.new
+
+    when Curses::Key::LEFT
+      Events::Text::Left.new
+    when Curses::Key::RIGHT
+      Events::Text::Right.new
+    when Curses::Key::UP
+      Events::Text::Up.new
+    when Curses::Key::DOWN
+      Events::Text::Down.new
+    when Curses::Key::HOME
+      Events::Text::Home.new
+    when Curses::Key::END
+      Events::Text::End.new
+    when Curses::Key::BACKSPACE
+      Events::Text::Backspace.new
+    when Curses::Key::DC
+      Events::Text::Delete.new
+
+    when String
+      Events::Text::Putc.new char
+    end
+  end
 end
