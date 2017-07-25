@@ -48,7 +48,7 @@ private
     end
 
     @tox_client.on_friend_request do |public_key|
-      @tox_client.friend_add_norequest public_key
+      on_friend_add @tox_client.friend_add_norequest public_key
     end
 
     @screen = Screen.new
@@ -181,8 +181,23 @@ private
             {
               name: friend.name.freeze,
               online: friend.status == Tox::UserStatus::NONE,
-            }
-          end,
+            }.freeze
+          end.freeze,
+        ).freeze,
+      ).freeze,
+    ).freeze
+  end
+
+  def on_friend_add(friend)
+    @state = state.merge(
+      sidebar: state[:sidebar].merge(
+        menu: state[:sidebar][:menu].merge(
+          items: (state[:sidebar][:menu][:items] + [
+            {
+              name: friend.name.freeze,
+              online: friend.status == Tox::UserStatus::NONE,
+            }.freeze,
+          ]).freeze,
         ).freeze,
       ).freeze,
     ).freeze
