@@ -17,6 +17,8 @@ module Widgets
       @props = value
     end
 
+    def trigger(event); end
+
     def render
       draw
       window.refresh
