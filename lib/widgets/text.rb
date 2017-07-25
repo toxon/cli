@@ -15,6 +15,11 @@ module Widgets
         props[:on_home].call
       when Events::Text::End
         props[:on_end].call
+
+      when Events::Text::Backspace
+        props[:on_backspace].call
+      when Events::Text::Delete
+        props[:on_delete].call
       end
     end
 

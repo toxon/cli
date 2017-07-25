@@ -76,6 +76,9 @@ private
       on_new_message_home:  method(:on_new_message_home),
       on_new_message_end:   method(:on_new_message_end),
 
+      on_new_message_backspace: method(:on_new_message_backspace),
+      on_new_message_delete:    method(:on_new_message_delete),
+
       sidebar: {
         x: 0,
         y: 0,
@@ -281,6 +284,40 @@ private
           state[:chat][:new_message],
           text:       state[:chat][:new_message][:text],
           cursor_pos: state[:chat][:new_message][:text].length,
+        ),
+      ).freeze,
+    ).freeze
+  end
+
+  def on_new_message_backspace
+    text       = state[:chat][:new_message][:text]
+    cursor_pos = state[:chat][:new_message][:cursor_pos]
+
+    return unless cursor_pos.positive?
+
+    @state = state.merge(
+      chat: state[:chat].merge(
+        new_message: self.class.update_new_message(
+          state[:chat][:new_message],
+          text: "#{text[0...(cursor_pos - 1)]}#{text[cursor_pos..-1]}",
+          cursor_pos: cursor_pos - 1,
+        ),
+      ).freeze,
+    ).freeze
+  end
+
+  def on_new_message_delete
+    text       = state[:chat][:new_message][:text]
+    cursor_pos = state[:chat][:new_message][:cursor_pos]
+
+    return if cursor_pos > text.length
+
+    @state = state.merge(
+      chat: state[:chat].merge(
+        new_message: self.class.update_new_message(
+          state[:chat][:new_message],
+          text: "#{text[0...cursor_pos]}#{text[(cursor_pos + 1)..-1]}",
+          cursor_pos: cursor_pos,
         ),
       ).freeze,
     ).freeze

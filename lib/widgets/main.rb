@@ -24,6 +24,9 @@ module Widgets
         on_new_message_right: props[:on_new_message_right],
         on_new_message_home:  props[:on_new_message_home],
         on_new_message_end:   props[:on_new_message_end],
+
+        on_new_message_backspace: props[:on_new_message_backspace],
+        on_new_message_delete:    props[:on_new_message_delete],
       ).freeze
     end
 
