@@ -56,11 +56,28 @@ private
 
   def state
     @state ||= {
+      x: 0,
+      y: 0,
+      width: Curses.stdscr.maxx,
+      height: Curses.stdscr.maxy,
       focus: :sidebar,
+      focused: true,
+
       sidebar: {
+        x: 0,
+        y: 0,
+        width: Widgets::Logo::WIDTH,
+        height: Curses.stdscr.maxy,
         focus: :menu,
+        focused: true,
+
         menu: {
+          x: 0,
+          y: 0,
+          width: Widgets::Logo::WIDTH,
+          height: Curses.stdscr.maxy - Widgets::Logo::HEIGHT,
           focused: true,
+
           active: 0,
           top: 0,
           items: 1.upto(Curses.stdscr.maxy).map do
@@ -71,17 +88,44 @@ private
           end,
         }.freeze,
       }.freeze,
+
       chat: {
+        x: 0,
+        y: 0,
+        width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
+        height: Curses.stdscr.maxy,
         focus: :new_message,
+        focused: false,
+
         info: {
+          x: 0,
+          y: 0,
+          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
+          height: 2,
+          focused: false,
+
           name: Faker::Name.name,
           public_key: SecureRandom.hex(32),
         }.freeze,
+
         new_message: {
+          x: 0,
+          y: 0,
+          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
+          height: Curses.stdscr.maxy - 3,
+          focused: false,
+
           text: '',
           cursor_pos: 0,
         }.freeze,
+
         history: {
+          x: 0,
+          y: 0,
+          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
+          height: 1,
+          focused: true,
+
           messages: 1.upto(100).map do
             {
               out: rand <= 0.2,
