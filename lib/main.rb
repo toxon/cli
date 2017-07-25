@@ -9,6 +9,8 @@ require 'faker'
 require 'screen'
 
 class Main
+  SAVEDATA_FILENAME = File.expand_path '../savedata', __dir__
+
   def self.inherited(_base)
     raise "#{self} is final"
   end
@@ -28,11 +30,15 @@ private
     before_loop
     before_iteration
     @tox_client.run
+  ensure
     after_loop
   end
 
   def before_loop
-    @tox_client = Tox::Client.new
+    tox_options = Tox::Options.new
+    tox_options.savedata = File.binread SAVEDATA_FILENAME if File.exist? SAVEDATA_FILENAME
+
+    @tox_client = Tox::Client.new tox_options
 
     @tox_client.on_iteration do
       after_iteration
@@ -44,7 +50,9 @@ private
   end
 
   def after_loop
-    @screen.close
+    @screen&.close
+
+    File.binwrite SAVEDATA_FILENAME, @tox_client.savedata if @tox_client
   end
 
   def before_iteration
