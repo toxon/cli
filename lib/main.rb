@@ -69,6 +69,8 @@ private
       on_menu_up:   method(:on_menu_up),
       on_menu_down: method(:on_menu_down),
 
+      on_new_message_putc: method(:on_new_message_putc),
+
       sidebar: {
         x: 0,
         y: 0,
@@ -175,7 +177,7 @@ private
 
   def on_window_right
     @state = state.merge(
-      focus: :sidebar,
+      focus: :chat,
 
       sidebar: state[:sidebar].merge(
         focused: true,
@@ -241,6 +243,20 @@ private
         menu: state[:sidebar][:menu].merge(
           active: active,
           top: top,
+        ).freeze,
+      ).freeze,
+    ).freeze
+  end
+
+  def on_new_message_putc(char)
+    text       = state[:chat][:new_message][:text]
+    cursor_pos = state[:chat][:new_message][:cursor_pos]
+
+    @state = state.merge(
+      chat: state[:chat].merge(
+        new_message: state[:chat][:new_message].merge(
+          text: "#{text[0...cursor_pos]}#{char}#{text[cursor_pos..-1]}",
+          cursor_pos: cursor_pos + 1,
         ).freeze,
       ).freeze,
     ).freeze

@@ -17,7 +17,9 @@ module Widgets
         on_menu_down: props[:on_menu_down],
       ).freeze
 
-      @chat.props = props[:chat]
+      @chat.props = props[:chat].merge(
+        on_new_message_putc: props[:on_new_message_putc],
+      ).freeze
     end
 
     def trigger(event)
@@ -27,7 +29,7 @@ module Widgets
       when Events::Window::Right
         props[:on_window_right].call
       else
-        focus.trigger event
+        focus&.trigger event
       end
     end
 

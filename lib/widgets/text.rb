@@ -2,6 +2,13 @@
 
 module Widgets
   class Text < Base
+    def trigger(event)
+      case event
+      when Events::Text::Putc
+        props[:on_putc].call event.char
+      end
+    end
+
   private
 
     def draw

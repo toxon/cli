@@ -12,9 +12,17 @@ module Widgets
 
     def props=(_value)
       super
+
       @info.props    = props[:info]
       @history.props = props[:history]
-      @message.props = props[:new_message]
+
+      @message.props = props[:new_message].merge(
+        on_putc: props[:on_new_message_putc],
+      ).freeze
+    end
+
+    def trigger(event)
+      focus&.trigger event
     end
 
   private
