@@ -197,53 +197,23 @@ private
   end
 
   def on_menu_up
-    active = state[:sidebar][:menu][:active]
-    top    = state[:sidebar][:menu][:top]
-    items  = state[:sidebar][:menu][:items]
-    height = state[:sidebar][:menu][:height]
-
-    active -= 1
-
-    active = items.count - 1 if active.negative?
-
-    if active < top
-      top = active
-    elsif active >= top + height
-      top = active - height + 1
-    end
-
     @state = state.merge(
       sidebar: state[:sidebar].merge(
-        menu: state[:sidebar][:menu].merge(
-          active: active,
-          top: top,
-        ).freeze,
+        menu: self.class.update_menu(
+          state[:sidebar][:menu],
+          active: state[:sidebar][:menu][:active] - 1,
+        ),
       ).freeze,
     ).freeze
   end
 
   def on_menu_down
-    active = state[:sidebar][:menu][:active]
-    top    = state[:sidebar][:menu][:top]
-    items  = state[:sidebar][:menu][:items]
-    height = state[:sidebar][:menu][:height]
-
-    active += 1
-
-    active = 0 if active >= items.count
-
-    if active < top
-      top = active
-    elsif active >= top + height
-      top = active - height + 1
-    end
-
     @state = state.merge(
       sidebar: state[:sidebar].merge(
-        menu: state[:sidebar][:menu].merge(
-          active: active,
-          top: top,
-        ).freeze,
+        menu: self.class.update_menu(
+          state[:sidebar][:menu],
+          active: state[:sidebar][:menu][:active] + 1,
+        ),
       ).freeze,
     ).freeze
   end
@@ -260,5 +230,28 @@ private
         ).freeze,
       ).freeze,
     ).freeze
+  end
+
+  class << self
+    def update_menu(state, active:)
+      top = state[:top]
+
+      if active.negative?
+        active = state[:items].count - 1
+      elsif active >= state[:items].count
+        active = 0
+      end
+
+      if active < state[:top]
+        top = active
+      elsif active >= state[:top] + state[:height]
+        top = active - state[:height] + 1
+      end
+
+      state.merge(
+        active: active,
+        top: top,
+      ).freeze
+    end
   end
 end
