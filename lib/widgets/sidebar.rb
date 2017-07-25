@@ -11,8 +11,17 @@ module Widgets
 
     def props=(_value)
       super
+
       @logo.props = props[:logo]
-      @menu.props = props[:menu]
+
+      @menu.props = props[:menu].merge(
+        on_up:   props[:on_menu_up],
+        on_down: props[:on_menu_down],
+      ).freeze
+    end
+
+    def trigger(event)
+      focus&.trigger event
     end
 
   private

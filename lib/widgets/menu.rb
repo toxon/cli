@@ -2,6 +2,15 @@
 
 module Widgets
   class Menu < Base
+    def trigger(event)
+      case event
+      when Events::Text::Up
+        props[:on_up].call
+      when Events::Text::Down
+        props[:on_down].call
+      end
+    end
+
   private
 
     def draw

@@ -11,8 +11,13 @@ module Widgets
 
     def props=(_value)
       super
-      @sidebar.props = props[:sidebar]
-      @chat.props    = props[:chat]
+
+      @sidebar.props = props[:sidebar].merge(
+        on_menu_up:   props[:on_menu_up],
+        on_menu_down: props[:on_menu_down],
+      ).freeze
+
+      @chat.props = props[:chat]
     end
 
     def trigger(event)

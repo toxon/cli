@@ -63,8 +63,11 @@ private
       focus: :sidebar,
       focused: true,
 
-      on_window_left: method(:on_window_left),
+      on_window_left:  method(:on_window_left),
       on_window_right: method(:on_window_right),
+
+      on_menu_up:   method(:on_menu_up),
+      on_menu_down: method(:on_menu_down),
 
       sidebar: {
         x: 0,
@@ -187,6 +190,58 @@ private
         info:               state[:chat][:info].merge(focused: state[:chat][:focus] == :info).freeze,
         new_message: state[:chat][:new_message].merge(focused: state[:chat][:focus] == :new_message).freeze,
         history:         state[:chat][:history].merge(focused: state[:chat][:focus] == :history).freeze,
+      ).freeze,
+    ).freeze
+  end
+
+  def on_menu_up
+    active = state[:sidebar][:menu][:active]
+    top    = state[:sidebar][:menu][:top]
+    items  = state[:sidebar][:menu][:items]
+    height = state[:sidebar][:menu][:height]
+
+    active -= 1
+
+    active = items.count - 1 if active.negative?
+
+    if active < top
+      top = active
+    elsif active >= top + height
+      top = active - height + 1
+    end
+
+    @state = state.merge(
+      sidebar: state[:sidebar].merge(
+        menu: state[:sidebar][:menu].merge(
+          active: active,
+          top: top,
+        ).freeze,
+      ).freeze,
+    ).freeze
+  end
+
+  def on_menu_down
+    active = state[:sidebar][:menu][:active]
+    top    = state[:sidebar][:menu][:top]
+    items  = state[:sidebar][:menu][:items]
+    height = state[:sidebar][:menu][:height]
+
+    active += 1
+
+    active = 0 if active >= items.count
+
+    if active < top
+      top = active
+    elsif active >= top + height
+      top = active - height + 1
+    end
+
+    @state = state.merge(
+      sidebar: state[:sidebar].merge(
+        menu: state[:sidebar][:menu].merge(
+          active: active,
+          top: top,
+        ).freeze,
       ).freeze,
     ).freeze
   end
