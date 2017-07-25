@@ -28,14 +28,5 @@ module Widgets
     def children
       [@info, @history, @message]
     end
-
-    def trigger(event)
-      case event
-      when Events::Panel::Base
-        @history.trigger event
-      when Events::Text::Base
-        @message.trigger event
-      end
-    end
   end
 end

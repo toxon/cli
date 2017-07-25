@@ -2,10 +2,6 @@
 
 module Widgets
   class Container < Base
-    def trigger(event)
-      focus.trigger event
-    end
-
     def draw
       children.each(&:render)
     end

@@ -3,7 +3,6 @@
 require 'curses'
 
 # Additional classes
-require 'events'
 require 'style'
 
 # Basic
@@ -63,35 +62,5 @@ class Screen
 
 private
 
-  def create_event(ch)
-    case ch
-    when "\t".ord
-      Events::Tab.new
-
-    when Curses::Key::SLEFT
-      Events::Window::Left.new
-    when Curses::Key::SRIGHT
-      Events::Window::Right.new
-
-    when Curses::Key::UP
-      Events::Panel::Up.new
-    when Curses::Key::DOWN
-      Events::Panel::Down.new
-
-    when /[a-zA-Z0-9 ]/
-      Events::Text::Putc.new ch
-    when Curses::Key::LEFT
-      Events::Text::Left.new
-    when Curses::Key::RIGHT
-      Events::Text::Right.new
-    when Curses::Key::HOME
-      Events::Text::Home.new
-    when Curses::Key::END
-      Events::Text::End.new
-    when Curses::Key::BACKSPACE
-      Events::Text::Backspace.new
-    when Curses::Key::DC
-      Events::Text::Delete.new
-    end
-  end
+  def create_event(ch); end
 end

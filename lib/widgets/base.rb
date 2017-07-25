@@ -14,8 +14,6 @@ module Widgets
       @window ||= parent ? parent.window.subwin(props[:height], props[:width], props[:y], props[:x]) : Curses.stdscr
     end
 
-    def trigger(event); end
-
     def props=(value)
       raise TypeError,     "expected props to be a #{Hash}" unless value.is_a? Hash
       raise ArgumentError, 'expected props to be frozen'    unless value.frozen?

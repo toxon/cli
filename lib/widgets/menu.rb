@@ -27,38 +27,5 @@ module Widgets
         end
       end
     end
-
-    def trigger(event)
-      case event
-      when Events::Panel::Up
-        up
-      when Events::Panel::Down
-        down
-      end
-    end
-
-    def up
-      @active -= 1
-      update
-    end
-
-    def down
-      @active += 1
-      update
-    end
-
-    def update
-      if active.negative?
-        @active = items.count - 1
-      elsif active >= items.count
-        @active = 0
-      end
-
-      if active < top
-        @top = active
-      elsif active >= top + height
-        @top = active - height + 1
-      end
-    end
   end
 end

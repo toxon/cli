@@ -25,16 +25,5 @@ module Widgets
     def children
       [@sidebar, @chat]
     end
-
-    def trigger(event)
-      case event
-      when Events::Window::Left
-        self.focus = @sidebar
-      when Events::Window::Right
-        self.focus = @chat
-      else
-        focus.trigger event
-      end
-    end
   end
 end
