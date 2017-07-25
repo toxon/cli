@@ -11,7 +11,7 @@ module Widgets
     end
 
     def window
-      @window ||= parent ? parent.window.subwin(height, width, y, x) : Curses.stdscr
+      @window ||= parent ? parent.window.subwin(props[:height], props[:width], props[:y], props[:x]) : Curses.stdscr
     end
 
     def trigger(event); end
@@ -24,26 +24,6 @@ module Widgets
                        props[:width] != value[:width] || props[:height] != value[:height]
 
       @props = value
-    end
-
-    def x
-      props[:x]
-    end
-
-    def y
-      props[:y]
-    end
-
-    def width
-      props[:width]
-    end
-
-    def height
-      props[:height]
-    end
-
-    def focused
-      props[:focused]
     end
 
     def render

@@ -3,14 +3,6 @@
 module Widgets
   class Chat < VPanel
     class Info < Base
-      def name
-        props[:name]
-      end
-
-      def public_key
-        props[:public_key]
-      end
-
       def draw
         setpos 0, 0
         Style.default.online_mark window do
@@ -18,12 +10,12 @@ module Widgets
         end
         addstr ' '
         Style.default.peer_info_name window do
-          addstr name
+          addstr props[:name]
         end
 
         setpos 0, 1
         addstr 'Public key: '
-        addstr public_key
+        addstr props[:public_key]
       end
     end
   end

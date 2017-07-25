@@ -2,21 +2,9 @@
 
 module Widgets
   class Menu < Base
-    def active
-      props[:active]
-    end
-
-    def top
-      props[:top]
-    end
-
-    def items
-      props[:items]
-    end
-
     def draw
-      items[top...(top + height)].each_with_index.each do |item, offset|
-        index = top + offset
+      props[:items][props[:top]...(props[:top] + props[:height])].each_with_index.each do |item, offset|
+        index = props[:top] + offset
 
         setpos 0, offset
 
@@ -30,11 +18,11 @@ module Widgets
 
         addstr ' '
 
-        Style.default.public_send(index == active && focused ? :selection : :text, window) do
-          if item[:name].length <= width - 2
-            addstr item[:name].ljust width - 2
+        Style.default.public_send(index == props[:active] && props[:focused] ? :selection : :text, window) do
+          if item[:name].length <= props[:width] - 2
+            addstr item[:name].ljust props[:width] - 2
           else
-            addstr "#{item[:name][0...width - 5]}..."
+            addstr "#{item[:name][0...props[:width] - 5]}..."
           end
         end
       end

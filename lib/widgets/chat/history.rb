@@ -3,17 +3,13 @@
 module Widgets
   class Chat < VPanel
     class History < Base
-      def messages
-        props[:messages]
-      end
-
       def draw
         offset = 0
 
-        messages.each do |msg|
+        props[:messages].each do |msg|
           offset += draw_message offset, msg[:out], msg[:time].strftime('%H:%M:%S'), msg[:name], msg[:text]
 
-          break if offset >= height
+          break if offset >= props[:height]
         end
       end
 
@@ -30,11 +26,11 @@ module Widgets
           addstr name
         end
 
-        lines = (text.length / width.to_f).ceil
+        lines = (text.length / props[:width].to_f).ceil
 
         1.upto lines do |line|
           setpos 0, offset + line
-          addstr text[(width * (line - 1))...(width * line)]
+          addstr text[(props[:width] * (line - 1))...(props[:width] * line)]
         end
 
         1 + lines

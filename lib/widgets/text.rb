@@ -2,31 +2,23 @@
 
 module Widgets
   class Text < Base
-    def text
-      props[:text]
-    end
-
-    def cursor_pos
-      props[:cursor_pos]
-    end
-
     def draw
-      total = width - 1
-      start = [0, cursor_pos - total].max
+      total = props[:width] - 1
+      start = [0, props[:cursor_pos] - total].max
 
-      cut = text[start...start + total]
+      cut = props[:text][start...start + total]
 
       setpos 0, 0
 
-      before_cursor = cut[0...cursor_pos]
-      under_cursor  = cut[cursor_pos] || ' '
-      after_cursor  = cut[(1 + cursor_pos)..-1] || ''
+      before_cursor = cut[0...props[:cursor_pos]]
+      under_cursor  = cut[props[:cursor_pos]] || ' '
+      after_cursor  = cut[(1 + props[:cursor_pos])..-1] || ''
 
       Style.default.editing_text window do
         addstr before_cursor
       end
 
-      Style.default.public_send focused ? :cursor : :editing_text, window do
+      Style.default.public_send props[:focused] ? :cursor : :editing_text, window do
         addstr under_cursor
       end
 
