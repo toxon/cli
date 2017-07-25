@@ -71,6 +71,11 @@ private
 
       on_new_message_putc: method(:on_new_message_putc),
 
+      on_new_message_left:  method(:on_new_message_left),
+      on_new_message_right: method(:on_new_message_right),
+      on_new_message_home:  method(:on_new_message_home),
+      on_new_message_end:   method(:on_new_message_end),
+
       sidebar: {
         x: 0,
         y: 0,
@@ -228,6 +233,54 @@ private
           state[:chat][:new_message],
           text: "#{text[0...cursor_pos]}#{char}#{text[cursor_pos..-1]}",
           cursor_pos: cursor_pos + 1,
+        ),
+      ).freeze,
+    ).freeze
+  end
+
+  def on_new_message_left
+    @state = state.merge(
+      chat: state[:chat].merge(
+        new_message: self.class.update_new_message(
+          state[:chat][:new_message],
+          text:       state[:chat][:new_message][:text],
+          cursor_pos: state[:chat][:new_message][:cursor_pos] - 1,
+        ),
+      ).freeze,
+    ).freeze
+  end
+
+  def on_new_message_right
+    @state = state.merge(
+      chat: state[:chat].merge(
+        new_message: self.class.update_new_message(
+          state[:chat][:new_message],
+          text:       state[:chat][:new_message][:text],
+          cursor_pos: state[:chat][:new_message][:cursor_pos] + 1,
+        ),
+      ).freeze,
+    ).freeze
+  end
+
+  def on_new_message_home
+    @state = state.merge(
+      chat: state[:chat].merge(
+        new_message: self.class.update_new_message(
+          state[:chat][:new_message],
+          text:       state[:chat][:new_message][:text],
+          cursor_pos: 0,
+        ),
+      ).freeze,
+    ).freeze
+  end
+
+  def on_new_message_end
+    @state = state.merge(
+      chat: state[:chat].merge(
+        new_message: self.class.update_new_message(
+          state[:chat][:new_message],
+          text:       state[:chat][:new_message][:text],
+          cursor_pos: state[:chat][:new_message][:text].length,
         ),
       ).freeze,
     ).freeze

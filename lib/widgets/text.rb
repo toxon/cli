@@ -6,6 +6,15 @@ module Widgets
       case event
       when Events::Text::Putc
         props[:on_putc].call event.char
+
+      when Events::Text::Left
+        props[:on_left].call
+      when Events::Text::Right
+        props[:on_right].call
+      when Events::Text::Home
+        props[:on_home].call
+      when Events::Text::End
+        props[:on_end].call
       end
     end
 
