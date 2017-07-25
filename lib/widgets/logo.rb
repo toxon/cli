@@ -16,10 +16,6 @@ module Widgets
     WIDTH  = LOGO.first.length
     HEIGHT = LOGO.length
 
-    def initialize(parent, x, y, _width, _height)
-      super parent, x, y, WIDTH, HEIGHT
-    end
-
     def draw
       Style.default.logo window do
         LOGO.each_with_index do |s, index|

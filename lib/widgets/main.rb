@@ -2,11 +2,11 @@
 
 module Widgets
   class Main < Container
-    def initialize(parent, x, y, width, height)
+    def initialize(_parent)
       super
 
-      @sidebar = Widgets::Sidebar.new self, x,                  y, nil,                    height
-      @chat    = Widgets::Chat.new    self, x + @sidebar.width, y, width - @sidebar.width, height
+      @sidebar = Widgets::Sidebar.new self
+      @chat    = Widgets::Chat.new    self
     end
 
     def focus

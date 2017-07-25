@@ -35,13 +35,7 @@ class Screen
     Curses.timeout = 0 # non-blocking input
     Curses.stdscr.keypad = true
 
-    @window ||= Widgets::Main.new(
-      nil,
-      0,
-      0,
-      Curses.stdscr.maxx,
-      Curses.stdscr.maxy,
-    )
+    @window ||= Widgets::Main.new nil
   end
 
   def close

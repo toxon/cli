@@ -2,11 +2,11 @@
 
 module Widgets
   class Sidebar < Container
-    def initialize(parent, x, y, _width, height)
-      super parent, x, y, Logo::WIDTH, height
+    def initialize(_parent)
+      super
 
-      @logo = Logo.new self, x, y,            nil,         nil
-      @menu = Menu.new self, x, @logo.height, @logo.width, height - @logo.height
+      @logo = Logo.new self
+      @menu = Menu.new self
     end
 
     def focus
@@ -18,6 +18,7 @@ module Widgets
 
     def props=(_value)
       super
+      @logo.props = props[:logo]
       @menu.props = props[:menu]
     end
 

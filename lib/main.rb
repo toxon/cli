@@ -71,9 +71,16 @@ private
         focus: :menu,
         focused: true,
 
-        menu: {
+        logo: {
           x: 0,
           y: 0,
+          width: Widgets::Logo::WIDTH,
+          height: Widgets::Logo::HEIGHT,
+        }.freeze,
+
+        menu: {
+          x: 0,
+          y: Widgets::Logo::HEIGHT,
           width: Widgets::Logo::WIDTH,
           height: Curses.stdscr.maxy - Widgets::Logo::HEIGHT,
           focused: true,
@@ -90,7 +97,7 @@ private
       }.freeze,
 
       chat: {
-        x: 0,
+        x: Widgets::Logo::WIDTH,
         y: 0,
         width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
         height: Curses.stdscr.maxy,
@@ -98,7 +105,7 @@ private
         focused: false,
 
         info: {
-          x: 0,
+          x: Widgets::Logo::WIDTH,
           y: 0,
           width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
           height: 2,
@@ -109,10 +116,10 @@ private
         }.freeze,
 
         new_message: {
-          x: 0,
-          y: 0,
+          x: Widgets::Logo::WIDTH,
+          y: Curses.stdscr.maxy - 1,
           width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
-          height: Curses.stdscr.maxy - 3,
+          height: 1,
           focused: false,
 
           text: '',
@@ -120,10 +127,10 @@ private
         }.freeze,
 
         history: {
-          x: 0,
-          y: 0,
+          x: Widgets::Logo::WIDTH,
+          y: 2,
           width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
-          height: 1,
+          height: Curses.stdscr.maxy - 3,
           focused: true,
 
           messages: 1.upto(100).map do

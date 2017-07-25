@@ -3,19 +3,15 @@
 module Widgets
   class Base
     attr_reader :parent
-    attr_reader :window
-    attr_reader :width, :height
     attr_reader :props
 
-    def initialize(parent, x, y, width, height)
+    def initialize(parent)
       @parent = parent
-
-      @window = parent ? parent.window.subwin(height, width, y, x) : Curses.stdscr
-
-      @width  = width
-      @height = height
-
       @props = {}.freeze
+    end
+
+    def window
+      @window ||= parent ? parent.window.subwin(height, width, y, x) : Curses.stdscr
     end
 
     def trigger(event); end
@@ -23,7 +19,27 @@ module Widgets
     def props=(value)
       raise TypeError,     "expected props to be a #{Hash}" unless value.is_a? Hash
       raise ArgumentError, 'expected props to be frozen'    unless value.frozen?
+
+      @window = nil if props[:x] != value[:x] || props[:y] != value[:y] ||
+                       props[:width] != value[:width] || props[:height] != value[:height]
+
       @props = value
+    end
+
+    def x
+      props[:x]
+    end
+
+    def y
+      props[:y]
+    end
+
+    def width
+      props[:width]
+    end
+
+    def height
+      props[:height]
     end
 
     def focused
