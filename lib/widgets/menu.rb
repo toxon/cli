@@ -2,6 +2,8 @@
 
 module Widgets
   class Menu < Base
+  private
+
     def draw
       props[:items][props[:top]...(props[:top] + props[:height])].each_with_index.each do |item, offset|
         index = props[:top] + offset

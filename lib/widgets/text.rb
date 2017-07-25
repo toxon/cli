@@ -2,6 +2,8 @@
 
 module Widgets
   class Text < Base
+  private
+
     def draw
       total = props[:width] - 1
       start = [0, props[:cursor_pos] - total].max

@@ -2,16 +2,9 @@
 
 module Widgets
   class Base
-    attr_reader :parent
-    attr_reader :props
-
     def initialize(parent)
       @parent = parent
       @props = {}.freeze
-    end
-
-    def window
-      @window ||= parent&.subwin(props[:x], props[:y], props[:width], props[:height]) || Curses.stdscr
     end
 
     def props=(value)
@@ -27,6 +20,14 @@ module Widgets
     def render
       draw
       window.refresh
+    end
+
+  private
+
+    attr_reader :parent, :props
+
+    def window
+      @window ||= parent&.subwin(props[:x], props[:y], props[:width], props[:height]) || Curses.stdscr
     end
 
     def draw

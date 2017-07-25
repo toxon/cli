@@ -3,6 +3,8 @@
 module Widgets
   class Chat < VPanel
     class Info < Base
+    private
+
       def draw
         setpos 0, 0
         Style.default.online_mark window do

@@ -3,6 +3,8 @@
 module Widgets
   class Chat < VPanel
     class History < Base
+    private
+
       def draw
         offset = 0
 

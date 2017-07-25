@@ -17,6 +17,8 @@ module Widgets
       @message.props = props[:new_message]
     end
 
+  private
+
     def focus
       case props[:focus]
       when :info        then @info

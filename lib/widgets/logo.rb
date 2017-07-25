@@ -16,6 +16,8 @@ module Widgets
     WIDTH  = LOGO.first.length
     HEIGHT = LOGO.length
 
+  private
+
     def draw
       Style.default.logo window do
         LOGO.each_with_index do |s, index|

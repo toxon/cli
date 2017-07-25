@@ -9,17 +9,19 @@ module Widgets
       @chat    = Widgets::Chat.new    self
     end
 
+    def props=(_value)
+      super
+      @sidebar.props = props[:sidebar]
+      @chat.props    = props[:chat]
+    end
+
+  private
+
     def focus
       case props[:focus]
       when :sidebar then @sidebar
       when :chat    then @chat
       end
-    end
-
-    def props=(_value)
-      super
-      @sidebar.props = props[:sidebar]
-      @chat.props    = props[:chat]
     end
 
     def children

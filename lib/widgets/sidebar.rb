@@ -9,17 +9,19 @@ module Widgets
       @menu = Menu.new self
     end
 
+    def props=(_value)
+      super
+      @logo.props = props[:logo]
+      @menu.props = props[:menu]
+    end
+
+  private
+
     def focus
       case props[:focus]
       when :menu
         @menu
       end
-    end
-
-    def props=(_value)
-      super
-      @logo.props = props[:logo]
-      @menu.props = props[:menu]
     end
 
     def children

@@ -6,6 +6,8 @@ module Widgets
       window.subwin height, width, y, x
     end
 
+  private
+
     def draw
       children.each(&:render)
     end
