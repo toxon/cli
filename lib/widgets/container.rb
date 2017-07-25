@@ -2,6 +2,10 @@
 
 module Widgets
   class Container < Base
+    def subwin(x, y, width, height)
+      window.subwin height, width, y, x
+    end
+
     def draw
       children.each(&:render)
     end

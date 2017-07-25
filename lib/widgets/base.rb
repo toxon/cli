@@ -11,7 +11,7 @@ module Widgets
     end
 
     def window
-      @window ||= parent ? parent.window.subwin(props[:height], props[:width], props[:y], props[:x]) : Curses.stdscr
+      @window ||= parent&.subwin(props[:x], props[:y], props[:width], props[:height]) || Curses.stdscr
     end
 
     def props=(value)
