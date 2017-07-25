@@ -3,6 +3,7 @@
 require 'curses'
 
 # Additional classes
+require 'events'
 require 'style'
 
 # Basic
