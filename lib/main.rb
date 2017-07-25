@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'tox'
+
 require 'thread'
 
 require 'faker'
@@ -24,19 +26,19 @@ private
 
   def call
     before_loop
-    loop do
-      before_iteration
-      sleep
-      after_iteration
-    end
+    before_iteration
+    @tox_client.run
     after_loop
   end
 
-  def sleep
-    super 0.01
-  end
-
   def before_loop
+    @tox_client = Tox::Client.new
+
+    @tox_client.on_iteration do
+      after_iteration
+      before_iteration
+    end
+
     @screen = Screen.new
     Style.default = Style.new
   end
