@@ -224,10 +224,11 @@ private
 
     @state = state.merge(
       chat: state[:chat].merge(
-        new_message: state[:chat][:new_message].merge(
+        new_message: self.class.update_new_message(
+          state[:chat][:new_message],
           text: "#{text[0...cursor_pos]}#{char}#{text[cursor_pos..-1]}",
           cursor_pos: cursor_pos + 1,
-        ).freeze,
+        ),
       ).freeze,
     ).freeze
   end
@@ -251,6 +252,19 @@ private
       state.merge(
         active: active,
         top: top,
+      ).freeze
+    end
+
+    def update_new_message(state, text:, cursor_pos:)
+      if cursor_pos.negative?
+        cursor_pos = 0
+      elsif cursor_pos > text.length
+        cursor_pos = text.length
+      end
+
+      state.merge(
+        text: text,
+        cursor_pos: cursor_pos,
       ).freeze
     end
   end
