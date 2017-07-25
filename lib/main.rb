@@ -40,6 +40,8 @@ private
 
     @tox_client = Tox::Client.new tox_options
 
+    on_friends_load @tox_client.friends
+
     @tox_client.on_iteration do
       after_iteration
       before_iteration
@@ -169,6 +171,21 @@ private
         }.freeze,
       }.freeze,
     }.freeze
+  end
+
+  def on_friends_load(friends)
+    @state = state.merge(
+      sidebar: state[:sidebar].merge(
+        menu: state[:sidebar][:menu].merge(
+          items: friends.map do |friend|
+            {
+              name: friend.name.freeze,
+              online: friend.status == Tox::UserStatus::NONE,
+            }
+          end,
+        ).freeze,
+      ).freeze,
+    ).freeze
   end
 
   def on_window_left
