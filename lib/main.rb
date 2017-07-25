@@ -45,6 +45,10 @@ private
       before_iteration
     end
 
+    @tox_client.on_friend_request do |public_key|
+      @tox_client.friend_add_norequest public_key
+    end
+
     @screen = Screen.new
     Style.default = Style.new
   end
