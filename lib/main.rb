@@ -63,6 +63,9 @@ private
       focus: :sidebar,
       focused: true,
 
+      on_window_left: method(:on_window_left),
+      on_window_right: method(:on_window_right),
+
       sidebar: {
         x: 0,
         y: 0,
@@ -144,5 +147,47 @@ private
         }.freeze,
       }.freeze,
     }.freeze
+  end
+
+  def on_window_left
+    @state = state.merge(
+      focus: :sidebar,
+
+      sidebar: state[:sidebar].merge(
+        focused: true,
+
+        logo: state[:sidebar][:logo].merge(focused: state[:sidebar][:focus] == :logo).freeze,
+        menu: state[:sidebar][:menu].merge(focused: state[:sidebar][:focus] == :menu).freeze,
+      ).freeze,
+
+      chat: state[:chat].merge(
+        focused: false,
+
+        info:               state[:chat][:info].merge(focused: false).freeze,
+        new_message: state[:chat][:new_message].merge(focused: false).freeze,
+        history:         state[:chat][:history].merge(focused: false).freeze,
+      ).freeze,
+    ).freeze
+  end
+
+  def on_window_right
+    @state = state.merge(
+      focus: :sidebar,
+
+      sidebar: state[:sidebar].merge(
+        focused: true,
+
+        logo: state[:sidebar][:logo].merge(focused: false).freeze,
+        menu: state[:sidebar][:menu].merge(focused: false).freeze,
+      ).freeze,
+
+      chat: state[:chat].merge(
+        focused: false,
+
+        info:               state[:chat][:info].merge(focused: state[:chat][:focus] == :info).freeze,
+        new_message: state[:chat][:new_message].merge(focused: state[:chat][:focus] == :new_message).freeze,
+        history:         state[:chat][:history].merge(focused: state[:chat][:focus] == :history).freeze,
+      ).freeze,
+    ).freeze
   end
 end

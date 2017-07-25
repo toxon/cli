@@ -15,6 +15,17 @@ module Widgets
       @chat.props    = props[:chat]
     end
 
+    def trigger(event)
+      case event
+      when Events::Window::Left
+        props[:on_window_left].call
+      when Events::Window::Right
+        props[:on_window_right].call
+      else
+        focus.trigger event
+      end
+    end
+
   private
 
     def focus
