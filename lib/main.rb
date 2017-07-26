@@ -62,7 +62,7 @@ private
 
   def on_friends_load(friends)
     @state = state.merge(
-      active_friend_number: friends.empty? ? nil : friends.first.number,
+      active_friend_index: friends.empty? ? nil : 0,
 
       friends: friends.map do |friend|
         [
@@ -81,7 +81,7 @@ private
     friend = @tox_client.friend_add_norequest public_key
 
     @state = state.merge(
-      active_friend_number: state[:active_friend_number] || friend.number,
+      active_friend_index: state[:active_friend_index] || state[:friends].count,
 
       friends: state[:friends].merge(
         friend.number => {
@@ -187,35 +187,61 @@ private
   end
 
   def on_menu_up
+    return if state[:active_friend_index].nil?
+
+    active_friend_index = state[:active_friend_index] + 1
+    top = state[:sidebar][:menu][:top]
+
+    if active_friend_index.negative?
+      active_friend_index = state[:friends].count - 1
+    elsif active_friend_index >= state[:friends].count
+      active_friend_index = 0
+    end
+
+    if active_friend_index < top
+      top = active_friend_index
+    elsif active_friend_index >= top + state[:height]
+      top = active_friend_index - state[:height] + 1
+    end
+
     @state = state.merge(
+      active_friend_index: active_friend_index,
+
       sidebar: state[:sidebar].merge(
-        menu: self.class.update_menu(
-          state[:sidebar][:menu],
-          state[:friends].count,
-          active: state[:sidebar][:menu][:active] - 1,
-        ),
+        menu: state[:sidebar][:menu].merge(
+          top: top,
+        ).freeze,
       ).freeze,
-    )
-
-    @state[:active_friend_number] = state[:friends].keys[@state[:sidebar][:menu][:active]]
-
-    @state.freeze
+    ).freeze
   end
 
   def on_menu_down
+    return if state[:active_friend_index].nil?
+
+    active_friend_index = state[:active_friend_index] + 1
+    top = state[:sidebar][:menu][:top]
+
+    if active_friend_index.negative?
+      active_friend_index = state[:friends].count - 1
+    elsif active_friend_index >= state[:friends].count
+      active_friend_index = 0
+    end
+
+    if active_friend_index < top
+      top = active_friend_index
+    elsif active_friend_index >= top + state[:height]
+      top = active_friend_index - state[:height] + 1
+    end
+
     @state = state.merge(
+      active_friend_index: active_friend_index,
+
       sidebar: state[:sidebar].merge(
-        menu: self.class.update_menu(
-          state[:sidebar][:menu],
-          state[:friends].count,
-          active: state[:sidebar][:menu][:active] + 1,
-        ),
+        menu: state[:sidebar][:menu].merge(
+          top: top,
+        ).freeze,
       ).freeze,
-    )
-
-    @state[:active_friend_number] = state[:friends].keys[@state[:sidebar][:menu][:active]]
-
-    @state.freeze
+    ).freeze
   end
 
   def on_new_message_putc(char)
@@ -320,27 +346,6 @@ private
   ####################
 
   class << self
-    def update_menu(state, items_count, active:)
-      top = state[:top]
-
-      if active.negative?
-        active = items_count - 1
-      elsif active >= items_count
-        active = 0
-      end
-
-      if active < state[:top]
-        top = active
-      elsif active >= state[:top] + state[:height]
-        top = active - state[:height] + 1
-      end
-
-      state.merge(
-        active: active,
-        top: top,
-      ).freeze
-    end
-
     def update_new_message(state, text:, cursor_pos:)
       if cursor_pos.negative?
         cursor_pos = 0
@@ -384,7 +389,7 @@ private
       on_new_message_backspace: method(:on_new_message_backspace),
       on_new_message_delete:    method(:on_new_message_delete),
 
-      active_friend_number: nil,
+      active_friend_index: nil,
 
       friends: {}.freeze,
 

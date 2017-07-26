@@ -18,6 +18,8 @@ module Widgets
         on_up:   props[:on_menu_up],
         on_down: props[:on_menu_down],
 
+        active_friend_index: props[:active_friend_index],
+
         friends: props[:friends],
       ).freeze
     end

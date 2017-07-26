@@ -16,6 +16,8 @@ module Widgets
         on_menu_up:   props[:on_menu_up],
         on_menu_down: props[:on_menu_down],
 
+        active_friend_index: props[:active_friend_index],
+
         friends: props[:friends],
       ).freeze
 
@@ -30,7 +32,9 @@ module Widgets
         on_new_message_backspace: props[:on_new_message_backspace],
         on_new_message_delete:    props[:on_new_message_delete],
 
-        friend: props[:friends][props[:active_friend_number]],
+        active_friend_index: props[:active_friend_index],
+
+        friend: props[:active_friend_index] && props[:friends][props[:friends].keys[props[:active_friend_index]]],
       ).freeze
     end
 

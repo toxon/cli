@@ -40,7 +40,14 @@ module Widgets
 
         addstr ' '
 
-        Style.default.public_send(index == props[:active] && props[:focused] ? :selection : :text, window) do
+        Style.default.public_send(
+          if index == props[:active_friend_index] && props[:focused]
+            :selection
+          else
+            :text
+          end,
+          window,
+        ) do
           if friend[:name].length <= props[:width] - 2
             addstr friend[:name].ljust props[:width] - 2
           else
