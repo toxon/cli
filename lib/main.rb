@@ -160,14 +160,7 @@ private
           height: Curses.stdscr.maxy - 3,
           focused: true,
 
-          messages: 1.upto(100).map do
-            {
-              out: rand <= 0.2,
-              time: Faker::Time.forward,
-              name: Faker::Name.name,
-              text: Faker::Lorem.sentence,
-            }
-          end,
+          messages: [],
         }.freeze,
       }.freeze,
     }.freeze
