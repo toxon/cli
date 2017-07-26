@@ -45,25 +45,16 @@ private
     @screen = Screen.new
     Style.default = Style.new
 
-    before_iteration
     @tox_client.run
   ensure
     @screen&.close
     File.binwrite SAVEDATA_FILENAME, @tox_client.savedata if @tox_client
   end
 
-  def before_iteration
+  def iteration
+    @screen.poll
     @screen.props = state
     @screen.render
-  end
-
-  def iteration
-    after_iteration
-    before_iteration
-  end
-
-  def after_iteration
-    @screen.poll
   end
 
   def state
