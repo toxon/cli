@@ -19,24 +19,48 @@ module Widgets
         end
       end
 
-      def draw_message(offset, _out, time, name, text)
-        setpos 0, offset
+      def draw_message(offset, out, time, name, text)
+        if out
+          setpos props[:width] - name.length - time.length - 1, offset
 
-        Style.default.message_time window do
-          addstr time
+          Style.default.message_author window do
+            addstr name
+          end
+
+          addstr ' '
+
+          Style.default.message_time window do
+            addstr time
+          end
+        else
+          setpos 0, offset
+
+          Style.default.message_time window do
+            addstr time
+          end
+
+          addstr ' '
+
+          Style.default.message_author window do
+            addstr name
+          end
         end
 
-        addstr ' '
+        width = props[:width] / 3 * 2
+        left  = out ? props[:width] - width : 0
 
-        Style.default.message_author window do
-          addstr name
-        end
-
-        lines = (text.length / props[:width].to_f).ceil
+        lines = (text.length / width.to_f).ceil
 
         1.upto lines do |line|
-          setpos 0, offset + line
-          addstr text[(props[:width] * (line - 1))...(props[:width] * line)]
+          s = text[(width * (line - 1))...(width * line)]
+
+          if out && s.length != width
+            setpos left + width - s.length, offset + line
+          else
+            setpos left, offset + line
+          end
+
+          addstr s
         end
 
         1 + lines
