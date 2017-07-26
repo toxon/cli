@@ -20,8 +20,6 @@ module Widgets
       end
 
       def draw_message(offset, out, time, name, text)
-        draw_header offset, out, time, name
-
         width = props[:width] / 3 * 2
         left  = out ? props[:width] - width : 0
 
@@ -31,20 +29,22 @@ module Widgets
           s = text[(width * (line - 1))...(width * line)]
 
           if out && s.length != width
-            setpos left + width - s.length, offset + line
+            setpos left + width - s.length, props[:height] - offset - lines + line - 1
           else
-            setpos left, offset + line
+            setpos left, props[:height] - offset - lines + line - 1
           end
 
           addstr s
         end
 
+        draw_header props[:height] - offset - lines - 1, out, time, name
+
         1 + lines
       end
 
-      def draw_header(offset, out, name, time)
+      def draw_header(y, out, name, time)
         if out
-          setpos props[:width] - name.length - time.length - 1, offset
+          setpos props[:width] - name.length - time.length - 1, y
 
           Style.default.message_time window do
             addstr time
@@ -56,7 +56,7 @@ module Widgets
             addstr name
           end
         else
-          setpos 0, offset
+          setpos 0, y
 
           Style.default.message_author window do
             addstr name
