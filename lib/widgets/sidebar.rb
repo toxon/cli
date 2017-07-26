@@ -17,6 +17,8 @@ module Widgets
       @menu.props = props[:menu].merge(
         on_up:   props[:on_menu_up],
         on_down: props[:on_menu_down],
+
+        friends: props[:friends],
       ).freeze
     end
 

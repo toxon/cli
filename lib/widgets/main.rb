@@ -15,6 +15,8 @@ module Widgets
       @sidebar.props = props[:sidebar].merge(
         on_menu_up:   props[:on_menu_up],
         on_menu_down: props[:on_menu_down],
+
+        friends: props[:friends],
       ).freeze
 
       @chat.props = props[:chat].merge(

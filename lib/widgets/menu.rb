@@ -14,14 +14,14 @@ module Widgets
   private
 
     def draw
-      return if props[:items].empty?
+      return if props[:friends].empty?
 
-      props[:items][props[:top]...(props[:top] + props[:height])].each_with_index.each do |item, offset|
+      props[:friends].values[props[:top]...(props[:top] + props[:height])].each_with_index.each do |friend, offset|
         index = props[:top] + offset
 
         setpos 0, offset
 
-        if item[:online]
+        if friend[:status] == Tox::UserStatus::NONE
           Style.default.online_mark window do
             addstr '*'
           end
@@ -32,10 +32,10 @@ module Widgets
         addstr ' '
 
         Style.default.public_send(index == props[:active] && props[:focused] ? :selection : :text, window) do
-          if item[:name].length <= props[:width] - 2
-            addstr item[:name].ljust props[:width] - 2
+          if friend[:name].length <= props[:width] - 2
+            addstr friend[:name].ljust props[:width] - 2
           else
-            addstr "#{item[:name][0...props[:width] - 5]}..."
+            addstr "#{friend[:name][0...props[:width] - 5]}..."
           end
         end
       end

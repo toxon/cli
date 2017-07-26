@@ -97,6 +97,8 @@ private
       on_new_message_backspace: method(:on_new_message_backspace),
       on_new_message_delete:    method(:on_new_message_delete),
 
+      friends: {}.freeze,
+
       sidebar: {
         x: 0,
         y: 0,
@@ -121,7 +123,6 @@ private
 
           active: 0,
           top: 0,
-          items: [],
         }.freeze,
       }.freeze,
 
@@ -170,30 +171,27 @@ private
 
   def on_friends_load(friends)
     @state = state.merge(
-      sidebar: state[:sidebar].merge(
-        menu: state[:sidebar][:menu].merge(
-          items: friends.map do |friend|
-            {
-              name: friend.name.freeze,
-              online: friend.status == Tox::UserStatus::NONE,
-            }.freeze
-          end.freeze,
-        ).freeze,
-      ).freeze,
+      friends: friends.map do |friend|
+        [
+          friend.number,
+          public_key:     friend.public_key.to_hex.freeze,
+          name:           friend.name.freeze,
+          status:         friend.status,
+          status_message: friend.status_message.freeze,
+        ]
+      end.to_h.freeze,
     ).freeze
   end
 
   def on_friend_add(friend)
     @state = state.merge(
-      sidebar: state[:sidebar].merge(
-        menu: state[:sidebar][:menu].merge(
-          items: (state[:sidebar][:menu][:items] + [
-            {
-              name: friend.name.freeze,
-              online: friend.status == Tox::UserStatus::NONE,
-            }.freeze,
-          ]).freeze,
-        ).freeze,
+      friends: state[:friends].merge(
+        friend.number => {
+          public_key:     friend.public_key.to_hex.freeze,
+          name:           friend.name.freeze,
+          status:         friend.status,
+          status_message: friend.status_message.freeze,
+        }.freeze,
       ).freeze,
     ).freeze
   end
@@ -262,6 +260,7 @@ private
       sidebar: state[:sidebar].merge(
         menu: self.class.update_menu(
           state[:sidebar][:menu],
+          state[:friends].count,
           active: state[:sidebar][:menu][:active] - 1,
         ),
       ).freeze,
@@ -273,6 +272,7 @@ private
       sidebar: state[:sidebar].merge(
         menu: self.class.update_menu(
           state[:sidebar][:menu],
+          state[:friends].count,
           active: state[:sidebar][:menu][:active] + 1,
         ),
       ).freeze,
@@ -377,12 +377,12 @@ private
   end
 
   class << self
-    def update_menu(state, active:)
+    def update_menu(state, items_count, active:)
       top = state[:top]
 
       if active.negative?
-        active = state[:items].count - 1
-      elsif active >= state[:items].count
+        active = items_count - 1
+      elsif active >= items_count
         active = 0
       end
 
