@@ -20,10 +20,11 @@ class Style
     Curses.init_pair active_menu_item_id, active_menu_item_color, active_menu_item_bg
     Curses.init_pair message_time_id,     message_time_color,     message_time_bg
     Curses.init_pair message_author_id,   message_author_color,   message_author_bg
+    Curses.init_pair peer_info_name_id,   peer_info_name_color,   peer_info_name_bg
+
     Curses.init_pair online_mark_id,      online_mark_color,      online_mark_bg
     Curses.init_pair away_mark_id,        away_mark_color,        away_mark_bg
     Curses.init_pair busy_mark_id,        busy_mark_color,        busy_mark_bg
-    Curses.init_pair peer_info_name_id,   peer_info_name_color,   peer_info_name_bg
   end
 
   def logo(window)
@@ -89,6 +90,13 @@ class Style
     window.attroff message_author_attr
   end
 
+  def peer_info_name(window)
+    window.attron peer_info_name_attr
+    yield
+  ensure
+    window.attroff peer_info_name_attr
+  end
+
   def online_mark(window)
     window.attron online_mark_attr
     yield
@@ -108,13 +116,6 @@ class Style
     yield
   ensure
     window.attroff busy_mark_attr
-  end
-
-  def peer_info_name(window)
-    window.attron peer_info_name_attr
-    yield
-  ensure
-    window.attroff peer_info_name_attr
   end
 
 private
@@ -155,6 +156,10 @@ private
     Curses.color_pair(message_author_id) | Curses::A_BOLD
   end
 
+  def peer_info_name_attr
+    Curses.color_pair(peer_info_name_id) | Curses::A_BOLD
+  end
+
   def online_mark_attr
     Curses.color_pair online_mark_id
   end
@@ -165,10 +170,6 @@ private
 
   def busy_mark_attr
     Curses.color_pair busy_mark_id
-  end
-
-  def peer_info_name_attr
-    Curses.color_pair(peer_info_name_id) | Curses::A_BOLD
   end
 
   def logo_id
@@ -207,6 +208,10 @@ private
     @message_author_id ||= self.class.counter
   end
 
+  def peer_info_name_id
+    @peer_info_name_id ||= self.class.counter
+  end
+
   def online_mark_id
     @online_mark_id ||= self.class.counter
   end
@@ -217,10 +222,6 @@ private
 
   def busy_mark_id
     @busy_mark_id ||= self.class.counter
-  end
-
-  def peer_info_name_id
-    @peer_info_name_id ||= self.class.counter
   end
 
   def logo_color
@@ -295,6 +296,14 @@ private
     Curses::COLOR_BLACK
   end
 
+  def peer_info_name_color
+    Curses::COLOR_WHITE
+  end
+
+  def peer_info_name_bg
+    Curses::COLOR_BLACK
+  end
+
   def online_mark_color
     Curses::COLOR_GREEN
   end
@@ -316,14 +325,6 @@ private
   end
 
   def busy_mark_bg
-    Curses::COLOR_BLACK
-  end
-
-  def peer_info_name_color
-    Curses::COLOR_WHITE
-  end
-
-  def peer_info_name_bg
     Curses::COLOR_BLACK
   end
 end
