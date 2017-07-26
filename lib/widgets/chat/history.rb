@@ -20,6 +20,29 @@ module Widgets
       end
 
       def draw_message(offset, out, time, name, text)
+        draw_header offset, out, time, name
+
+        width = props[:width] / 3 * 2
+        left  = out ? props[:width] - width : 0
+
+        lines = (text.length / width.to_f).ceil
+
+        1.upto lines do |line|
+          s = text[(width * (line - 1))...(width * line)]
+
+          if out && s.length != width
+            setpos left + width - s.length, offset + line
+          else
+            setpos left, offset + line
+          end
+
+          addstr s
+        end
+
+        1 + lines
+      end
+
+      def draw_header(offset, out, name, time)
         if out
           setpos props[:width] - name.length - time.length - 1, offset
 
@@ -45,25 +68,6 @@ module Widgets
             addstr name
           end
         end
-
-        width = props[:width] / 3 * 2
-        left  = out ? props[:width] - width : 0
-
-        lines = (text.length / width.to_f).ceil
-
-        1.upto lines do |line|
-          s = text[(width * (line - 1))...(width * line)]
-
-          if out && s.length != width
-            setpos left + width - s.length, offset + line
-          else
-            setpos left, offset + line
-          end
-
-          addstr s
-        end
-
-        1 + lines
       end
     end
   end
