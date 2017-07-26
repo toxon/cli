@@ -51,6 +51,8 @@ private
       on_friend_add @tox_client.friend_add_norequest public_key
     end
 
+    @tox_client.on_friend_message(&method(:on_friend_message))
+
     @screen = Screen.new
     Style.default = Style.new
   end
@@ -189,6 +191,23 @@ private
             {
               name: friend.name.freeze,
               online: friend.status == Tox::UserStatus::NONE,
+            }.freeze,
+          ]).freeze,
+        ).freeze,
+      ).freeze,
+    ).freeze
+  end
+
+  def on_friend_message(friend, text)
+    @state = state.merge(
+      chat: state[:chat].merge(
+        history: state[:chat][:history].merge(
+          messages: (state[:chat][:history][:messages] + [
+            {
+              out:  false,
+              time: Time.now.utc.freeze,
+              name: friend.name.freeze,
+              text: text.freeze,
             }.freeze,
           ]).freeze,
         ).freeze,
