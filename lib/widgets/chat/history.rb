@@ -6,6 +6,10 @@ module Widgets
     private
 
       def draw
+        window.clear
+
+        return if props[:messages].empty?
+
         offset = 0
 
         props[:messages].each do |msg|

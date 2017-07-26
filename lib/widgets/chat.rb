@@ -13,8 +13,14 @@ module Widgets
     def props=(_value)
       super
 
-      @info.props    = props[:info]
-      @history.props = props[:history]
+      @info.props = props[:info].merge(
+        public_key: props[:friend] ? props[:friend][:public_key] : nil,
+        name:       props[:friend] ? props[:friend][:name]       : nil,
+      ).freeze
+
+      @history.props = props[:history].merge(
+        messages: props[:friend] ? props[:friend][:history] : [].freeze,
+      ).freeze
 
       @message.props = props[:new_message].merge(
         on_putc: props[:on_new_message_putc],

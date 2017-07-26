@@ -29,6 +29,8 @@ module Widgets
 
         on_new_message_backspace: props[:on_new_message_backspace],
         on_new_message_delete:    props[:on_new_message_delete],
+
+        friend: props[:friends][props[:active_friend_number]],
       ).freeze
     end
 

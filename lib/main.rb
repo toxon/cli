@@ -142,9 +142,6 @@ private
           width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
           height: 2,
           focused: false,
-
-          name: Faker::Name.name,
-          public_key: SecureRandom.hex(32),
         }.freeze,
 
         new_message: {
@@ -164,8 +161,6 @@ private
           width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
           height: Curses.stdscr.maxy - 3,
           focused: true,
-
-          messages: [],
         }.freeze,
       }.freeze,
     }.freeze
@@ -173,6 +168,8 @@ private
 
   def on_friends_load(friends)
     @state = state.merge(
+      active_friend_number: friends.empty? ? nil : friends.first.number,
+
       friends: friends.map do |friend|
         [
           friend.number,
@@ -180,6 +177,7 @@ private
           name:           friend.name.freeze,
           status:         friend.status,
           status_message: friend.status_message.freeze,
+          history:        [].freeze,
         ]
       end.to_h.freeze,
     ).freeze
@@ -193,6 +191,7 @@ private
           name:           friend.name.freeze,
           status:         friend.status,
           status_message: friend.status_message.freeze,
+          history:        [].freeze,
         }.freeze,
       ).freeze,
     ).freeze
@@ -200,15 +199,13 @@ private
 
   def on_friend_message(friend, text)
     @state = state.merge(
-      chat: state[:chat].merge(
-        history: state[:chat][:history].merge(
-          messages: (state[:chat][:history][:messages] + [
-            {
-              out:  false,
-              time: Time.now.utc.freeze,
-              name: friend.name.freeze,
-              text: text.freeze,
-            }.freeze,
+      friends: state[:friends].merge(
+        friend.number => state[:friends][friend.number].merge(
+          history: (state[:friends][friend.number][:history] + [
+            out:  false,
+            time: Time.now.utc.freeze,
+            name: friend.name.freeze,
+            text: text.freeze,
           ]).freeze,
         ).freeze,
       ).freeze,
@@ -258,35 +255,35 @@ private
   end
 
   def on_menu_up
-    active = state[:sidebar][:menu][:active] - 1
-
     @state = state.merge(
-      active_friend_number: state[:friends].keys[active],
-
       sidebar: state[:sidebar].merge(
         menu: self.class.update_menu(
           state[:sidebar][:menu],
           state[:friends].count,
-          active: active,
+          active: state[:sidebar][:menu][:active] - 1,
         ),
       ).freeze,
-    ).freeze
+    )
+
+    @state[:active_friend_number] = state[:friends].keys[@state[:sidebar][:menu][:active]]
+
+    @state.freeze
   end
 
   def on_menu_down
-    active = state[:sidebar][:menu][:active] + 1
-
     @state = state.merge(
-      active_friend_number: state[:friends].keys[active],
-
       sidebar: state[:sidebar].merge(
         menu: self.class.update_menu(
           state[:sidebar][:menu],
           state[:friends].count,
-          active: active,
+          active: state[:sidebar][:menu][:active] + 1,
         ),
       ).freeze,
-    ).freeze
+    )
+
+    @state[:active_friend_number] = state[:friends].keys[@state[:sidebar][:menu][:active]]
+
+    @state.freeze
   end
 
   def on_new_message_putc(char)
