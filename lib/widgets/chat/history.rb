@@ -26,7 +26,7 @@ module Widgets
         lines = (text.length / width.to_f).ceil
 
         1.upto lines do |line|
-          s = text[(width * (line - 1))...(width * line)]
+          s = text[(width * (line - 1))...(width * line)].strip
 
           if out && s.length != width
             setpos left + width - s.length, props[:height] - offset - lines + line - 1
