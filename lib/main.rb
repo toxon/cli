@@ -35,9 +35,7 @@ private
     on_friends_load @tox_client.friends
 
     @tox_client.on_iteration(&method(:on_iteration))
-
     @tox_client.on_friend_request(&method(:on_friend_request))
-
     @tox_client.on_friend_message(&method(:on_friend_message))
 
     @screen = Screen.new
