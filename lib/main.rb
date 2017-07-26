@@ -37,6 +37,7 @@ private
     @tox_client.on_iteration(&method(:on_iteration))
     @tox_client.on_friend_request(&method(:on_friend_request))
     @tox_client.on_friend_message(&method(:on_friend_message))
+    @tox_client.on_friend_name_change(&method(:on_friend_name_change))
 
     @screen = Screen.new
     Style.default = Style.new
@@ -102,6 +103,16 @@ private
             name: friend.name.freeze,
             text: text.freeze,
           ]).freeze,
+        ).freeze,
+      ).freeze,
+    ).freeze
+  end
+
+  def on_friend_name_change(friend, name)
+    @state = @state.merge(
+      friends: state[:friends].merge(
+        friend.number => state[:friends][friend.number].merge(
+          name: name.freeze,
         ).freeze,
       ).freeze,
     ).freeze
