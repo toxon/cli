@@ -499,6 +499,13 @@ private
       on_new_message_backspace: method(:on_new_message_backspace),
       on_new_message_delete:    method(:on_new_message_delete),
 
+      me: {
+        public_key:     @tox_client.public_key,
+        name:           @tox_client.name,
+        status:         @tox_client.status,
+        status_message: @tox_client.status_message,
+      },
+
       active_friend_index: nil,
 
       friends: {}.freeze,
