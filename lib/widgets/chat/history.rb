@@ -46,26 +46,26 @@ module Widgets
         if out
           setpos props[:width] - name.length - time.length - 1, offset
 
-          Style.default.message_author window do
-            addstr name
+          Style.default.message_time window do
+            addstr time
           end
 
           addstr ' '
 
-          Style.default.message_time window do
-            addstr time
+          Style.default.message_author window do
+            addstr name
           end
         else
           setpos 0, offset
 
-          Style.default.message_time window do
-            addstr time
+          Style.default.message_author window do
+            addstr name
           end
 
           addstr ' '
 
-          Style.default.message_author window do
-            addstr name
+          Style.default.message_time window do
+            addstr time
           end
         end
       end
