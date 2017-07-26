@@ -53,100 +53,6 @@ private
     @screen.render
   end
 
-  def state
-    @state ||= {
-      x: 0,
-      y: 0,
-      width: Curses.stdscr.maxx,
-      height: Curses.stdscr.maxy,
-      focus: :sidebar,
-      focused: true,
-
-      on_window_left:  method(:on_window_left),
-      on_window_right: method(:on_window_right),
-
-      on_menu_up:   method(:on_menu_up),
-      on_menu_down: method(:on_menu_down),
-
-      on_new_message_putc: method(:on_new_message_putc),
-
-      on_new_message_left:  method(:on_new_message_left),
-      on_new_message_right: method(:on_new_message_right),
-      on_new_message_home:  method(:on_new_message_home),
-      on_new_message_end:   method(:on_new_message_end),
-
-      on_new_message_backspace: method(:on_new_message_backspace),
-      on_new_message_delete:    method(:on_new_message_delete),
-
-      active_friend_number: nil,
-
-      friends: {}.freeze,
-
-      sidebar: {
-        x: 0,
-        y: 0,
-        width: Widgets::Logo::WIDTH,
-        height: Curses.stdscr.maxy,
-        focus: :menu,
-        focused: true,
-
-        logo: {
-          x: 0,
-          y: 0,
-          width: Widgets::Logo::WIDTH,
-          height: Widgets::Logo::HEIGHT,
-        }.freeze,
-
-        menu: {
-          x: 0,
-          y: Widgets::Logo::HEIGHT,
-          width: Widgets::Logo::WIDTH,
-          height: Curses.stdscr.maxy - Widgets::Logo::HEIGHT,
-          focused: true,
-
-          active: 0,
-          top: 0,
-        }.freeze,
-      }.freeze,
-
-      chat: {
-        x: Widgets::Logo::WIDTH,
-        y: 0,
-        width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
-        height: Curses.stdscr.maxy,
-        focus: :new_message,
-        focused: false,
-
-        info: {
-          x: Widgets::Logo::WIDTH,
-          y: 0,
-          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
-          height: 2,
-          focused: false,
-        }.freeze,
-
-        new_message: {
-          x: Widgets::Logo::WIDTH,
-          y: Curses.stdscr.maxy - 1,
-          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
-          height: 1,
-          focused: false,
-
-          text: '',
-          cursor_pos: 0,
-        }.freeze,
-
-        history: {
-          x: Widgets::Logo::WIDTH,
-          y: 2,
-          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
-          height: Curses.stdscr.maxy - 3,
-          focused: true,
-        }.freeze,
-      }.freeze,
-    }.freeze
-  end
-
   def on_friends_load(friends)
     @state = state.merge(
       active_friend_number: friends.empty? ? nil : friends.first.number,
@@ -402,5 +308,99 @@ private
         cursor_pos: cursor_pos,
       ).freeze
     end
+  end
+
+  def state
+    @state ||= {
+      x: 0,
+      y: 0,
+      width: Curses.stdscr.maxx,
+      height: Curses.stdscr.maxy,
+      focus: :sidebar,
+      focused: true,
+
+      on_window_left:  method(:on_window_left),
+      on_window_right: method(:on_window_right),
+
+      on_menu_up:   method(:on_menu_up),
+      on_menu_down: method(:on_menu_down),
+
+      on_new_message_putc: method(:on_new_message_putc),
+
+      on_new_message_left:  method(:on_new_message_left),
+      on_new_message_right: method(:on_new_message_right),
+      on_new_message_home:  method(:on_new_message_home),
+      on_new_message_end:   method(:on_new_message_end),
+
+      on_new_message_backspace: method(:on_new_message_backspace),
+      on_new_message_delete:    method(:on_new_message_delete),
+
+      active_friend_number: nil,
+
+      friends: {}.freeze,
+
+      sidebar: {
+        x: 0,
+        y: 0,
+        width: Widgets::Logo::WIDTH,
+        height: Curses.stdscr.maxy,
+        focus: :menu,
+        focused: true,
+
+        logo: {
+          x: 0,
+          y: 0,
+          width: Widgets::Logo::WIDTH,
+          height: Widgets::Logo::HEIGHT,
+        }.freeze,
+
+        menu: {
+          x: 0,
+          y: Widgets::Logo::HEIGHT,
+          width: Widgets::Logo::WIDTH,
+          height: Curses.stdscr.maxy - Widgets::Logo::HEIGHT,
+          focused: true,
+
+          active: 0,
+          top: 0,
+        }.freeze,
+      }.freeze,
+
+      chat: {
+        x: Widgets::Logo::WIDTH,
+        y: 0,
+        width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
+        height: Curses.stdscr.maxy,
+        focus: :new_message,
+        focused: false,
+
+        info: {
+          x: Widgets::Logo::WIDTH,
+          y: 0,
+          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
+          height: 2,
+          focused: false,
+        }.freeze,
+
+        new_message: {
+          x: Widgets::Logo::WIDTH,
+          y: Curses.stdscr.maxy - 1,
+          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
+          height: 1,
+          focused: false,
+
+          text: '',
+          cursor_pos: 0,
+        }.freeze,
+
+        history: {
+          x: Widgets::Logo::WIDTH,
+          y: 2,
+          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
+          height: Curses.stdscr.maxy - 3,
+          focused: true,
+        }.freeze,
+      }.freeze,
+    }.freeze
   end
 end
