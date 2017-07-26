@@ -47,6 +47,10 @@ private
     File.binwrite SAVEDATA_FILENAME, @tox_client.savedata if @tox_client
   end
 
+  #################
+  # Tox callbacks #
+  #################
+
   def on_iteration
     @screen.poll
     @screen.props = state
@@ -102,6 +106,10 @@ private
       ).freeze,
     ).freeze
   end
+
+  ####################
+  # Screen callbacks #
+  ####################
 
   def on_window_left
     @state = state.merge(
@@ -274,6 +282,10 @@ private
     ).freeze
   end
 
+  ####################
+  # Helper functions #
+  ####################
+
   class << self
     def update_menu(state, items_count, active:)
       top = state[:top]
@@ -309,6 +321,10 @@ private
       ).freeze
     end
   end
+
+  #########
+  # State #
+  #########
 
   def state
     @state ||= {
