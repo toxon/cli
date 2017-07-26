@@ -27,14 +27,6 @@ class Main
 private
 
   def call
-    before_loop
-    before_iteration
-    @tox_client.run
-  ensure
-    after_loop
-  end
-
-  def before_loop
     tox_options = Tox::Options.new
     tox_options.savedata = File.binread SAVEDATA_FILENAME if File.exist? SAVEDATA_FILENAME
 
@@ -55,11 +47,11 @@ private
 
     @screen = Screen.new
     Style.default = Style.new
-  end
 
-  def after_loop
+    before_iteration
+    @tox_client.run
+  ensure
     @screen&.close
-
     File.binwrite SAVEDATA_FILENAME, @tox_client.savedata if @tox_client
   end
 
