@@ -34,10 +34,7 @@ private
 
     on_friends_load @tox_client.friends
 
-    @tox_client.on_iteration do
-      after_iteration
-      before_iteration
-    end
+    @tox_client.on_iteration(&method(:iteration))
 
     @tox_client.on_friend_request do |public_key|
       on_friend_add @tox_client.friend_add_norequest public_key
@@ -58,6 +55,11 @@ private
   def before_iteration
     @screen.props = state
     @screen.render
+  end
+
+  def iteration
+    after_iteration
+    before_iteration
   end
 
   def after_iteration
