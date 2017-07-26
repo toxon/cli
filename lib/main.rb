@@ -39,6 +39,7 @@ private
     @tox_client.on_friend_message(&method(:on_friend_message))
     @tox_client.on_friend_name_change(&method(:on_friend_name_change))
     @tox_client.on_friend_status_message_change(&method(:on_friend_status_message_change))
+    @tox_client.on_friend_status_change(&method(:on_friend_status_change))
 
     @screen = Screen.new
     Style.default = Style.new
@@ -124,6 +125,16 @@ private
       friends: state[:friends].merge(
         friend.number => state[:friends][friend.number].merge(
           status_message: status_message.freeze,
+        ).freeze,
+      ).freeze,
+    ).freeze
+  end
+
+  def on_friend_status_change(friend, status)
+    @state = @state.merge(
+      friends: state[:friends].merge(
+        friend.number => state[:friends][friend.number].merge(
+          status: status,
         ).freeze,
       ).freeze,
     ).freeze
