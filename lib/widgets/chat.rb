@@ -34,6 +34,9 @@ module Widgets
 
         on_backspace: props[:on_new_message_backspace],
         on_delete:    props[:on_new_message_delete],
+
+        text:       props[:friend] ? props[:friend][:new_message][:text]       : '',
+        cursor_pos: props[:friend] ? props[:friend][:new_message][:cursor_pos] : 0,
       ).freeze
     end
 

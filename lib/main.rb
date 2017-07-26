@@ -72,6 +72,10 @@ private
           status:         friend.status,
           status_message: friend.status_message.freeze,
           history:        [].freeze,
+          new_message: {
+            text: '',
+            cursor_pos: 0,
+          }.freeze,
         ]
       end.to_h.freeze,
     ).freeze
@@ -90,6 +94,10 @@ private
           status:         friend.status,
           status_message: friend.status_message.freeze,
           history:        [].freeze,
+          new_message: {
+            text: '',
+            cursor_pos: 0,
+          }.freeze,
         }.freeze,
       ).freeze,
     ).freeze
@@ -245,119 +253,187 @@ private
   end
 
   def on_new_message_putc(char)
-    text       = state[:chat][:new_message][:text]
-    cursor_pos = state[:chat][:new_message][:cursor_pos]
+    return if state[:active_friend_index].nil?
+
+    friend_number = state[:friends].keys[state[:active_friend_index]]
+
+    return if friend_number.nil?
+
+    friend = state[:friends][friend_number]
+    new_message = friend[:new_message]
+
+    text       = new_message[:text]
+    cursor_pos = new_message[:cursor_pos]
+
+    text = "#{text[0...cursor_pos]}#{char}#{text[cursor_pos..-1]}"
+    cursor_pos += 1
 
     @state = state.merge(
-      chat: state[:chat].merge(
-        new_message: self.class.update_new_message(
-          state[:chat][:new_message],
-          text: "#{text[0...cursor_pos]}#{char}#{text[cursor_pos..-1]}",
-          cursor_pos: cursor_pos + 1,
-        ),
+      friends: state[:friends].merge(
+        friend_number => friend.merge(
+          new_message: new_message.merge(
+            text: text,
+            cursor_pos: cursor_pos,
+          ).freeze,
+        ).freeze,
       ).freeze,
     ).freeze
   end
 
   def on_new_message_left
+    return if state[:active_friend_index].nil?
+
+    friend_number = state[:friends].keys[state[:active_friend_index]]
+
+    return if friend_number.nil?
+
+    friend = state[:friends][friend_number]
+    new_message = friend[:new_message]
+
+    cursor_pos = new_message[:cursor_pos]
+
+    cursor_pos -= 1
+
+    cursor_pos = 0 if cursor_pos.negative?
+
     @state = state.merge(
-      chat: state[:chat].merge(
-        new_message: self.class.update_new_message(
-          state[:chat][:new_message],
-          text:       state[:chat][:new_message][:text],
-          cursor_pos: state[:chat][:new_message][:cursor_pos] - 1,
-        ),
+      friends: state[:friends].merge(
+        friend_number => friend.merge(
+          new_message: new_message.merge(
+            cursor_pos: cursor_pos,
+          ).freeze,
+        ).freeze,
       ).freeze,
     ).freeze
   end
 
   def on_new_message_right
+    return if state[:active_friend_index].nil?
+
+    friend_number = state[:friends].keys[state[:active_friend_index]]
+
+    return if friend_number.nil?
+
+    friend = state[:friends][friend_number]
+    new_message = friend[:new_message]
+
+    text       = new_message[:text]
+    cursor_pos = new_message[:cursor_pos]
+
+    cursor_pos += 1
+
+    cursor_pos = text.length if cursor_pos > text.length
+
     @state = state.merge(
-      chat: state[:chat].merge(
-        new_message: self.class.update_new_message(
-          state[:chat][:new_message],
-          text:       state[:chat][:new_message][:text],
-          cursor_pos: state[:chat][:new_message][:cursor_pos] + 1,
-        ),
+      friends: state[:friends].merge(
+        friend_number => friend.merge(
+          new_message: new_message.merge(
+            cursor_pos: cursor_pos,
+          ).freeze,
+        ).freeze,
       ).freeze,
     ).freeze
   end
 
   def on_new_message_home
+    return if state[:active_friend_index].nil?
+
+    friend_number = state[:friends].keys[state[:active_friend_index]]
+
+    return if friend_number.nil?
+
+    friend = state[:friends][friend_number]
+    new_message = friend[:new_message]
+
     @state = state.merge(
-      chat: state[:chat].merge(
-        new_message: self.class.update_new_message(
-          state[:chat][:new_message],
-          text:       state[:chat][:new_message][:text],
-          cursor_pos: 0,
-        ),
+      friends: state[:friends].merge(
+        friend_number => friend.merge(
+          new_message: new_message.merge(
+            cursor_pos: 0,
+          ).freeze,
+        ).freeze,
       ).freeze,
     ).freeze
   end
 
   def on_new_message_end
+    return if state[:active_friend_index].nil?
+
+    friend_number = state[:friends].keys[state[:active_friend_index]]
+
+    return if friend_number.nil?
+
+    friend = state[:friends][friend_number]
+    new_message = friend[:new_message]
+
     @state = state.merge(
-      chat: state[:chat].merge(
-        new_message: self.class.update_new_message(
-          state[:chat][:new_message],
-          text:       state[:chat][:new_message][:text],
-          cursor_pos: state[:chat][:new_message][:text].length,
-        ),
+      friends: state[:friends].merge(
+        friend_number => friend.merge(
+          new_message: new_message.merge(
+            cursor_pos: new_message[:text].length,
+          ).freeze,
+        ).freeze,
       ).freeze,
     ).freeze
   end
 
   def on_new_message_backspace
-    text       = state[:chat][:new_message][:text]
-    cursor_pos = state[:chat][:new_message][:cursor_pos]
+    return if state[:active_friend_index].nil?
+
+    friend_number = state[:friends].keys[state[:active_friend_index]]
+
+    return if friend_number.nil?
+
+    friend = state[:friends][friend_number]
+    new_message = friend[:new_message]
+
+    text       = new_message[:text]
+    cursor_pos = new_message[:cursor_pos]
 
     return unless cursor_pos.positive?
 
+    text = "#{text[0...(cursor_pos - 1)]}#{text[cursor_pos..-1]}"
+    cursor_pos -= 1
+
     @state = state.merge(
-      chat: state[:chat].merge(
-        new_message: self.class.update_new_message(
-          state[:chat][:new_message],
-          text: "#{text[0...(cursor_pos - 1)]}#{text[cursor_pos..-1]}",
-          cursor_pos: cursor_pos - 1,
-        ),
+      friends: state[:friends].merge(
+        friend_number => friend.merge(
+          new_message: new_message.merge(
+            text:       text,
+            cursor_pos: cursor_pos,
+          ).freeze,
+        ).freeze,
       ).freeze,
     ).freeze
   end
 
   def on_new_message_delete
-    text       = state[:chat][:new_message][:text]
-    cursor_pos = state[:chat][:new_message][:cursor_pos]
+    return if state[:active_friend_index].nil?
+
+    friend_number = state[:friends].keys[state[:active_friend_index]]
+
+    return if friend_number.nil?
+
+    friend = state[:friends][friend_number]
+    new_message = friend[:new_message]
+
+    text       = new_message[:text]
+    cursor_pos = new_message[:cursor_pos]
 
     return if cursor_pos > text.length
 
+    text = "#{text[0...cursor_pos]}#{text[(cursor_pos + 1)..-1]}"
+
     @state = state.merge(
-      chat: state[:chat].merge(
-        new_message: self.class.update_new_message(
-          state[:chat][:new_message],
-          text: "#{text[0...cursor_pos]}#{text[(cursor_pos + 1)..-1]}",
-          cursor_pos: cursor_pos,
-        ),
+      friends: state[:friends].merge(
+        friend_number => friend.merge(
+          new_message: new_message.merge(
+            text:       text,
+            cursor_pos: cursor_pos,
+          ).freeze,
+        ).freeze,
       ).freeze,
     ).freeze
-  end
-
-  ####################
-  # Helper functions #
-  ####################
-
-  class << self
-    def update_new_message(state, text:, cursor_pos:)
-      if cursor_pos.negative?
-        cursor_pos = 0
-      elsif cursor_pos > text.length
-        cursor_pos = text.length
-      end
-
-      state.merge(
-        text: text,
-        cursor_pos: cursor_pos,
-      ).freeze
-    end
   end
 
   #########
@@ -442,9 +518,6 @@ private
           width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
           height: 1,
           focused: false,
-
-          text: '',
-          cursor_pos: 0,
         }.freeze,
 
         history: {
