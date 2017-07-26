@@ -21,8 +21,17 @@ module Widgets
 
         setpos 0, offset
 
-        if friend[:status] == Tox::UserStatus::NONE
+        case friend[:status]
+        when Tox::UserStatus::NONE
           Style.default.online_mark window do
+            addstr '*'
+          end
+        when Tox::UserStatus::AWAY
+          Style.default.away_mark window do
+            addstr '*'
+          end
+        when Tox::UserStatus::BUSY
+          Style.default.busy_mark window do
             addstr '*'
           end
         else
