@@ -14,8 +14,9 @@ module Widgets
       super
 
       @info.props = props[:info].merge(
-        public_key: props[:friend] ? props[:friend][:public_key] : nil,
-        name:       props[:friend] ? props[:friend][:name]       : nil,
+        public_key:     props[:friend] ? props[:friend][:public_key]     : nil,
+        name:           props[:friend] ? props[:friend][:name]           : nil,
+        status_message: props[:friend] ? props[:friend][:status_message] : nil,
       ).freeze
 
       @history.props = props[:history].merge(

@@ -14,6 +14,8 @@ module Widgets
         Style.default.peer_info_name window do
           addstr props[:name]
         end
+        addstr ' : '
+        addstr props[:status_message]
 
         setpos 0, 1
         addstr 'Public key: '
