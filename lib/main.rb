@@ -36,9 +36,7 @@ private
 
     @tox_client.on_iteration(&method(:on_iteration))
 
-    @tox_client.on_friend_request do |public_key|
-      on_friend_add @tox_client.friend_add_norequest public_key
-    end
+    @tox_client.on_friend_request(&method(:on_friend_request))
 
     @tox_client.on_friend_message(&method(:on_friend_message))
 
@@ -168,8 +166,12 @@ private
     ).freeze
   end
 
-  def on_friend_add(friend)
+  def on_friend_request(public_key, _text)
+    friend = @tox_client.friend_add_norequest public_key
+
     @state = state.merge(
+      active_friend_number: state[:active_friend_number] || friend.number,
+
       friends: state[:friends].merge(
         friend.number => {
           public_key:     friend.public_key.to_hex.freeze,
