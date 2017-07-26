@@ -70,6 +70,9 @@ private
     when Curses::Key::SRIGHT
       Events::Window::Right.new
 
+    when "\n".ord
+      Events::Text::Enter.new
+
     when Curses::Key::LEFT
       Events::Text::Left.new
     when Curses::Key::RIGHT

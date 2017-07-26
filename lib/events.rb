@@ -7,6 +7,8 @@ module Events
   end
 
   module Text
+    class Enter; end
+
     class Left;      end
     class Right;     end
     class Up;        end

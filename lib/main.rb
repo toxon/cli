@@ -252,6 +252,38 @@ private
     ).freeze
   end
 
+  def on_new_message_enter
+    return if state[:active_friend_index].nil?
+
+    friend_number = state[:friends].keys[state[:active_friend_index]]
+
+    return if friend_number.nil?
+
+    text = state[:friends][friend_number][:new_message][:text].strip.freeze
+
+    return if text.empty?
+
+    @tox_client.friend(friend_number).send_message text
+
+    @state = state.merge(
+      friends: state[:friends].merge(
+        friend_number => state[:friends][friend_number].merge(
+          new_message: state[:friends][friend_number][:new_message].merge(
+            text: '',
+            cursor_pos: 0,
+          ),
+
+          history: (state[:friends][friend_number][:history] + [
+            out:  true,
+            time: Time.now.utc.freeze,
+            name: @tox_client.name.freeze,
+            text: text,
+          ]).freeze,
+        ).freeze,
+      ).freeze,
+    ).freeze
+  end
+
   def on_new_message_putc(char)
     return if state[:active_friend_index].nil?
 
@@ -454,6 +486,8 @@ private
 
       on_menu_up:   method(:on_menu_up),
       on_menu_down: method(:on_menu_down),
+
+      on_new_message_enter: method(:on_new_message_enter),
 
       on_new_message_putc: method(:on_new_message_putc),
 

@@ -22,6 +22,8 @@ module Widgets
       ).freeze
 
       @chat.props = props[:chat].merge(
+        on_new_message_enter: props[:on_new_message_enter],
+
         on_new_message_putc: props[:on_new_message_putc],
 
         on_new_message_left:  props[:on_new_message_left],

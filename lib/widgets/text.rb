@@ -4,6 +4,9 @@ module Widgets
   class Text < Base
     def trigger(event)
       case event
+      when Events::Text::Enter
+        props[:on_enter].call
+
       when Events::Text::Putc
         props[:on_putc].call event.char
 

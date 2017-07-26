@@ -25,6 +25,8 @@ module Widgets
       ).freeze
 
       @message.props = props[:new_message].merge(
+        on_enter: props[:on_new_message_enter],
+
         on_putc: props[:on_new_message_putc],
 
         on_left:  props[:on_new_message_left],
