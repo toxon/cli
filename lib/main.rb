@@ -97,6 +97,8 @@ private
       on_new_message_backspace: method(:on_new_message_backspace),
       on_new_message_delete:    method(:on_new_message_delete),
 
+      active_friend_number: nil,
+
       friends: {}.freeze,
 
       sidebar: {
@@ -256,24 +258,32 @@ private
   end
 
   def on_menu_up
+    active = state[:sidebar][:menu][:active] - 1
+
     @state = state.merge(
+      active_friend_number: state[:friends].keys[active],
+
       sidebar: state[:sidebar].merge(
         menu: self.class.update_menu(
           state[:sidebar][:menu],
           state[:friends].count,
-          active: state[:sidebar][:menu][:active] - 1,
+          active: active,
         ),
       ).freeze,
     ).freeze
   end
 
   def on_menu_down
+    active = state[:sidebar][:menu][:active] + 1
+
     @state = state.merge(
+      active_friend_number: state[:friends].keys[active],
+
       sidebar: state[:sidebar].merge(
         menu: self.class.update_menu(
           state[:sidebar][:menu],
           state[:friends].count,
-          active: state[:sidebar][:menu][:active] + 1,
+          active: active,
         ),
       ).freeze,
     ).freeze
