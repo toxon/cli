@@ -48,6 +48,16 @@ module Widgets
 
   private
 
+    def draw
+      super
+
+      setpos 0, 2
+      addstr '-' * props[:width]
+
+      setpos 0, props[:height] - 2
+      addstr '-' * props[:width]
+    end
+
     def focus
       case props[:focus]
       when :info        then @info

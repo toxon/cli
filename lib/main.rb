@@ -538,34 +538,34 @@ private
       }.freeze,
 
       chat: {
-        x: Widgets::Logo::WIDTH,
+        x: Widgets::Logo::WIDTH + 1,
         y: 0,
-        width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
+        width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
         height: Curses.stdscr.maxy,
         focus: :new_message,
         focused: false,
 
         info: {
-          x: Widgets::Logo::WIDTH,
+          x: Widgets::Logo::WIDTH + 1,
           y: 0,
-          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
+          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
           height: 2,
           focused: false,
         }.freeze,
 
         new_message: {
-          x: Widgets::Logo::WIDTH,
+          x: Widgets::Logo::WIDTH + 1,
           y: Curses.stdscr.maxy - 1,
-          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
+          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
           height: 1,
           focused: false,
         }.freeze,
 
         history: {
-          x: Widgets::Logo::WIDTH,
-          y: 2,
-          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH,
-          height: Curses.stdscr.maxy - 3,
+          x: Widgets::Logo::WIDTH + 1,
+          y: 3,
+          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
+          height: Curses.stdscr.maxy - 5,
           focused: true,
         }.freeze,
       }.freeze,

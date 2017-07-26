@@ -53,6 +53,15 @@ module Widgets
 
   private
 
+    def draw
+      super
+
+      (0...props[:height]).each do |y|
+        setpos props[:sidebar][:width], y
+        addstr '|'
+      end
+    end
+
     def focus
       case props[:focus]
       when :sidebar then @sidebar
