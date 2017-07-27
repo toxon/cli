@@ -48,7 +48,6 @@ class Screen
 
   def render
     window.render
-    Curses.refresh
   end
 
   def poll
