@@ -4,7 +4,7 @@ module Curses
   module React
     class Component
       def initialize(parent)
-        @parent = parent
+        self.parent = parent
         @props = {}.freeze
       end
 
@@ -28,6 +28,12 @@ module Curses
     private
 
       attr_reader :parent, :props
+
+      def parent=(value)
+        return if value.nil?
+        raise TypeError, "expected #parent to be a #{Component}" unless value.is_a? Component
+        @parent = value
+      end
 
       def window
         @window ||= parent&.subwin(props[:x], props[:y], props[:width], props[:height]) || Curses.stdscr
