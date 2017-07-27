@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Widgets
+  using Helpers
+
   class Menu < Base
     def trigger(event)
       case event
@@ -48,11 +50,7 @@ module Widgets
           end,
           window,
         ) do
-          if friend[:name].length <= props[:width] - 2
-            addstr friend[:name].ljust props[:width] - 2
-          else
-            addstr "#{friend[:name][0...props[:width] - 5]}..."
-          end
+          addstr friend[:name].ljustetc props[:width] - 2
         end
       end
     end
