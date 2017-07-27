@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require 'curses'
-require 'curses/react/component'
+require 'curses/react'
 
 # Additional classes
 require 'events'
