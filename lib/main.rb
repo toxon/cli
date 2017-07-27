@@ -280,11 +280,12 @@ private
           ),
 
           history: (state[:friends][friend_number][:history] + [
-            error: error,
-            out:   true,
-            time:  Time.now.utc.freeze,
-            name:  @tox_client.name.freeze,
-            text:  text,
+            error:    error,
+            out:      true,
+            received: false,
+            time:     Time.now.utc.freeze,
+            name:     @tox_client.name.freeze,
+            text:     text,
           ]).freeze,
         ).freeze,
       ).freeze,

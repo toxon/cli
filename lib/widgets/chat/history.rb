@@ -13,7 +13,14 @@ module Widgets
         offset = 0
 
         props[:messages].reverse_each do |msg|
-          offset += draw_message offset, msg[:error], msg[:out], msg[:time].strftime('%H:%M:%S'), msg[:name], msg[:text]
+          offset += draw_message(
+            offset,
+            msg[:error] || msg[:out] && !msg[:received] && Time.now.utc - msg[:time] > 10,
+            msg[:out],
+            msg[:time].strftime('%H:%M:%S'),
+            msg[:name],
+            msg[:text],
+          )
 
           break if offset >= props[:height]
         end
