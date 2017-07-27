@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 require 'curses'
+require 'curses/react/component'
 
 # Additional classes
 require 'events'
 require 'style'
 
 # Basic
-require 'widgets/base'
 require 'widgets/text'
 
 # Basic containers

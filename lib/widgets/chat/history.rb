@@ -2,7 +2,7 @@
 
 module Widgets
   class Chat < VPanel
-    class History < Base
+    class History < Curses::React::Component
     private
 
       def draw

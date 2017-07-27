@@ -3,7 +3,7 @@
 module Widgets
   using Helpers
 
-  class Menu < Base
+  class Menu < Curses::React::Component
     def trigger(event)
       case event
       when Events::Text::Up

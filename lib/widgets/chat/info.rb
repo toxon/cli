@@ -4,7 +4,7 @@ module Widgets
   using Helpers
 
   class Chat < VPanel
-    class Info < Base
+    class Info < Curses::React::Component
       PUBLIC_KEY_LABEL = 'Public key: '
 
     private
