@@ -6,6 +6,7 @@ require 'thread'
 
 require 'faker'
 
+require 'helpers'
 require 'screen'
 
 class Main

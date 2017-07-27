@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Widgets
+  using Helpers
+
   class Chat < VPanel
     class Info < Base
       PUBLIC_KEY_LABEL = 'Public key: '
@@ -43,12 +45,7 @@ module Widgets
       def draw_public_key
         setpos 0, 1
         addstr PUBLIC_KEY_LABEL
-        if PUBLIC_KEY_LABEL.length + props[:public_key].length > props[:width]
-          width = props[:width] - PUBLIC_KEY_LABEL.length
-          addstr "#{props[:public_key][0...(width - 3)]}..."
-        else
-          addstr props[:public_key]
-        end
+        addstr props[:public_key].ljustetc props[:width] - PUBLIC_KEY_LABEL.length
       end
     end
   end
