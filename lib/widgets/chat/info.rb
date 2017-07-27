@@ -3,6 +3,8 @@
 module Widgets
   class Chat < VPanel
     class Info < Base
+      PUBLIC_KEY_LABEL = 'Public key: '
+
     private
 
       def draw
@@ -33,8 +35,13 @@ module Widgets
         addstr props[:status_message]
 
         setpos 0, 1
-        addstr 'Public key: '
-        addstr props[:public_key]
+        addstr PUBLIC_KEY_LABEL
+        if PUBLIC_KEY_LABEL.length + props[:public_key].length > props[:width]
+          width = props[:width] - PUBLIC_KEY_LABEL.length
+          addstr "#{props[:public_key][0...(width - 3)]}..."
+        else
+          addstr props[:public_key]
+        end
       end
     end
   end
