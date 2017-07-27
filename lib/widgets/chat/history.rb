@@ -13,13 +13,13 @@ module Widgets
         offset = 0
 
         props[:messages].reverse_each do |msg|
-          offset += draw_message offset, msg[:out], msg[:time].strftime('%H:%M:%S'), msg[:name], msg[:text]
+          offset += draw_message offset, msg[:error], msg[:out], msg[:time].strftime('%H:%M:%S'), msg[:name], msg[:text]
 
           break if offset >= props[:height]
         end
       end
 
-      def draw_message(offset, out, time, name, text)
+      def draw_message(offset, error, out, time, name, text)
         width = props[:width] / 3 * 2
         left  = out ? props[:width] - width : 0
 
@@ -37,14 +37,22 @@ module Widgets
           addstr s
         end
 
-        draw_header props[:height] - offset - lines - 1, out, time, name
+        draw_header props[:height] - offset - lines - 1, error, out, time, name
 
         1 + lines
       end
 
-      def draw_header(y, out, name, time)
+      def draw_header(y, error, out, name, time)
         if out
-          setpos props[:width] - name.length - time.length - 1, y
+          setpos props[:width] - name.length - time.length - (error ? 3 : 1), y
+
+          if error
+            Style.default.message_error window do
+              addstr 'x'
+            end
+
+            addstr ' '
+          end
 
           Style.default.message_time window do
             addstr time
@@ -66,6 +74,14 @@ module Widgets
 
           Style.default.message_time window do
             addstr time
+          end
+
+          if error
+            addstr ' '
+
+            Style.default.message_error window do
+              addstr 'x'
+            end
           end
         end
       end

@@ -263,7 +263,13 @@ private
 
     return if text.empty?
 
-    @tox_client.friend(friend_number).send_message text
+    error = false
+
+    begin
+      @tox_client.friend(friend_number).send_message text
+    rescue
+      error = true
+    end
 
     @state = state.merge(
       friends: state[:friends].merge(
@@ -274,10 +280,11 @@ private
           ),
 
           history: (state[:friends][friend_number][:history] + [
-            out:  true,
-            time: Time.now.utc.freeze,
-            name: @tox_client.name.freeze,
-            text: text,
+            error: error,
+            out:   true,
+            time:  Time.now.utc.freeze,
+            name:  @tox_client.name.freeze,
+            text:  text,
           ]).freeze,
         ).freeze,
       ).freeze,

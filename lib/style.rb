@@ -18,13 +18,15 @@ class Style
     Curses.init_pair cursor_id,           cursor_color,           cursor_bg
     Curses.init_pair menu_item_id,        menu_item_color,        menu_item_bg
     Curses.init_pair active_menu_item_id, active_menu_item_color, active_menu_item_bg
-    Curses.init_pair message_time_id,     message_time_color,     message_time_bg
-    Curses.init_pair message_author_id,   message_author_color,   message_author_bg
     Curses.init_pair peer_info_name_id,   peer_info_name_color,   peer_info_name_bg
 
     Curses.init_pair online_mark_id,      online_mark_color,      online_mark_bg
     Curses.init_pair away_mark_id,        away_mark_color,        away_mark_bg
     Curses.init_pair busy_mark_id,        busy_mark_color,        busy_mark_bg
+
+    Curses.init_pair message_time_id,     message_time_color,     message_time_bg
+    Curses.init_pair message_author_id,   message_author_color,   message_author_bg
+    Curses.init_pair message_error_id,    message_error_color,    message_error_bg
   end
 
   def logo(window)
@@ -76,20 +78,6 @@ class Style
     window.attroff active_menu_item_attr
   end
 
-  def message_time(window)
-    window.attron message_time_attr
-    yield
-  ensure
-    window.attroff message_time_attr
-  end
-
-  def message_author(window)
-    window.attron message_author_attr
-    yield
-  ensure
-    window.attroff message_author_attr
-  end
-
   def peer_info_name(window)
     window.attron peer_info_name_attr
     yield
@@ -116,6 +104,27 @@ class Style
     yield
   ensure
     window.attroff busy_mark_attr
+  end
+
+  def message_time(window)
+    window.attron message_time_attr
+    yield
+  ensure
+    window.attroff message_time_attr
+  end
+
+  def message_author(window)
+    window.attron message_author_attr
+    yield
+  ensure
+    window.attroff message_author_attr
+  end
+
+  def message_error(window)
+    window.attron message_error_attr
+    yield
+  ensure
+    window.attroff message_error_attr
   end
 
 private
@@ -148,14 +157,6 @@ private
     Curses.color_pair active_menu_item_id
   end
 
-  def message_time_attr
-    Curses.color_pair message_time_id
-  end
-
-  def message_author_attr
-    Curses.color_pair(message_author_id) | Curses::A_BOLD
-  end
-
   def peer_info_name_attr
     Curses.color_pair(peer_info_name_id) | Curses::A_BOLD
   end
@@ -170,6 +171,18 @@ private
 
   def busy_mark_attr
     Curses.color_pair busy_mark_id
+  end
+
+  def message_time_attr
+    Curses.color_pair message_time_id
+  end
+
+  def message_author_attr
+    Curses.color_pair(message_author_id) | Curses::A_BOLD
+  end
+
+  def message_error_attr
+    Curses.color_pair message_error_id
   end
 
   def logo_id
@@ -200,14 +213,6 @@ private
     @active_menu_item_id ||= self.class.counter
   end
 
-  def message_time_id
-    @message_time_id ||= self.class.counter
-  end
-
-  def message_author_id
-    @message_author_id ||= self.class.counter
-  end
-
   def peer_info_name_id
     @peer_info_name_id ||= self.class.counter
   end
@@ -222,6 +227,18 @@ private
 
   def busy_mark_id
     @busy_mark_id ||= self.class.counter
+  end
+
+  def message_time_id
+    @message_time_id ||= self.class.counter
+  end
+
+  def message_author_id
+    @message_author_id ||= self.class.counter
+  end
+
+  def message_error_id
+    @message_error_id ||= self.class.counter
   end
 
   def logo_color
@@ -280,22 +297,6 @@ private
     Curses::COLOR_BLUE
   end
 
-  def message_time_color
-    Curses::COLOR_CYAN
-  end
-
-  def message_time_bg
-    Curses::COLOR_BLACK
-  end
-
-  def message_author_color
-    Curses::COLOR_GREEN
-  end
-
-  def message_author_bg
-    Curses::COLOR_BLACK
-  end
-
   def peer_info_name_color
     Curses::COLOR_WHITE
   end
@@ -325,6 +326,30 @@ private
   end
 
   def busy_mark_bg
+    Curses::COLOR_BLACK
+  end
+
+  def message_time_color
+    Curses::COLOR_CYAN
+  end
+
+  def message_time_bg
+    Curses::COLOR_BLACK
+  end
+
+  def message_author_color
+    Curses::COLOR_GREEN
+  end
+
+  def message_author_bg
+    Curses::COLOR_BLACK
+  end
+
+  def message_error_color
+    Curses::COLOR_RED
+  end
+
+  def message_error_bg
     Curses::COLOR_BLACK
   end
 end
