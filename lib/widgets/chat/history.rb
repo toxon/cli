@@ -13,36 +13,25 @@ module Widgets
         offset = 0
 
         props[:messages].reverse_each do |msg|
-          offset += render_message(
-            offset,
-            msg[:error] || msg[:out] && !msg[:received] && Time.now.utc - msg[:time] > 10,
+          lines = (msg[:text].length / message_block_width.to_f).ceil
+
+          elem = render_lines(
             msg[:out],
-            msg[:time].strftime('%H:%M:%S'),
-            msg[:name],
+            msg[:error],
             msg[:text],
+            msg[:name],
+            msg[:time].strftime('%H:%M:%S'),
+            lines,
+            x: msg[:out] ? props[:width] - message_block_width : 0,
+            y: props[:height] - offset - lines - 1,
           )
+
+          Curses::React::Nodes.klass_for(elem).new(elem, window).draw
+
+          offset += 1 + lines
 
           break if offset >= props[:height]
         end
-      end
-
-      def render_message(offset, error, out, time, name, text)
-        lines = (text.length / message_block_width.to_f).ceil
-
-        elem = render_lines(
-          out,
-          error,
-          text,
-          name,
-          time,
-          lines,
-          x: out ? props[:width] - message_block_width : 0,
-          y: props[:height] - offset - lines - 1,
-        )
-
-        Curses::React::Nodes.klass_for(elem).new(elem, window).draw
-
-        1 + lines
       end
 
       def render_lines(out, error, text, name, time, lines, x:, y:)
