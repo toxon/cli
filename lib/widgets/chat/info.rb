@@ -9,7 +9,6 @@ module Widgets
 
       def draw
         elem = render
-
         Curses::React::Nodes.klass_for(elem).new(parent, elem).draw
       end
 
