@@ -28,13 +28,21 @@ module Curses
           1
         end
 
+        def text
+          props[:text]
+        end
+
+        def attr
+          props[:attr]
+        end
+
         def draw
-          return if props[:text].nil?
+          return if text.nil?
 
           window.setpos  y, x
-          window.attron  props[:attr] if props[:attr]
-          window.addstr  props[:text].ljustetc width
-          window.attroff props[:attr] if props[:attr]
+          window.attron  attr if attr
+          window.addstr  text.ljustetc width
+          window.attroff attr if attr
         end
 
       private
