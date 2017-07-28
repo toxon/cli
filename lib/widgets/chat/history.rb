@@ -29,7 +29,6 @@ module Widgets
       def render_message(offset, error, out, time, name, text)
         full_message_block_width = props[:width] / 3 * 2
         full_message_block_x = out ? props[:width] - full_message_block_width : 0
-        header_width = name.length + time.length + (error ? 3 : 1)
 
         lines = (text.length / full_message_block_width.to_f).ceil
 
@@ -49,9 +48,9 @@ module Widgets
           out,
           name,
           time,
-          x: out ? props[:width] - header_width : 0,
+          x: out ? props[:width] - full_message_block_width : 0,
           y: props[:height] - offset - lines - 1,
-          width: header_width,
+          width: full_message_block_width,
         )
 
         Curses::React::Nodes.klass_for(elem).new(elem, window).draw
@@ -76,9 +75,13 @@ module Widgets
       end
 
       def render_header(error, out, name, time, x:, y:, width:)
+        text_width = name.length + time.length + (error ? 3 : 1)
+
         create_element :lines, x: x, y: y, width: width do
           create_element :line do
             if out
+              create_element :text, text: ' ' * (width - text_width)
+
               if error
                 create_element :text, text: 'x', attr: Style.default.message_error_attr
                 create_element :text, text: ' '
