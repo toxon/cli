@@ -19,6 +19,12 @@ module Reducers
         add_friend
       when Actions::AddFriendMessage
         add_friend_message
+      when Actions::ChangeFriendName
+        change_friend_name
+      when Actions::ChangeFriendStatusMessage
+        change_friend_status_message
+      when Actions::ChangeFriendStatus
+        change_friend_status
       else
         state
       end
@@ -75,6 +81,36 @@ module Reducers
               name: action.friend.name.freeze,
               text: action.text.freeze,
             ]).freeze,
+          ).freeze,
+        ).freeze,
+      ).freeze
+    end
+
+    def change_friend_name
+      state.merge(
+        friends: state[:friends].merge(
+          action.friend.number => state[:friends][action.friend.number].merge(
+            name: action.new_name.freeze,
+          ).freeze,
+        ).freeze,
+      ).freeze
+    end
+
+    def change_friend_status_message
+      state.merge(
+        friends: state[:friends].merge(
+          action.friend.number => state[:friends][action.friend.number].merge(
+            status_message: action.new_status_message.freeze,
+          ).freeze,
+        ).freeze,
+      ).freeze
+    end
+
+    def change_friend_status
+      state.merge(
+        friends: state[:friends].merge(
+          action.friend.number => state[:friends][action.friend.number].merge(
+            status: action.new_status,
           ).freeze,
         ).freeze,
       ).freeze

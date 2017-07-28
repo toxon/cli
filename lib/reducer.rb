@@ -96,12 +96,6 @@ private
 
   def reduce
     case action
-    when Actions::ChangeFriendName
-      change_friend_name
-    when Actions::ChangeFriendStatusMessage
-      change_friend_status_message
-    when Actions::ChangeFriendStatus
-      change_friend_status
     when Actions::WindowLeft
       window_left
     when Actions::WindowRight
@@ -129,42 +123,6 @@ private
     else
       state
     end
-  end
-
-  def change_friend_name
-    state.merge(
-      data: state[:data].merge(
-        friends: state[:data][:friends].merge(
-          action.friend.number => state[:data][:friends][action.friend.number].merge(
-            name: action.new_name.freeze,
-          ).freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
-  end
-
-  def change_friend_status_message
-    state.merge(
-      data: state[:data].merge(
-        friends: state[:data][:friends].merge(
-          action.friend.number => state[:data][:friends][action.friend.number].merge(
-            status_message: action.new_status_message.freeze,
-          ).freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
-  end
-
-  def change_friend_status
-    state.merge(
-      data: state[:data].merge(
-        friends: state[:data][:friends].merge(
-          action.friend.number => state[:data][:friends][action.friend.number].merge(
-            status: action.new_status,
-          ).freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
   end
 
   def window_left
