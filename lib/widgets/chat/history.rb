@@ -39,18 +39,10 @@ module Widgets
           full_message_block_width,
           full_message_block_x,
           lines,
-        )
 
-        Curses::React::Nodes.klass_for(elem).new(elem, window).draw
-
-        elem = render_header(
           error,
-          out,
           name,
           time,
-          x: full_message_block_x,
-          y: props[:height] - offset - lines - 1,
-          width: full_message_block_width,
         )
 
         Curses::React::Nodes.klass_for(elem).new(elem, window).draw
@@ -58,26 +50,15 @@ module Widgets
         1 + lines
       end
 
-      def render_lines(offset, out, text, width, left, lines)
+      def render_lines(offset, out, text, width, left, lines, error, name, time)
         create_element(
           :lines,
           x: left,
-          y: props[:height] - offset - lines,
+          y: props[:height] - offset - lines - 1,
           width: width,
         ) do
-          1.upto lines do |line|
-            create_element :line do
-              s = text[(width * (line - 1))...(width * line)].strip
-              create_element :text, text: out ? s.rjust(width) : s
-            end
-          end
-        end
-      end
+          text_width = name.length + time.length + (error ? 3 : 1)
 
-      def render_header(error, out, name, time, x:, y:, width:)
-        text_width = name.length + time.length + (error ? 3 : 1)
-
-        create_element :lines, x: x, y: y, width: width do
           create_element :line do
             if out
               create_element :text, text: ' ' * (width - text_width)
@@ -99,6 +80,13 @@ module Widgets
                 create_element :text, text: ' '
                 create_element :text, text: 'x', attr: Style.default.message_error_attr
               end
+            end
+          end
+
+          1.upto lines do |line|
+            create_element :line do
+              s = text[(width * (line - 1))...(width * line)].strip
+              create_element :text, text: out ? s.rjust(width) : s
             end
           end
         end
