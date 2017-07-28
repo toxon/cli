@@ -17,8 +17,10 @@ module Curses
 
         def draw
           return if props[:text].nil?
+          @window.attron props[:attr] if props[:attr]
           setpos props[:x], props[:y]
           addstr props[:text].ljustetc props[:width]
+          @window.attroff props[:attr] if props[:attr]
         end
 
         def setpos(x, y)

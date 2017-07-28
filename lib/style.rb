@@ -127,8 +127,6 @@ class Style
     window.attroff message_error_attr
   end
 
-private
-
   def logo_attr
     Curses.color_pair(logo_id) | Curses::A_BOLD
   end
@@ -184,6 +182,8 @@ private
   def message_error_attr
     Curses.color_pair message_error_id
   end
+
+private
 
   def logo_id
     @logo_id ||= self.class.counter
