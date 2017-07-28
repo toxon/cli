@@ -4,24 +4,6 @@ module Curses
   module React
     module Nodes
       class Line < Wrapper
-        attr_reader :x, :y, :width
-
-        def initialize(element, window, x:, y:, width:)
-          super element, window
-
-          self.x = x
-          self.y = y
-          self.width = width
-        end
-
-        def height
-          1
-        end
-
-        def attr
-          props[:attr]
-        end
-
         def draw
           window.attron attr if attr
           super
@@ -39,19 +21,12 @@ module Curses
           end
         end
 
-        def x=(value)
-          raise TypeError, "expected x to be an #{Integer}" unless value.is_a? Integer
-          @x = value
+        def height
+          1
         end
 
-        def y=(value)
-          raise TypeError, "expected y to be an #{Integer}" unless value.is_a? Integer
-          @y = value
-        end
-
-        def width=(value)
-          raise TypeError, "expected width to be an #{Integer}" unless value.is_a? Integer
-          @width = value
+        def attr
+          props[:attr]
         end
       end
     end

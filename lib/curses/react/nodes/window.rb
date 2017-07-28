@@ -13,22 +13,6 @@ module Curses
           window.subwin height, width, y, x
         end
 
-        def x
-          props[:x] || @x
-        end
-
-        def y
-          props[:y] || @y
-        end
-
-        def width
-          props[:width] || @width
-        end
-
-        def height
-          props[:height] || @height
-        end
-
         def draw
           super
           window.refresh
@@ -43,26 +27,6 @@ module Curses
             child_node.width = width
             child_node.height = height
           end
-        end
-
-        def x=(value)
-          raise TypeError, "expected x to be an #{Integer}" unless value.is_a? Integer
-          @x = value
-        end
-
-        def y=(value)
-          raise TypeError, "expected y to be an #{Integer}" unless value.is_a? Integer
-          @y = value
-        end
-
-        def width=(value)
-          raise TypeError, "expected width to be an #{Integer}" unless value.is_a? Integer
-          @width = value
-        end
-
-        def height=(value)
-          raise TypeError, "expected height to be an #{Integer}" unless value.is_a? Integer
-          @height = value
         end
       end
     end
