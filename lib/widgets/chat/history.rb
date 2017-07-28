@@ -3,13 +3,16 @@
 module Widgets
   class Chat < VPanel
     class History < Curses::React::Component
+      def draw
+        window.clear
+        return if props[:messages].empty?
+        render
+        window.refresh
+      end
+
     private
 
       def render
-        window.clear
-
-        return if props[:messages].empty?
-
         offset = 0
 
         props[:messages].reverse_each do |msg|
