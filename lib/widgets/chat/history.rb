@@ -32,7 +32,11 @@ module Widgets
 
         lines = (text.length / width.to_f).ceil
 
-        render_lines offset, out, text, width, left, lines
+        elem = render_lines offset, out, text, width, left, lines
+        Curses::React::Nodes.klass_for(elem).new(
+          elem,
+          window,
+        ).draw
 
         elem = render_header error, out, name, time
         width = name.length + time.length + (error ? 3 : 1)
@@ -72,16 +76,18 @@ module Widgets
       end
 
       def render_lines(offset, out, text, width, left, lines)
-        1.upto lines do |line|
-          s = text[(width * (line - 1))...(width * line)].strip
-
-          if out && s.length != width
-            setpos left + width - s.length, props[:height] - offset - lines + line - 1
-          else
-            setpos left, props[:height] - offset - lines + line - 1
+        create_element(
+          :lines,
+          x: left,
+          y: props[:height] - offset - lines,
+          width: width,
+        ) do
+          1.upto lines do |line|
+            create_element :line do
+              s = text[(width * (line - 1))...(width * line)].strip
+              create_element :text, text: out ? s.rjust(width) : s
+            end
           end
-
-          addstr s
         end
       end
     end
