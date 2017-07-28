@@ -18,25 +18,25 @@ module Widgets
       def render_element
         create_element :wrapper do
           create_element :wrapper do
-            create_element :text_line,
+            create_element :text,
                            x: 0,
                            y: 0,
                            width: status_text.length,
                            text: status_text,
                            attr: status_attr
 
-            create_element :text_line, x: status_text.length, y: 0, width: 1, text: ' '
+            create_element :text, x: status_text.length, y: 0, width: 1, text: ' '
 
-            create_element :text_line,
+            create_element :text,
                            x: status_text.length + 1,
                            y: 0,
                            width: props[:name].length,
                            text: props[:name],
                            attr: Style.default.peer_info_name_attr
 
-            create_element :text_line, x: status_text.length + 1 + props[:name].length, y: 0, width: 3, text: ' : '
+            create_element :text, x: status_text.length + 1 + props[:name].length, y: 0, width: 3, text: ' : '
 
-            create_element :text_line,
+            create_element :text,
                            x: status_text.length + 1 + props[:name].length + 3,
                            y: 0,
                            width: props[:width] - (status_text.length + 1 + props[:name].length + 3),
@@ -44,13 +44,13 @@ module Widgets
           end
 
           create_element :wrapper do
-            create_element :text_line,
+            create_element :text,
                            x: 0,
                            y: 1,
                            width: PUBLIC_KEY_LABEL.length,
                            text: PUBLIC_KEY_LABEL
 
-            create_element :text_line,
+            create_element :text,
                            x: PUBLIC_KEY_LABEL.length,
                            y: 1,
                            width: props[:width] - PUBLIC_KEY_LABEL.length,

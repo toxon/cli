@@ -5,7 +5,7 @@ module Curses
 
   module React
     module Nodes
-      class TextLine
+      class Text
         def initialize(element, window)
           @element = element
           @window = window
