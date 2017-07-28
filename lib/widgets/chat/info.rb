@@ -37,7 +37,7 @@ module Widgets
         addstr props[:status_message]
 
         Curses::React::Nodes.create(
-          create_element(:line) do
+          create_element(:wrapper) do
             create_element :text_line,
                            x: 0,
                            y: 1,

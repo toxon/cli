@@ -3,7 +3,7 @@
 module Curses
   module React
     module Nodes
-      class Line
+      class Wrapper
         def initialize(element, window)
           @element = element
           @window = window
