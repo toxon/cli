@@ -44,24 +44,24 @@ module Widgets
 
       def render_public_key
         Curses::React::Nodes.create(
-          Curses::React::Element.create(
-            :text_line,
-            x: 0,
-            y: 1,
-            width: PUBLIC_KEY_LABEL.length,
-            text: PUBLIC_KEY_LABEL,
-          ),
-          window,
-        ).draw
+          Curses::React::Element.create(:line) do
+            Curses::React::Element.create(
+              :text_line,
+              x: 0,
+              y: 1,
+              width: PUBLIC_KEY_LABEL.length,
+              text: PUBLIC_KEY_LABEL,
+            )
 
-        Curses::React::Nodes.create(
-          Curses::React::Element.create(
-            :text_line,
-            x: PUBLIC_KEY_LABEL.length,
-            y: 1,
-            width: props[:width] - PUBLIC_KEY_LABEL.length,
-            text: props[:public_key],
-          ),
+            Curses::React::Element.create(
+              :text_line,
+              x: PUBLIC_KEY_LABEL.length,
+              y: 1,
+              width: props[:width] - PUBLIC_KEY_LABEL.length,
+              text: props[:public_key],
+            )
+          end,
+
           window,
         ).draw
       end
