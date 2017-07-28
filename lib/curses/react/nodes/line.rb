@@ -42,14 +42,12 @@ module Curses
       private
 
         def x=(value)
-          raise TypeError,     "expected x to be an #{Integer}"                 unless value.is_a? Integer
-          raise ArgumentError, 'expected x to be greater than or equal to zero' unless value >= 0
+          raise TypeError, "expected x to be an #{Integer}" unless value.is_a? Integer
           @x = value
         end
 
         def y=(value)
-          raise TypeError,     "expected y to be an #{Integer}"                 unless value.is_a? Integer
-          raise ArgumentError, 'expected y to be greater than or equal to zero' unless value >= 0
+          raise TypeError, "expected y to be an #{Integer}" unless value.is_a? Integer
           @y = value
         end
 
