@@ -100,8 +100,8 @@ private
     case action
     when Actions::LoadFriends
       load_friends
-    when Actions::FriendRequest
-      friend_request
+    when Actions::AddFriend
+      add_friend
     when Actions::FriendMessage
       friend_message
     when Actions::ChangeFriendName
@@ -162,19 +162,17 @@ private
     ).freeze
   end
 
-  def friend_request
-    friend = action.tox_client.friend_add_norequest action.public_key
-
+  def add_friend
     state.merge(
       data: state[:data].merge(
         active_friend_index: state[:data][:active_friend_index] || state[:data][:friends].count,
 
         friends: state[:data][:friends].merge(
-          friend.number => {
-            public_key:     friend.public_key.to_hex.freeze,
-            name:           friend.name.freeze,
-            status:         friend.status,
-            status_message: friend.status_message.freeze,
+          action.friend.number => {
+            public_key:     action.friend.public_key.to_hex.freeze,
+            name:           action.friend.name.freeze,
+            status:         action.friend.status,
+            status_message: action.friend.status_message.freeze,
             history:        [].freeze,
             new_message: {
               text: '',
