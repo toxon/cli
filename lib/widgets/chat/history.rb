@@ -27,23 +27,23 @@ module Widgets
       end
 
       def render_message(offset, error, out, time, name, text)
-        width = props[:width] / 3 * 2
-        left  = out ? props[:width] - width : 0
+        full_message_block_width = props[:width] / 3 * 2
+        full_message_block_x = out ? props[:width] - full_message_block_width : 0
+        header_width = name.length + time.length + (error ? 3 : 1)
 
-        lines = (text.length / width.to_f).ceil
+        lines = (text.length / full_message_block_width.to_f).ceil
 
-        elem = render_lines offset, out, text, width, left, lines
+        elem = render_lines offset, out, text, full_message_block_width, full_message_block_x, lines
         Curses::React::Nodes.klass_for(elem).new(elem, window).draw
 
-        width = name.length + time.length + (error ? 3 : 1)
         elem = render_header(
           error,
           out,
           name,
           time,
-          x: out ? props[:width] - width : 0,
+          x: out ? props[:width] - header_width : 0,
           y: props[:height] - offset - lines - 1,
-          width: width,
+          width: header_width,
         )
         Curses::React::Nodes.klass_for(elem).new(elem, window).draw
 
