@@ -27,9 +27,7 @@ module Widgets
       end
 
       def render_message(offset, error, out, time, name, text)
-        width = props[:width] / 3 * 2
-
-        lines = (text.length / width.to_f).ceil
+        lines = (text.length / message_block_width.to_f).ceil
 
         elem = render_lines(
           out,
@@ -38,9 +36,8 @@ module Widgets
           name,
           time,
           lines,
-          x: out ? props[:width] - width : 0,
+          x: out ? props[:width] - message_block_width : 0,
           y: props[:height] - offset - lines - 1,
-          width: width,
         )
 
         Curses::React::Nodes.klass_for(elem).new(elem, window).draw
@@ -48,18 +45,18 @@ module Widgets
         1 + lines
       end
 
-      def render_lines(out, error, text, name, time, lines, x:, y:, width:)
+      def render_lines(out, error, text, name, time, lines, x:, y:)
         text_width = name.length + time.length + (error ? 3 : 1)
 
         create_element(
           :lines,
           x: x,
           y: y,
-          width: width,
+          width: message_block_width,
         ) do
           create_element :line do
             if out
-              create_element :text, text: ' ' * (width - text_width)
+              create_element :text, text: ' ' * (message_block_width - text_width)
 
               if error
                 create_element :text, text: 'x', attr: Style.default.message_error_attr
@@ -83,11 +80,15 @@ module Widgets
 
           1.upto lines do |line|
             create_element :line do
-              s = text[(width * (line - 1))...(width * line)].strip
-              create_element :text, text: out ? s.rjust(width) : s
+              s = text[(message_block_width * (line - 1))...(message_block_width * line)].strip
+              create_element :text, text: out ? s.rjust(message_block_width) : s
             end
           end
         end
+      end
+
+      def message_block_width
+        props[:width] / 3 * 2
       end
     end
   end
