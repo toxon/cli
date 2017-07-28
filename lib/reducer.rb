@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'reducers/data'
+
 class Reducer < Obredux::Reducer
   class << self
     attr_reader :screen_width, :screen_height
@@ -21,12 +23,6 @@ private
 
   def initial_state
     {
-      data: {
-        active_friend_index: nil,
-
-        friends: {}.freeze,
-      }.freeze,
-
       x: 0,
       y: 0,
       width: self.class.screen_width,
@@ -97,11 +93,11 @@ private
   end
 
   def reduce
+    @state = state.merge(
+      data: Reducers::Data.new(state[:data], action).call,
+    )
+
     case action
-    when Actions::LoadFriends
-      load_friends
-    when Actions::AddFriend
-      add_friend
     when Actions::FriendMessage
       friend_message
     when Actions::ChangeFriendName
@@ -137,51 +133,6 @@ private
     else
       state
     end
-  end
-
-  def load_friends
-    state.merge(
-      data: state[:data].merge(
-        active_friend_index: action.friends.empty? ? nil : 0,
-
-        friends: action.friends.map do |friend|
-          [
-            friend.number,
-            public_key:     friend.public_key.to_hex.freeze,
-            name:           friend.name.freeze,
-            status:         friend.status,
-            status_message: friend.status_message.freeze,
-            history:        [].freeze,
-            new_message: {
-              text: '',
-              cursor_pos: 0,
-            }.freeze,
-          ]
-        end.to_h.freeze,
-      ).freeze,
-    ).freeze
-  end
-
-  def add_friend
-    state.merge(
-      data: state[:data].merge(
-        active_friend_index: state[:data][:active_friend_index] || state[:data][:friends].count,
-
-        friends: state[:data][:friends].merge(
-          action.friend.number => {
-            public_key:     action.friend.public_key.to_hex.freeze,
-            name:           action.friend.name.freeze,
-            status:         action.friend.status,
-            status_message: action.friend.status_message.freeze,
-            history:        [].freeze,
-            new_message: {
-              text: '',
-              cursor_pos: 0,
-            }.freeze,
-          }.freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
   end
 
   def friend_message

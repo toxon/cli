@@ -29,6 +29,7 @@ module Obredux
 
     def call
       @state = initial_state if state.equal? UNDEFINED
+      @state ||= {}.freeze
       reduce
     end
 
@@ -38,6 +39,10 @@ module Obredux
 
     def initial_state
       raise NotImplementedError, "#{self.class}#initial_state"
+    end
+
+    def reduce
+      raise NotImplementedError, "#{self.class}#reduce"
     end
   end
 end
