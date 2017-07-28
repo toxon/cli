@@ -6,6 +6,8 @@ require 'curses/react/nodes/wrapper'
 require 'curses/react/nodes/line'
 require 'curses/react/nodes/lines'
 
+require 'curses/react/nodes/window'
+
 module Curses
   module React
     module Nodes
@@ -17,6 +19,7 @@ module Curses
         when :wrapper then Wrapper
         when :line    then Line
         when :lines   then Lines
+        when :window  then Window
         else
           raise "unknown element type: #{element.type.inspect}"
         end

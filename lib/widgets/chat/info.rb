@@ -7,27 +7,29 @@ module Widgets
     class Info < Curses::React::Component
       PUBLIC_KEY_LABEL = 'Public key: '
 
+      def draw
+        elem = render
+
+        Curses::React::Nodes.klass_for(elem).new(parent, elem).draw
+      end
+
     private
 
       def render
-        elem = render_element
+        create_element :window, x: props[:x], y: props[:y], width: props[:width], height: props[:height] do
+          create_element :lines, x: 0, y: 0, width: props[:width] do
+            create_element :line do
+              create_element :text, text: status_text, attr: status_attr
+              create_element :text, text: ' '
+              create_element :text, text: props[:name], attr: Style.default.peer_info_name_attr
+              create_element :text, text: ' : '
+              create_element :text, text: props[:status_message]
+            end
 
-        Curses::React::Nodes.klass_for(elem).new(elem, window).draw
-      end
-
-      def render_element
-        create_element :lines, x: 0, y: 0, width: props[:width] do
-          create_element :line do
-            create_element :text, text: status_text, attr: status_attr
-            create_element :text, text: ' '
-            create_element :text, text: props[:name], attr: Style.default.peer_info_name_attr
-            create_element :text, text: ' : '
-            create_element :text, text: props[:status_message]
-          end
-
-          create_element :line do
-            create_element :text, text: PUBLIC_KEY_LABEL
-            create_element :text, text: props[:public_key]
+            create_element :line do
+              create_element :text, text: PUBLIC_KEY_LABEL
+              create_element :text, text: props[:public_key]
+            end
           end
         end
       end
