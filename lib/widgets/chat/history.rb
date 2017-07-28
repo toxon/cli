@@ -15,7 +15,7 @@ module Widgets
         props[:messages].reverse_each do |msg|
           lines = (msg[:text].length / message_block_width.to_f).ceil
 
-          elem = render_lines(
+          elem = render_message(
             msg[:out],
             msg[:error],
             msg[:text],
@@ -34,7 +34,7 @@ module Widgets
         end
       end
 
-      def render_lines(out, error, text, name, time, lines, x:, y:)
+      def render_message(out, error, text, name, time, lines, x:, y:)
         text_width = name.length + time.length + (error ? 3 : 1)
 
         create_element(
