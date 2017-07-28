@@ -59,6 +59,22 @@ module Widgets
         1 + lines
       end
 
+      def render_lines(offset, out, text, width, left, lines)
+        create_element(
+          :lines,
+          x: left,
+          y: props[:height] - offset - lines,
+          width: width,
+        ) do
+          1.upto lines do |line|
+            create_element :line do
+              s = text[(width * (line - 1))...(width * line)].strip
+              create_element :text, text: out ? s.rjust(width) : s
+            end
+          end
+        end
+      end
+
       def render_header(error, out, name, time, x:, y:, width:)
         create_element :lines, x: x, y: y, width: width do
           create_element :line do
@@ -80,22 +96,6 @@ module Widgets
                 create_element :text, text: ' '
                 create_element :text, text: 'x', attr: Style.default.message_error_attr
               end
-            end
-          end
-        end
-      end
-
-      def render_lines(offset, out, text, width, left, lines)
-        create_element(
-          :lines,
-          x: left,
-          y: props[:height] - offset - lines,
-          width: width,
-        ) do
-          1.upto lines do |line|
-            create_element :line do
-              s = text[(width * (line - 1))...(width * line)].strip
-              create_element :text, text: out ? s.rjust(width) : s
             end
           end
         end
