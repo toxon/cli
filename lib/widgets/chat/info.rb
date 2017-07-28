@@ -9,12 +9,12 @@ module Widgets
 
     private
 
-      def draw
-        draw_main_line
-        draw_public_key
+      def render
+        render_main_line
+        render_public_key
       end
 
-      def draw_main_line
+      def render_main_line
         setpos 0, 0
 
         case props[:status]
@@ -42,7 +42,7 @@ module Widgets
         addstr props[:status_message]
       end
 
-      def draw_public_key
+      def render_public_key
         setpos 0, 1
         addstr PUBLIC_KEY_LABEL
         addstr props[:public_key].ljustetc props[:width] - PUBLIC_KEY_LABEL.length

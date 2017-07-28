@@ -20,8 +20,8 @@ module Curses
 
       def trigger(event); end
 
-      def render
-        draw
+      def draw
+        render
         window.refresh
       end
 
@@ -39,8 +39,8 @@ module Curses
         @window ||= parent&.subwin(props[:x], props[:y], props[:width], props[:height]) || Curses.stdscr
       end
 
-      def draw
-        raise NotImplementedError, "#{self.class}#draw"
+      def render
+        raise NotImplementedError, "#{self.class}#render"
       end
 
       def setpos(x, y)

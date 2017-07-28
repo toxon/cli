@@ -48,7 +48,7 @@ module Widgets
 
   private
 
-    def draw
+    def render
       super
 
       setpos 0, 2

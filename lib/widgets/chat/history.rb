@@ -5,7 +5,7 @@ module Widgets
     class History < Curses::React::Component
     private
 
-      def draw
+      def render
         window.clear
 
         return if props[:messages].empty?
@@ -13,7 +13,7 @@ module Widgets
         offset = 0
 
         props[:messages].reverse_each do |msg|
-          offset += draw_message(
+          offset += render_message(
             offset,
             msg[:error] || msg[:out] && !msg[:received] && Time.now.utc - msg[:time] > 10,
             msg[:out],
@@ -26,7 +26,7 @@ module Widgets
         end
       end
 
-      def draw_message(offset, error, out, time, name, text)
+      def render_message(offset, error, out, time, name, text)
         width = props[:width] / 3 * 2
         left  = out ? props[:width] - width : 0
 
@@ -44,12 +44,12 @@ module Widgets
           addstr s
         end
 
-        draw_header props[:height] - offset - lines - 1, error, out, time, name
+        render_header props[:height] - offset - lines - 1, error, out, time, name
 
         1 + lines
       end
 
-      def draw_header(y, error, out, name, time)
+      def render_header(y, error, out, name, time)
         if out
           setpos props[:width] - name.length - time.length - (error ? 3 : 1), y
 

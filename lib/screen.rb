@@ -45,8 +45,8 @@ class Screen
     window.props = value
   end
 
-  def render
-    window.render
+  def draw
+    window.draw
   end
 
   def poll

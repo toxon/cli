@@ -56,7 +56,7 @@ private
   def on_iteration
     @screen.poll
     @screen.props = state
-    @screen.render
+    @screen.draw
   end
 
   def on_friends_load(friends)

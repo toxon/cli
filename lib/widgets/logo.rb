@@ -18,7 +18,7 @@ module Widgets
 
   private
 
-    def draw
+    def render
       Style.default.logo window do
         LOGO.each_with_index do |s, index|
           setpos 0, index

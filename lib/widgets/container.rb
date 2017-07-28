@@ -8,8 +8,8 @@ module Widgets
 
   private
 
-    def draw
-      children.each(&:render)
+    def render
+      children.each(&:draw)
     end
 
     def focus

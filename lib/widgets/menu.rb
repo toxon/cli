@@ -15,7 +15,7 @@ module Widgets
 
   private
 
-    def draw
+    def render
       return if props[:friends].empty?
 
       props[:friends].values[props[:top]...(props[:top] + props[:height])].each_with_index.each do |friend, offset|

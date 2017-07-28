@@ -53,7 +53,7 @@ module Widgets
 
   private
 
-    def draw
+    def render
       super
 
       (0...props[:height]).each do |y|

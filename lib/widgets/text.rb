@@ -28,7 +28,7 @@ module Widgets
 
   private
 
-    def draw
+    def render
       total = props[:width] - 1
       start = [0, props[:cursor_pos] - total].max
 
