@@ -16,7 +16,7 @@ module Widgets
       end
 
       def render_element
-        create_element :lines do
+        create_element :lines, width: props[:width] do
           create_element :line do
             create_element :text,
                            x: 0,
