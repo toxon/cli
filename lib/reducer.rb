@@ -1,7 +1,84 @@
 # frozen_string_literal: true
 
 module Reducer
+  def self.initial_state
+    {
+      x: 0,
+      y: 0,
+      width: Curses.stdscr.maxx,
+      height: Curses.stdscr.maxy,
+      focus: :sidebar,
+      focused: true,
+
+      active_friend_index: nil,
+
+      friends: {}.freeze,
+
+      sidebar: {
+        x: 0,
+        y: 0,
+        width: Widgets::Logo::WIDTH,
+        height: Curses.stdscr.maxy,
+        focus: :menu,
+        focused: true,
+
+        logo: {
+          x: 0,
+          y: 0,
+          width: Widgets::Logo::WIDTH,
+          height: Widgets::Logo::HEIGHT,
+        }.freeze,
+
+        menu: {
+          x: 0,
+          y: Widgets::Logo::HEIGHT,
+          width: Widgets::Logo::WIDTH,
+          height: Curses.stdscr.maxy - Widgets::Logo::HEIGHT,
+          focused: true,
+
+          active: 0,
+          top: 0,
+        }.freeze,
+      }.freeze,
+
+      chat: {
+        x: Widgets::Logo::WIDTH + 1,
+        y: 0,
+        width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
+        height: Curses.stdscr.maxy,
+        focus: :new_message,
+        focused: false,
+
+        info: {
+          x: Widgets::Logo::WIDTH + 1,
+          y: 0,
+          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
+          height: 2,
+          focused: false,
+        }.freeze,
+
+        new_message: {
+          x: Widgets::Logo::WIDTH + 1,
+          y: Curses.stdscr.maxy - 1,
+          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
+          height: 1,
+          focused: false,
+        }.freeze,
+
+        history: {
+          x: Widgets::Logo::WIDTH + 1,
+          y: 3,
+          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
+          height: Curses.stdscr.maxy - 5,
+          focused: true,
+        }.freeze,
+      }.freeze,
+    }.freeze
+  end
+
   def self.call(state, action)
+    state = initial_state if state == Obredux::UNDEFINED
+
     case action
     when Actions::LoadFriends
       state.merge(

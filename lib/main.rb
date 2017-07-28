@@ -28,13 +28,35 @@ class Main
 private
 
   def store
-    return @store if @store
-    @store = Obredux::Store.new Reducer
-    @store.state = initial_state
-    @store
+    @store ||= Obredux::Store.new Reducer
+  end
+
+  def state
+    store.state.merge(
+      on_window_left:  method(:on_window_left),
+      on_window_right: method(:on_window_right),
+
+      on_menu_up:   method(:on_menu_up),
+      on_menu_down: method(:on_menu_down),
+
+      on_new_message_enter: method(:on_new_message_enter),
+
+      on_new_message_putc: method(:on_new_message_putc),
+
+      on_new_message_left:  method(:on_new_message_left),
+      on_new_message_right: method(:on_new_message_right),
+      on_new_message_home:  method(:on_new_message_home),
+      on_new_message_end:   method(:on_new_message_end),
+
+      on_new_message_backspace: method(:on_new_message_backspace),
+      on_new_message_delete:    method(:on_new_message_delete),
+    ).freeze
   end
 
   def call
+    @screen = Screen.new
+    Style.default = Style.new
+
     tox_options = Tox::Options.new
     tox_options.savedata = File.binread SAVEDATA_FILENAME if File.exist? SAVEDATA_FILENAME
 
@@ -49,9 +71,6 @@ private
     @tox_client.on_friend_status_message_change(&method(:on_friend_status_message_change))
     @tox_client.on_friend_status_change(&method(:on_friend_status_change))
 
-    @screen = Screen.new
-    Style.default = Style.new
-
     @tox_client.run
   ensure
     @screen&.close
@@ -64,7 +83,7 @@ private
 
   def on_iteration
     @screen.poll
-    @screen.props = store.state
+    @screen.props = state
     @screen.draw
   end
 
@@ -142,109 +161,5 @@ private
 
   def on_new_message_delete
     store.dispatch Actions::NewMessageDelete.new
-  end
-
-  #########
-  # State #
-  #########
-
-  def initial_state
-    store.state ||= {
-      x: 0,
-      y: 0,
-      width: Curses.stdscr.maxx,
-      height: Curses.stdscr.maxy,
-      focus: :sidebar,
-      focused: true,
-
-      on_window_left:  method(:on_window_left),
-      on_window_right: method(:on_window_right),
-
-      on_menu_up:   method(:on_menu_up),
-      on_menu_down: method(:on_menu_down),
-
-      on_new_message_enter: method(:on_new_message_enter),
-
-      on_new_message_putc: method(:on_new_message_putc),
-
-      on_new_message_left:  method(:on_new_message_left),
-      on_new_message_right: method(:on_new_message_right),
-      on_new_message_home:  method(:on_new_message_home),
-      on_new_message_end:   method(:on_new_message_end),
-
-      on_new_message_backspace: method(:on_new_message_backspace),
-      on_new_message_delete:    method(:on_new_message_delete),
-
-      me: {
-        public_key:     @tox_client.public_key,
-        name:           @tox_client.name,
-        status:         @tox_client.status,
-        status_message: @tox_client.status_message,
-      },
-
-      active_friend_index: nil,
-
-      friends: {}.freeze,
-
-      sidebar: {
-        x: 0,
-        y: 0,
-        width: Widgets::Logo::WIDTH,
-        height: Curses.stdscr.maxy,
-        focus: :menu,
-        focused: true,
-
-        logo: {
-          x: 0,
-          y: 0,
-          width: Widgets::Logo::WIDTH,
-          height: Widgets::Logo::HEIGHT,
-        }.freeze,
-
-        menu: {
-          x: 0,
-          y: Widgets::Logo::HEIGHT,
-          width: Widgets::Logo::WIDTH,
-          height: Curses.stdscr.maxy - Widgets::Logo::HEIGHT,
-          focused: true,
-
-          active: 0,
-          top: 0,
-        }.freeze,
-      }.freeze,
-
-      chat: {
-        x: Widgets::Logo::WIDTH + 1,
-        y: 0,
-        width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
-        height: Curses.stdscr.maxy,
-        focus: :new_message,
-        focused: false,
-
-        info: {
-          x: Widgets::Logo::WIDTH + 1,
-          y: 0,
-          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
-          height: 2,
-          focused: false,
-        }.freeze,
-
-        new_message: {
-          x: Widgets::Logo::WIDTH + 1,
-          y: Curses.stdscr.maxy - 1,
-          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
-          height: 1,
-          focused: false,
-        }.freeze,
-
-        history: {
-          x: Widgets::Logo::WIDTH + 1,
-          y: 3,
-          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
-          height: Curses.stdscr.maxy - 5,
-          focused: true,
-        }.freeze,
-      }.freeze,
-    }.freeze
   end
 end

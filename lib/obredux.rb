@@ -10,11 +10,9 @@ module Obredux
   class Store
     attr_reader :reducer, :state
 
-    attr_writer :state
-
     def initialize(reducer)
       @reducer = reducer
-      # @state = reducer.call UNDEFINED, Init.new
+      @state = reducer.call UNDEFINED, Init.new
     end
 
     def dispatch(action)
