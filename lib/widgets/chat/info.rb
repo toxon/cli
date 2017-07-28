@@ -10,11 +10,6 @@ module Widgets
     private
 
       def render
-        render_main_line
-        render_public_key
-      end
-
-      def render_main_line
         setpos 0, 0
 
         case props[:status]
@@ -40,9 +35,7 @@ module Widgets
         end
         addstr ' : '
         addstr props[:status_message]
-      end
 
-      def render_public_key
         Curses::React::Nodes.create(
           create_element(:line) do
             create_element :text_line,
