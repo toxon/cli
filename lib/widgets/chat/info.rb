@@ -45,7 +45,7 @@ module Widgets
       def render_public_key
         setpos 0, 1
         addstr PUBLIC_KEY_LABEL
-        addstr props[:public_key].ljustetc props[:width] - PUBLIC_KEY_LABEL.length
+        addstr props[:public_key].ljustetc props[:width] - PUBLIC_KEY_LABEL.length if props[:public_key]
       end
     end
   end

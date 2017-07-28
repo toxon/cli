@@ -23,6 +23,9 @@ Metrics/LineLength:
 Metrics/MethodLength:
   Enabled: false
 
+Metrics/ModuleLength:
+  Enabled: false
+
 Metrics/ParameterLists:
   Enabled: false
 

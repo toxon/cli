@@ -27,6 +27,13 @@ class Main
 
 private
 
+  def store
+    return @store if @store
+    @store = Obredux::Store.new Reducer
+    @store.state = initial_state
+    @store
+  end
+
   def call
     tox_options = Tox::Options.new
     tox_options.savedata = File.binread SAVEDATA_FILENAME if File.exist? SAVEDATA_FILENAME
@@ -57,79 +64,32 @@ private
 
   def on_iteration
     @screen.poll
-    @screen.props = state
+    @screen.props = store.state
     @screen.draw
   end
 
   def on_friends_load(friends)
-    @state = Reducer.call state, Actions::LoadFriends.new(friends)
+    store.dispatch Actions::LoadFriends.new friends
   end
 
   def on_friend_request(public_key, _text)
-    friend = @tox_client.friend_add_norequest public_key
-
-    @state = state.merge(
-      active_friend_index: state[:active_friend_index] || state[:friends].count,
-
-      friends: state[:friends].merge(
-        friend.number => {
-          public_key:     friend.public_key.to_hex.freeze,
-          name:           friend.name.freeze,
-          status:         friend.status,
-          status_message: friend.status_message.freeze,
-          history:        [].freeze,
-          new_message: {
-            text: '',
-            cursor_pos: 0,
-          }.freeze,
-        }.freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::FriendRequest.new @tox_client, public_key
   end
 
   def on_friend_message(friend, text)
-    @state = state.merge(
-      friends: state[:friends].merge(
-        friend.number => state[:friends][friend.number].merge(
-          history: (state[:friends][friend.number][:history] + [
-            out:  false,
-            time: Time.now.utc.freeze,
-            name: friend.name.freeze,
-            text: text.freeze,
-          ]).freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::FriendMessage.new friend, text
   end
 
   def on_friend_name_change(friend, name)
-    @state = @state.merge(
-      friends: state[:friends].merge(
-        friend.number => state[:friends][friend.number].merge(
-          name: name.freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::ChangeFriendName.new friend, name
   end
 
   def on_friend_status_message_change(friend, status_message)
-    @state = @state.merge(
-      friends: state[:friends].merge(
-        friend.number => state[:friends][friend.number].merge(
-          status_message: status_message.freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::ChangeFriendStatusMessage.new friend, status_message
   end
 
   def on_friend_status_change(friend, status)
-    @state = @state.merge(
-      friends: state[:friends].merge(
-        friend.number => state[:friends][friend.number].merge(
-          status: status,
-        ).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::ChangeFriendStatus.new friend, status
   end
 
   ####################
@@ -137,335 +97,59 @@ private
   ####################
 
   def on_window_left
-    @state = state.merge(
-      focus: :sidebar,
-
-      sidebar: state[:sidebar].merge(
-        focused: true,
-
-        logo: state[:sidebar][:logo].merge(focused: state[:sidebar][:focus] == :logo).freeze,
-        menu: state[:sidebar][:menu].merge(focused: state[:sidebar][:focus] == :menu).freeze,
-      ).freeze,
-
-      chat: state[:chat].merge(
-        focused: false,
-
-        info:               state[:chat][:info].merge(focused: false).freeze,
-        new_message: state[:chat][:new_message].merge(focused: false).freeze,
-        history:         state[:chat][:history].merge(focused: false).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::WindowLeft.new
   end
 
   def on_window_right
-    @state = state.merge(
-      focus: :chat,
-
-      sidebar: state[:sidebar].merge(
-        focused: true,
-
-        logo: state[:sidebar][:logo].merge(focused: false).freeze,
-        menu: state[:sidebar][:menu].merge(focused: false).freeze,
-      ).freeze,
-
-      chat: state[:chat].merge(
-        focused: false,
-
-        info:               state[:chat][:info].merge(focused: state[:chat][:focus] == :info).freeze,
-        new_message: state[:chat][:new_message].merge(focused: state[:chat][:focus] == :new_message).freeze,
-        history:         state[:chat][:history].merge(focused: state[:chat][:focus] == :history).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::WindowRight.new
   end
 
   def on_menu_up
-    return if state[:active_friend_index].nil?
-
-    active_friend_index = state[:active_friend_index] + 1
-    top = state[:sidebar][:menu][:top]
-
-    if active_friend_index.negative?
-      active_friend_index = state[:friends].count - 1
-    elsif active_friend_index >= state[:friends].count
-      active_friend_index = 0
-    end
-
-    if active_friend_index < top
-      top = active_friend_index
-    elsif active_friend_index >= top + state[:height]
-      top = active_friend_index - state[:height] + 1
-    end
-
-    @state = state.merge(
-      active_friend_index: active_friend_index,
-
-      sidebar: state[:sidebar].merge(
-        menu: state[:sidebar][:menu].merge(
-          top: top,
-        ).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::MenuUp.new
   end
 
   def on_menu_down
-    return if state[:active_friend_index].nil?
-
-    active_friend_index = state[:active_friend_index] + 1
-    top = state[:sidebar][:menu][:top]
-
-    if active_friend_index.negative?
-      active_friend_index = state[:friends].count - 1
-    elsif active_friend_index >= state[:friends].count
-      active_friend_index = 0
-    end
-
-    if active_friend_index < top
-      top = active_friend_index
-    elsif active_friend_index >= top + state[:height]
-      top = active_friend_index - state[:height] + 1
-    end
-
-    @state = state.merge(
-      active_friend_index: active_friend_index,
-
-      sidebar: state[:sidebar].merge(
-        menu: state[:sidebar][:menu].merge(
-          top: top,
-        ).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::MenuDown.new
   end
 
   def on_new_message_enter
-    return if state[:active_friend_index].nil?
-
-    friend_number = state[:friends].keys[state[:active_friend_index]]
-
-    return if friend_number.nil?
-
-    text = state[:friends][friend_number][:new_message][:text].strip.freeze
-
-    return if text.empty?
-
-    error = false
-
-    begin
-      @tox_client.friend(friend_number).send_message text
-    rescue
-      error = true
-    end
-
-    @state = state.merge(
-      friends: state[:friends].merge(
-        friend_number => state[:friends][friend_number].merge(
-          new_message: state[:friends][friend_number][:new_message].merge(
-            text: '',
-            cursor_pos: 0,
-          ),
-
-          history: (state[:friends][friend_number][:history] + [
-            error:    error,
-            out:      true,
-            received: false,
-            time:     Time.now.utc.freeze,
-            name:     @tox_client.name.freeze,
-            text:     text,
-          ]).freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::NewMessageEnter.new @tox_client
   end
 
   def on_new_message_putc(char)
-    return if state[:active_friend_index].nil?
-
-    friend_number = state[:friends].keys[state[:active_friend_index]]
-
-    return if friend_number.nil?
-
-    friend = state[:friends][friend_number]
-    new_message = friend[:new_message]
-
-    text       = new_message[:text]
-    cursor_pos = new_message[:cursor_pos]
-
-    text = "#{text[0...cursor_pos]}#{char}#{text[cursor_pos..-1]}"
-    cursor_pos += 1
-
-    @state = state.merge(
-      friends: state[:friends].merge(
-        friend_number => friend.merge(
-          new_message: new_message.merge(
-            text: text,
-            cursor_pos: cursor_pos,
-          ).freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::NewMessagePutc.new char
   end
 
   def on_new_message_left
-    return if state[:active_friend_index].nil?
-
-    friend_number = state[:friends].keys[state[:active_friend_index]]
-
-    return if friend_number.nil?
-
-    friend = state[:friends][friend_number]
-    new_message = friend[:new_message]
-
-    cursor_pos = new_message[:cursor_pos]
-
-    cursor_pos -= 1
-
-    cursor_pos = 0 if cursor_pos.negative?
-
-    @state = state.merge(
-      friends: state[:friends].merge(
-        friend_number => friend.merge(
-          new_message: new_message.merge(
-            cursor_pos: cursor_pos,
-          ).freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::NewMessageLeft.new
   end
 
   def on_new_message_right
-    return if state[:active_friend_index].nil?
-
-    friend_number = state[:friends].keys[state[:active_friend_index]]
-
-    return if friend_number.nil?
-
-    friend = state[:friends][friend_number]
-    new_message = friend[:new_message]
-
-    text       = new_message[:text]
-    cursor_pos = new_message[:cursor_pos]
-
-    cursor_pos += 1
-
-    cursor_pos = text.length if cursor_pos > text.length
-
-    @state = state.merge(
-      friends: state[:friends].merge(
-        friend_number => friend.merge(
-          new_message: new_message.merge(
-            cursor_pos: cursor_pos,
-          ).freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::NewMessageRight.new
   end
 
   def on_new_message_home
-    return if state[:active_friend_index].nil?
-
-    friend_number = state[:friends].keys[state[:active_friend_index]]
-
-    return if friend_number.nil?
-
-    friend = state[:friends][friend_number]
-    new_message = friend[:new_message]
-
-    @state = state.merge(
-      friends: state[:friends].merge(
-        friend_number => friend.merge(
-          new_message: new_message.merge(
-            cursor_pos: 0,
-          ).freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::NewMessageHome.new
   end
 
   def on_new_message_end
-    return if state[:active_friend_index].nil?
-
-    friend_number = state[:friends].keys[state[:active_friend_index]]
-
-    return if friend_number.nil?
-
-    friend = state[:friends][friend_number]
-    new_message = friend[:new_message]
-
-    @state = state.merge(
-      friends: state[:friends].merge(
-        friend_number => friend.merge(
-          new_message: new_message.merge(
-            cursor_pos: new_message[:text].length,
-          ).freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::NewMessageEnd.new
   end
 
   def on_new_message_backspace
-    return if state[:active_friend_index].nil?
-
-    friend_number = state[:friends].keys[state[:active_friend_index]]
-
-    return if friend_number.nil?
-
-    friend = state[:friends][friend_number]
-    new_message = friend[:new_message]
-
-    text       = new_message[:text]
-    cursor_pos = new_message[:cursor_pos]
-
-    return unless cursor_pos.positive?
-
-    text = "#{text[0...(cursor_pos - 1)]}#{text[cursor_pos..-1]}"
-    cursor_pos -= 1
-
-    @state = state.merge(
-      friends: state[:friends].merge(
-        friend_number => friend.merge(
-          new_message: new_message.merge(
-            text:       text,
-            cursor_pos: cursor_pos,
-          ).freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::NewMessageBackspace.new
   end
 
   def on_new_message_delete
-    return if state[:active_friend_index].nil?
-
-    friend_number = state[:friends].keys[state[:active_friend_index]]
-
-    return if friend_number.nil?
-
-    friend = state[:friends][friend_number]
-    new_message = friend[:new_message]
-
-    text       = new_message[:text]
-    cursor_pos = new_message[:cursor_pos]
-
-    return if cursor_pos > text.length
-
-    text = "#{text[0...cursor_pos]}#{text[(cursor_pos + 1)..-1]}"
-
-    @state = state.merge(
-      friends: state[:friends].merge(
-        friend_number => friend.merge(
-          new_message: new_message.merge(
-            text:       text,
-            cursor_pos: cursor_pos,
-          ).freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
+    store.dispatch Actions::NewMessageDelete.new
   end
 
   #########
   # State #
   #########
 
-  def state
-    @state ||= {
+  def initial_state
+    store.state ||= {
       x: 0,
       y: 0,
       width: Curses.stdscr.maxx,
