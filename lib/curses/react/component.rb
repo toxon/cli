@@ -50,6 +50,10 @@ module Curses
       def addstr(s)
         window.addstr s
       end
+
+      def create_element(type, props = {}, &block)
+        Element.create type, props, &block
+      end
     end
   end
 end

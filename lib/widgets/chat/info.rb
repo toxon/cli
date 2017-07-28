@@ -44,8 +44,8 @@ module Widgets
 
       def render_public_key
         Curses::React::Nodes.create(
-          Curses::React::Element.create(:line) do
-            Curses::React::Element.create(
+          create_element(:line) do
+            create_element(
               :text_line,
               x: 0,
               y: 1,
@@ -53,7 +53,7 @@ module Widgets
               text: PUBLIC_KEY_LABEL,
             )
 
-            Curses::React::Element.create(
+            create_element(
               :text_line,
               x: PUBLIC_KEY_LABEL.length,
               y: 1,
