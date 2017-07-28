@@ -19,7 +19,7 @@ module Curses
 
         def children
           props[:children].map do |child_element|
-            Nodes.create child_element, @window
+            Nodes.klass_for(child_element).new child_element, @window
           end
         end
       end

@@ -6,12 +6,12 @@ require 'curses/react/nodes/wrapper'
 module Curses
   module React
     module Nodes
-      def self.create(element, window)
+      def self.klass_for(element)
         raise TypeError, "expected element to be an #{Element}" unless element.is_a? Element
 
         case element.type
-        when :text_line then TextLine.new element, window
-        when :wrapper   then Wrapper.new  element, window
+        when :text_line then TextLine
+        when :wrapper   then Wrapper
         else
           raise "unknown element type: #{element.type.inspect}"
         end
