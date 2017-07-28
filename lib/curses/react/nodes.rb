@@ -2,6 +2,7 @@
 
 require 'curses/react/nodes/text'
 require 'curses/react/nodes/wrapper'
+require 'curses/react/nodes/line'
 
 module Curses
   module React
@@ -12,6 +13,7 @@ module Curses
         case element.type
         when :text    then Text
         when :wrapper then Wrapper
+        when :line    then Line
         else
           raise "unknown element type: #{element.type.inspect}"
         end

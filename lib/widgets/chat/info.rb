@@ -17,7 +17,7 @@ module Widgets
 
       def render_element
         create_element :wrapper do
-          create_element :wrapper do
+          create_element :line do
             create_element :text,
                            x: 0,
                            y: 0,
@@ -43,7 +43,7 @@ module Widgets
                            text: props[:status_message]
           end
 
-          create_element :wrapper do
+          create_element :line do
             create_element :text,
                            x: 0,
                            y: 1,
