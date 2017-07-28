@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Obredux
-  UNDEFINED = Object.new.freeze
+  UNDEFINED = {}.freeze
 
   class Action; end
 
@@ -22,14 +22,39 @@ module Obredux
   end
 
   class Reducer
+    def self.combine(options = nil)
+      @combine ||= {}
+
+      return @combine if options.nil?
+
+      options.each do |key, reducer_klass|
+        @combine[key] = reducer_klass
+      end
+    end
+
     def initialize(state, action)
       @state = state
       @action = action
     end
 
     def call
-      @state = initial_state if state.equal? UNDEFINED
+      init = state.equal? UNDEFINED
+
       @state ||= {}.freeze
+
+      unless self.class.combine.empty?
+        @state = state.merge(
+          self.class.combine.map do |key, reducer_klass|
+            [
+              key,
+              reducer_klass.new(state[key], action).call,
+            ]
+          end.to_h.freeze,
+        ).freeze
+      end
+
+      @state = state.merge initial_state if init
+
       reduce
     end
 

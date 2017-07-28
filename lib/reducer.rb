@@ -3,6 +3,8 @@
 require 'reducers/data'
 
 class Reducer < Obredux::Reducer
+  combine data: Reducers::Data
+
   class << self
     attr_reader :screen_width, :screen_height
 
@@ -93,10 +95,6 @@ private
   end
 
   def reduce
-    @state = state.merge(
-      data: Reducers::Data.new(state[:data], action).call,
-    )
-
     case action
     when Actions::FriendMessage
       friend_message
