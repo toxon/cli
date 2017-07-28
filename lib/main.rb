@@ -5,6 +5,8 @@ require 'tox'
 require 'thread'
 
 require 'helpers'
+require 'actions'
+require 'reducer'
 require 'screen'
 
 class Main
@@ -60,24 +62,7 @@ private
   end
 
   def on_friends_load(friends)
-    @state = state.merge(
-      active_friend_index: friends.empty? ? nil : 0,
-
-      friends: friends.map do |friend|
-        [
-          friend.number,
-          public_key:     friend.public_key.to_hex.freeze,
-          name:           friend.name.freeze,
-          status:         friend.status,
-          status_message: friend.status_message.freeze,
-          history:        [].freeze,
-          new_message: {
-            text: '',
-            cursor_pos: 0,
-          }.freeze,
-        ]
-      end.to_h.freeze,
-    ).freeze
+    @state = Reducer.call state, Actions::LoadFriends.new(friends)
   end
 
   def on_friend_request(public_key, _text)
