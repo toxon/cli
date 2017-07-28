@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
-class Reducer
-  attr_reader :state, :action
-
-  def initialize(state, action)
-    @state = state
-    @action = action
-  end
+class Reducer < Obredux::Reducer
+private
 
   def initial_state
     {
@@ -83,9 +78,7 @@ class Reducer
     }.freeze
   end
 
-  def call
-    @state = initial_state if state == Obredux::UNDEFINED
-
+  def reduce
     case action
     when Actions::LoadFriends
       load_friends

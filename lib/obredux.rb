@@ -20,4 +20,24 @@ module Obredux
       @state = reducer_klass.new(state, action).call
     end
   end
+
+  class Reducer
+    def initialize(state, action)
+      @state = state
+      @action = action
+    end
+
+    def call
+      @state = initial_state if state.equal? UNDEFINED
+      reduce
+    end
+
+  private
+
+    attr_reader :state, :action
+
+    def initial_state
+      raise NotImplementedError, "#{self.class}#initial_state"
+    end
+  end
 end
