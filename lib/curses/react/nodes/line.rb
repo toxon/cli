@@ -16,7 +16,7 @@ module Curses
           props[:children].map do |child_element|
             node_klass = Nodes.klass_for child_element
             raise "#{self.class} can only have children of type #{Text}" unless node_klass <= Text
-            child_node = node_klass.new child_element, @window, max_width: width - left
+            child_node = node_klass.new child_element, @window, x: left, max_width: width - left
             left += child_node.width
             child_node
           end

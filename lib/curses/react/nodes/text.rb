@@ -6,11 +6,12 @@ module Curses
   module React
     module Nodes
       class Text
-        attr_reader :max_width
+        attr_reader :x, :max_width
 
-        def initialize(element, window, max_width:)
+        def initialize(element, window, x:, max_width:)
           @element = element
           @window = window
+          self.x = x
           self.max_width = max_width
         end
 
@@ -25,7 +26,7 @@ module Curses
         def draw
           return if props[:text].nil?
           @window.attron props[:attr] if props[:attr]
-          setpos props[:x], props[:y]
+          setpos x, props[:y]
           addstr props[:text].ljustetc props[:width]
           @window.attroff props[:attr] if props[:attr]
         end
@@ -39,6 +40,12 @@ module Curses
         end
 
       private
+
+        def x=(value)
+          raise TypeError,     "expected x to be an #{Integer}"                 unless value.is_a? Integer
+          raise ArgumentError, 'expected x to be greater than or equal to zero' unless value >= 0
+          @x = value
+        end
 
         def max_width=(value)
           raise TypeError, "expected max width to be an #{Integer}" unless value.is_a? Integer
