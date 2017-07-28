@@ -48,6 +48,13 @@ module Curses
         children.freeze
       end
 
+      def all_props
+        @all_props ||= props.merge(
+          key:      key,
+          children: children,
+        ).freeze
+      end
+
     private
 
       def children

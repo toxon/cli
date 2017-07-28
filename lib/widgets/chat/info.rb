@@ -43,9 +43,27 @@ module Widgets
       end
 
       def render_public_key
-        setpos 0, 1
-        addstr PUBLIC_KEY_LABEL
-        addstr props[:public_key].ljustetc props[:width] - PUBLIC_KEY_LABEL.length if props[:public_key]
+        Curses::React::Nodes::TextLine.new(
+          Curses::React::Element.create(
+            :text_line,
+            x: 0,
+            y: 1,
+            width: PUBLIC_KEY_LABEL.length,
+            text: PUBLIC_KEY_LABEL,
+          ),
+          window,
+        ).draw
+
+        Curses::React::Nodes::TextLine.new(
+          Curses::React::Element.create(
+            :text_line,
+            x: PUBLIC_KEY_LABEL.length,
+            y: 1,
+            width: props[:width] - PUBLIC_KEY_LABEL.length,
+            text: props[:public_key],
+          ),
+          window,
+        ).draw
       end
     end
   end
