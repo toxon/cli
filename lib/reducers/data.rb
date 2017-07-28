@@ -17,6 +17,8 @@ module Reducers
         load_friends
       when Actions::AddFriend
         add_friend
+      when Actions::AddFriendMessage
+        add_friend_message
       else
         state
       end
@@ -59,6 +61,21 @@ module Reducers
               cursor_pos: 0,
             }.freeze,
           }.freeze,
+        ).freeze,
+      ).freeze
+    end
+
+    def add_friend_message
+      state.merge(
+        friends: state[:friends].merge(
+          action.friend.number => state[:friends][action.friend.number].merge(
+            history: (state[:friends][action.friend.number][:history] + [
+              out:  false,
+              time: Time.now.utc.freeze,
+              name: action.friend.name.freeze,
+              text: action.text.freeze,
+            ]).freeze,
+          ).freeze,
         ).freeze,
       ).freeze
     end

@@ -4,7 +4,7 @@ require 'obredux'
 
 require 'actions/load_friends'
 require 'actions/add_friend'
-require 'actions/friend_message'
+require 'actions/add_friend_message'
 require 'actions/change_friend_name'
 require 'actions/change_friend_status'
 require 'actions/change_friend_status_message'

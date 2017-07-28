@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Actions
-  class FriendMessage < Obredux::Action
+  class AddFriendMessage < Obredux::Action
     attr_reader :friend, :text
 
     def initialize(friend, text)

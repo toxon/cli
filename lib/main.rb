@@ -101,7 +101,7 @@ private
   end
 
   def on_friend_message(friend, text)
-    store.dispatch Actions::FriendMessage.new friend, text
+    store.dispatch Actions::AddFriendMessage.new friend, text
   end
 
   def on_friend_name_change(friend, name)

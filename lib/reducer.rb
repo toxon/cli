@@ -96,8 +96,6 @@ private
 
   def reduce
     case action
-    when Actions::FriendMessage
-      friend_message
     when Actions::ChangeFriendName
       change_friend_name
     when Actions::ChangeFriendStatusMessage
@@ -131,23 +129,6 @@ private
     else
       state
     end
-  end
-
-  def friend_message
-    state.merge(
-      data: state[:data].merge(
-        friends: state[:data][:friends].merge(
-          action.friend.number => state[:data][:friends][action.friend.number].merge(
-            history: (state[:data][:friends][action.friend.number][:history] + [
-              out:  false,
-              time: Time.now.utc.freeze,
-              name: action.friend.name.freeze,
-              text: action.text.freeze,
-            ]).freeze,
-          ).freeze,
-        ).freeze,
-      ).freeze,
-    ).freeze
   end
 
   def change_friend_name
