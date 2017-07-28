@@ -11,6 +11,7 @@ module Curses
         def initialize(element, window, x:, y:, max_width:)
           @element = element
           @window = window
+
           self.x = x
           self.y = y
           self.max_width = max_width
@@ -20,24 +21,25 @@ module Curses
           @element.all_props
         end
 
+        def max_height
+          1
+        end
+
         def width
           [props[:text].length, max_width].min
         end
 
+        def height
+          1
+        end
+
         def draw
           return if props[:text].nil?
-          @window.attron props[:attr] if props[:attr]
-          setpos x, y
-          addstr props[:text].ljustetc width
+
+          @window.setpos  y, x
+          @window.attron  props[:attr] if props[:attr]
+          @window.addstr  props[:text].ljustetc width
           @window.attroff props[:attr] if props[:attr]
-        end
-
-        def setpos(x, y)
-          @window.setpos y, x
-        end
-
-        def addstr(s)
-          @window.addstr s
         end
 
       private
