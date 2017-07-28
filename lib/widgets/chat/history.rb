@@ -27,7 +27,12 @@ module Widgets
       end
 
       def render_message(offset, error, out, time, name, text)
-        lines = render_lines offset, out, text
+        width = props[:width] / 3 * 2
+        left  = out ? props[:width] - width : 0
+
+        lines = (text.length / width.to_f).ceil
+
+        render_lines offset, out, text, width, left, lines
 
         elem = render_header error, out, name, time
         width = name.length + time.length + (error ? 3 : 1)
@@ -66,12 +71,7 @@ module Widgets
         end
       end
 
-      def render_lines(offset, out, text)
-        width = props[:width] / 3 * 2
-        left  = out ? props[:width] - width : 0
-
-        lines = (text.length / width.to_f).ceil
-
+      def render_lines(offset, out, text, width, left, lines)
         1.upto lines do |line|
           s = text[(width * (line - 1))...(width * line)].strip
 
@@ -83,8 +83,6 @@ module Widgets
 
           addstr s
         end
-
-        lines
       end
     end
   end
