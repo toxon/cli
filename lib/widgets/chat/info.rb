@@ -37,13 +37,7 @@ module Widgets
                              width: props[:width] - (status_text.length + 1 + props[:name].length + 3),
                              text: props[:status_message]
             end
-          end,
 
-          window,
-        ).draw
-
-        Curses::React::Nodes.create(
-          create_element(:wrapper) do
             create_element :wrapper do
               create_element :text_line,
                              x: 0,
