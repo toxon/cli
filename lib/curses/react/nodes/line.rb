@@ -18,6 +18,16 @@ module Curses
           1
         end
 
+        def attr
+          props[:attr]
+        end
+
+        def draw
+          window.attron attr if attr
+          super
+          window.attroff attr if attr
+        end
+
         def children
           left = 0
           props[:children].map do |child_element|
