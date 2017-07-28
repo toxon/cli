@@ -33,7 +33,15 @@ module Widgets
 
         lines = (text.length / full_message_block_width.to_f).ceil
 
-        elem = render_lines offset, out, text, full_message_block_width, full_message_block_x, lines
+        elem = render_lines(
+          offset,
+          out,
+          text,
+          full_message_block_width,
+          full_message_block_x,
+          lines,
+        )
+
         Curses::React::Nodes.klass_for(elem).new(elem, window).draw
 
         elem = render_header(
@@ -45,6 +53,7 @@ module Widgets
           y: props[:height] - offset - lines - 1,
           width: header_width,
         )
+
         Curses::React::Nodes.klass_for(elem).new(elem, window).draw
 
         1 + lines
