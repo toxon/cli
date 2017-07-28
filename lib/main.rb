@@ -57,6 +57,9 @@ private
     @screen = Screen.new
     Style.default = Style.new
 
+    Reducer.screen_width  = Curses.stdscr.maxx
+    Reducer.screen_height = Curses.stdscr.maxy
+
     tox_options = Tox::Options.new
     tox_options.savedata = File.binread SAVEDATA_FILENAME if File.exist? SAVEDATA_FILENAME
 

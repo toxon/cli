@@ -1,14 +1,30 @@
 # frozen_string_literal: true
 
 class Reducer < Obredux::Reducer
+  class << self
+    attr_reader :screen_width, :screen_height
+
+    def screen_width=(value)
+      raise TypeError,     "expected screen width to be an #{Integer}"                 unless value.is_a? Integer
+      raise ArgumentError, 'expected screen width to be greater than or equal to zero' unless value >= 0
+      @screen_width = value
+    end
+
+    def screen_height=(value)
+      raise TypeError,     "expected screen height to be an #{Integer}"                 unless value.is_a? Integer
+      raise ArgumentError, 'expected screen height to be greater than or equal to zero' unless value >= 0
+      @screen_height = value
+    end
+  end
+
 private
 
   def initial_state
     {
       x: 0,
       y: 0,
-      width: Curses.stdscr.maxx,
-      height: Curses.stdscr.maxy,
+      width: self.class.screen_width,
+      height: self.class.screen_height,
       focus: :sidebar,
       focused: true,
 
@@ -20,7 +36,7 @@ private
         x: 0,
         y: 0,
         width: Widgets::Logo::WIDTH,
-        height: Curses.stdscr.maxy,
+        height: self.class.screen_height,
         focus: :menu,
         focused: true,
 
@@ -35,7 +51,7 @@ private
           x: 0,
           y: Widgets::Logo::HEIGHT,
           width: Widgets::Logo::WIDTH,
-          height: Curses.stdscr.maxy - Widgets::Logo::HEIGHT,
+          height: self.class.screen_height - Widgets::Logo::HEIGHT,
           focused: true,
 
           active: 0,
@@ -46,23 +62,23 @@ private
       chat: {
         x: Widgets::Logo::WIDTH + 1,
         y: 0,
-        width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
-        height: Curses.stdscr.maxy,
+        width: self.class.screen_width - Widgets::Logo::WIDTH - 1,
+        height: self.class.screen_height,
         focus: :new_message,
         focused: false,
 
         info: {
           x: Widgets::Logo::WIDTH + 1,
           y: 0,
-          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
+          width: self.class.screen_width - Widgets::Logo::WIDTH - 1,
           height: 2,
           focused: false,
         }.freeze,
 
         new_message: {
           x: Widgets::Logo::WIDTH + 1,
-          y: Curses.stdscr.maxy - 1,
-          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
+          y: self.class.screen_height - 1,
+          width: self.class.screen_width - Widgets::Logo::WIDTH - 1,
           height: 1,
           focused: false,
         }.freeze,
@@ -70,8 +86,8 @@ private
         history: {
           x: Widgets::Logo::WIDTH + 1,
           y: 3,
-          width: Curses.stdscr.maxx - Widgets::Logo::WIDTH - 1,
-          height: Curses.stdscr.maxy - 5,
+          width: self.class.screen_width - Widgets::Logo::WIDTH - 1,
+          height: self.class.screen_height - 5,
           focused: true,
         }.freeze,
       }.freeze,
