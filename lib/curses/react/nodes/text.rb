@@ -27,7 +27,7 @@ module Curses
           return if props[:text].nil?
           @window.attron props[:attr] if props[:attr]
           setpos x, props[:y]
-          addstr props[:text].ljustetc props[:width]
+          addstr props[:text].ljustetc width
           @window.attroff props[:attr] if props[:attr]
         end
 
