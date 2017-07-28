@@ -4,10 +4,12 @@ module Curses
   module React
     module Nodes
       class Line < Wrapper
-        attr_reader :width
+        attr_reader :x, :y, :width
 
-        def initialize(element, window, width:)
+        def initialize(element, window, x:, y:, width:)
           super element, window
+          self.x = x
+          self.y = y
           self.width = width
         end
 
@@ -16,13 +18,25 @@ module Curses
           props[:children].map do |child_element|
             node_klass = Nodes.klass_for child_element
             raise "#{self.class} can only have children of type #{Text}" unless node_klass <= Text
-            child_node = node_klass.new child_element, @window, x: left, max_width: width - left
+            child_node = node_klass.new child_element, @window, x: x + left, y: y, max_width: width - left
             left += child_node.width
             child_node
           end
         end
 
       private
+
+        def x=(value)
+          raise TypeError,     "expected x to be an #{Integer}"                 unless value.is_a? Integer
+          raise ArgumentError, 'expected x to be greater than or equal to zero' unless value >= 0
+          @x = value
+        end
+
+        def y=(value)
+          raise TypeError,     "expected y to be an #{Integer}"                 unless value.is_a? Integer
+          raise ArgumentError, 'expected y to be greater than or equal to zero' unless value >= 0
+          @y = value
+        end
 
         def width=(value)
           raise TypeError, "expected width to be an #{Integer}" unless value.is_a? Integer
