@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
-module Reducer
-  def self.initial_state
+class Reducer
+  attr_reader :state, :action
+
+  def initialize(state, action)
+    @state = state
+    @action = action
+  end
+
+  def initial_state
     {
       x: 0,
       y: 0,
@@ -76,52 +83,52 @@ module Reducer
     }.freeze
   end
 
-  def self.call(state, action)
-    state = initial_state if state == Obredux::UNDEFINED
+  def call
+    @state = initial_state if state == Obredux::UNDEFINED
 
     case action
     when Actions::LoadFriends
-      load_friends state, action
+      load_friends
     when Actions::FriendRequest
-      friend_request state, action
+      friend_request
     when Actions::FriendMessage
-      friend_message state, action
+      friend_message
     when Actions::ChangeFriendName
-      change_friend_name state, action
+      change_friend_name
     when Actions::ChangeFriendStatusMessage
-      change_friend_status_message state, action
+      change_friend_status_message
     when Actions::ChangeFriendStatus
-      change_friend_status state, action
+      change_friend_status
     when Actions::WindowLeft
-      window_left state, action
+      window_left
     when Actions::WindowRight
-      window_right state, action
+      window_right
     when Actions::MenuUp
-      menu_up state, action
+      menu_up
     when Actions::MenuDown
-      menu_down state, action
+      menu_down
     when Actions::NewMessageEnter
-      new_message_enter state, action
+      new_message_enter
     when Actions::NewMessagePutc
-      new_message_putc state, action
+      new_message_putc
     when Actions::NewMessageLeft
-      new_message_left state, action
+      new_message_left
     when Actions::NewMessageRight
-      new_message_right state, action
+      new_message_right
     when Actions::NewMessageHome
-      new_message_home state, action
+      new_message_home
     when Actions::NewMessageEnd
-      new_message_end state, action
+      new_message_end
     when Actions::NewMessageBackspace
-      new_message_backspace state, action
+      new_message_backspace
     when Actions::NewMessageDelete
-      new_message_delete state, action
+      new_message_delete
     else
       state
     end
   end
 
-  def self.load_friends(state, action)
+  def load_friends
     state.merge(
       active_friend_index: action.friends.empty? ? nil : 0,
       friends: action.friends.map do |friend|
@@ -141,7 +148,7 @@ module Reducer
     ).freeze
   end
 
-  def self.friend_request(state, action)
+  def friend_request
     friend = action.tox_client.friend_add_norequest action.public_key
 
     state.merge(
@@ -163,7 +170,7 @@ module Reducer
     ).freeze
   end
 
-  def self.friend_message(state, action)
+  def friend_message
     state.merge(
       friends: state[:friends].merge(
         action.friend.number => state[:friends][action.friend.number].merge(
@@ -178,7 +185,7 @@ module Reducer
     ).freeze
   end
 
-  def self.change_friend_name(state, action)
+  def change_friend_name
     state.merge(
       friends: state[:friends].merge(
         action.friend.number => state[:friends][action.friend.number].merge(
@@ -188,7 +195,7 @@ module Reducer
     ).freeze
   end
 
-  def self.change_friend_status_message(state, action)
+  def change_friend_status_message
     state.merge(
       friends: state[:friends].merge(
         action.friend.number => state[:friends][action.friend.number].merge(
@@ -198,7 +205,7 @@ module Reducer
     ).freeze
   end
 
-  def self.change_friend_status(state, action)
+  def change_friend_status
     state.merge(
       friends: state[:friends].merge(
         action.friend.number => state[:friends][action.friend.number].merge(
@@ -208,7 +215,7 @@ module Reducer
     ).freeze
   end
 
-  def self.window_left(state, _action)
+  def window_left
     state.merge(
       focus: :sidebar,
 
@@ -229,7 +236,7 @@ module Reducer
     ).freeze
   end
 
-  def self.window_right(state, _action)
+  def window_right
     state.merge(
       focus: :chat,
 
@@ -250,7 +257,7 @@ module Reducer
     ).freeze
   end
 
-  def self.menu_up(state, _action)
+  def menu_up
     return state if state[:active_friend_index].nil?
 
     active_friend_index = state[:active_friend_index] + 1
@@ -279,7 +286,7 @@ module Reducer
     ).freeze
   end
 
-  def self.menu_down(state, _action)
+  def menu_down
     return state if state[:active_friend_index].nil?
 
     active_friend_index = state[:active_friend_index] + 1
@@ -308,7 +315,7 @@ module Reducer
     ).freeze
   end
 
-  def self.new_message_enter(state, action)
+  def new_message_enter
     return state if state[:active_friend_index].nil?
 
     friend_number = state[:friends].keys[state[:active_friend_index]]
@@ -348,7 +355,7 @@ module Reducer
     ).freeze
   end
 
-  def self.new_message_putc(state, action)
+  def new_message_putc
     return state if state[:active_friend_index].nil?
 
     friend_number = state[:friends].keys[state[:active_friend_index]]
@@ -376,7 +383,7 @@ module Reducer
     ).freeze
   end
 
-  def self.new_message_left(state, _action)
+  def new_message_left
     return state if state[:active_friend_index].nil?
 
     friend_number = state[:friends].keys[state[:active_friend_index]]
@@ -403,7 +410,7 @@ module Reducer
     ).freeze
   end
 
-  def self.new_message_right(state, _action)
+  def new_message_right
     return state if state[:active_friend_index].nil?
 
     friend_number = state[:friends].keys[state[:active_friend_index]]
@@ -431,7 +438,7 @@ module Reducer
     ).freeze
   end
 
-  def self.new_message_home(state, _action)
+  def new_message_home
     return state if state[:active_friend_index].nil?
 
     friend_number = state[:friends].keys[state[:active_friend_index]]
@@ -452,7 +459,7 @@ module Reducer
     ).freeze
   end
 
-  def self.new_message_end(state, _action)
+  def new_message_end
     return state if state[:active_friend_index].nil?
 
     friend_number = state[:friends].keys[state[:active_friend_index]]
@@ -473,7 +480,7 @@ module Reducer
     ).freeze
   end
 
-  def self.new_message_backspace(state, _action)
+  def new_message_backspace
     return state if state[:active_friend_index].nil?
 
     friend_number = state[:friends].keys[state[:active_friend_index]]
@@ -503,7 +510,7 @@ module Reducer
     ).freeze
   end
 
-  def self.new_message_delete(state, _action)
+  def new_message_delete
     return state if state[:active_friend_index].nil?
 
     friend_number = state[:friends].keys[state[:active_friend_index]]

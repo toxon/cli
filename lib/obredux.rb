@@ -8,15 +8,16 @@ module Obredux
   class Init < Action; end
 
   class Store
-    attr_reader :reducer, :state
+    attr_reader :reducer_klass, :state
 
-    def initialize(reducer)
-      @reducer = reducer
-      @state = reducer.call UNDEFINED, Init.new
+    def initialize(reducer_klass)
+      @reducer_klass = reducer_klass
+      @state = UNDEFINED
+      dispatch Init.new
     end
 
     def dispatch(action)
-      @state = reducer.call state, action
+      @state = reducer_klass.new(state, action).call
     end
   end
 end
