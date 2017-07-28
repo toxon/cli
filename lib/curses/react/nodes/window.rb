@@ -14,19 +14,19 @@ module Curses
         end
 
         def x
-          props[:x]
+          props[:x] || @x
         end
 
         def y
-          props[:y]
+          props[:y] || @y
         end
 
         def width
-          props[:width]
+          props[:width] || @width
         end
 
         def height
-          props[:height]
+          props[:height] || @height
         end
 
         def draw
@@ -37,7 +37,32 @@ module Curses
         def children
           return [] if props[:children].empty?
           raise 'window can include only single child' unless props[:children].size == 1
-          super
+          super.each do |child_node|
+            child_node.x = 0
+            child_node.y = 0
+            child_node.width = width
+            child_node.height = height
+          end
+        end
+
+        def x=(value)
+          raise TypeError, "expected x to be an #{Integer}" unless value.is_a? Integer
+          @x = value
+        end
+
+        def y=(value)
+          raise TypeError, "expected y to be an #{Integer}" unless value.is_a? Integer
+          @y = value
+        end
+
+        def width=(value)
+          raise TypeError, "expected width to be an #{Integer}" unless value.is_a? Integer
+          @width = value
+        end
+
+        def height=(value)
+          raise TypeError, "expected height to be an #{Integer}" unless value.is_a? Integer
+          @height = value
         end
       end
     end

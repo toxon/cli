@@ -14,7 +14,7 @@ module Widgets
 
       def render
         create_element :window, x: props[:x], y: props[:y], width: props[:width], height: props[:height] do
-          create_element :lines, x: 0, y: 0, width: props[:width] do
+          create_element :lines do
             create_element :line do
               create_element :text, text: status_text, attr: status_attr
               create_element :text, text: ' '
