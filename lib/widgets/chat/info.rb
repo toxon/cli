@@ -19,18 +19,23 @@ module Widgets
                              width: status_text.length,
                              text: status_text,
                              attr: status_attr
+
+              create_element :text_line, x: status_text.length, y: 0, width: 1, text: ' '
+
+              create_element :text_line,
+                             x: status_text.length + 1,
+                             y: 0,
+                             width: props[:name].length,
+                             text: props[:name],
+                             attr: Style.default.peer_info_name_attr
             end
           end,
 
           window,
         ).draw
 
-        setpos status_text.length, 0
+        setpos status_text.length + 1 + props[:name].length, 0
 
-        addstr ' '
-        Style.default.peer_info_name window do
-          addstr props[:name]
-        end
         addstr ' : '
         addstr props[:status_message]
 
