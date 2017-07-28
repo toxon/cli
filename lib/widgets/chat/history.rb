@@ -40,8 +40,8 @@ module Widgets
       def render_message(out, error, text, name, time, lines, x:, y:)
         text_width = name.length + time.length + (error ? 3 : 1)
 
-        create_element :lines, x: x, y: y, width: message_block_width do
-          create_element :line do
+        create_element :lines, x: 0, y: y, width: message_block_width do
+          create_element :line, x: out ? x : 0, rjust: out do
             if out
               create_element :text, text: ' ' * (message_block_width - text_width)
 
@@ -66,7 +66,7 @@ module Widgets
           end
 
           1.upto lines do |line|
-            create_element :line do
+            create_element :line, x: out ? x : 0, rjust: out do
               s = text[(message_block_width * (line - 1))...(message_block_width * line)].strip
               create_element :text, text: out ? s.rjust(message_block_width) : s
             end

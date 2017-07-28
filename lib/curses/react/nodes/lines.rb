@@ -8,12 +8,17 @@ module Curses
           props[:children].each_with_index.map do |child_element, index|
             node_klass = Nodes.klass_for child_element
             raise "#{self.class} can only have children of type #{Line}" unless node_klass <= Line
-            node_klass.new child_element, window, x: x, y: y + index, width: width
+            node_klass.new child_element, window, x: x, y: y + index, width: width, rjust: rjust
           end
         end
 
         def height
           props[:children].size
+        end
+
+        def rjust
+          return props[:rjust] unless props[:jrust].nil?
+          false
         end
       end
     end
