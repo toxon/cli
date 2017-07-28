@@ -39,8 +39,6 @@ module Curses
           end
         end
 
-      private
-
         def x=(value)
           raise TypeError, "expected x to be an #{Integer}" unless value.is_a? Integer
           @x = value
