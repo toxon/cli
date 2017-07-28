@@ -19,19 +19,14 @@ module Widgets
         create_element :lines, x: 0, y: 0, width: props[:width] do
           create_element :line do
             create_element :text, text: status_text, attr: status_attr
-
             create_element :text, text: ' '
-
             create_element :text, text: props[:name], attr: Style.default.peer_info_name_attr
-
             create_element :text, text: ' : '
-
             create_element :text, text: props[:status_message]
           end
 
           create_element :line do
             create_element :text, text: PUBLIC_KEY_LABEL
-
             create_element :text, text: props[:public_key]
           end
         end
