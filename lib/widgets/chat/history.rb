@@ -48,7 +48,7 @@ module Widgets
           out,
           name,
           time,
-          x: out ? props[:width] - full_message_block_width : 0,
+          x: full_message_block_x,
           y: props[:height] - offset - lines - 1,
           width: full_message_block_width,
         )
