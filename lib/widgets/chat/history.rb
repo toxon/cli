@@ -44,50 +44,38 @@ module Widgets
           addstr s
         end
 
-        render_header props[:height] - offset - lines - 1, error, out, time, name
+        elem = render_header error, out, name, time
+        width = name.length + time.length + (error ? 3 : 1)
+        Curses::React::Nodes.klass_for(elem).new(
+          elem,
+          window,
+          x: out ? props[:width] - width : 0,
+          y: props[:height] - offset - lines - 1,
+          width: width,
+        ).draw
 
         1 + lines
       end
 
-      def render_header(y, error, out, name, time)
-        if out
-          setpos props[:width] - name.length - time.length - (error ? 3 : 1), y
-
-          if error
-            Style.default.message_error window do
-              addstr 'x'
+      def render_header(error, out, name, time)
+        create_element :line do
+          if out
+            if error
+              create_element :text, text: 'x', attr: Style.default.message_error_attr
+              create_element :text, text: ' '
             end
 
-            addstr ' '
-          end
+            create_element :text, text: name, attr: Style.default.message_author_attr
+            create_element :text, text: ' '
+            create_element :text, text: time, attr: Style.default.message_time_attr
+          else
+            create_element :text, text: time, attr: Style.default.message_time_attr
+            create_element :text, text: ' '
+            create_element :text, text: name, attr: Style.default.message_author_attr
 
-          Style.default.message_time window do
-            addstr time
-          end
-
-          addstr ' '
-
-          Style.default.message_author window do
-            addstr name
-          end
-        else
-          setpos 0, y
-
-          Style.default.message_author window do
-            addstr name
-          end
-
-          addstr ' '
-
-          Style.default.message_time window do
-            addstr time
-          end
-
-          if error
-            addstr ' '
-
-            Style.default.message_error window do
-              addstr 'x'
+            if error
+              create_element :text, text: ' '
+              create_element :text, text: 'x', attr: Style.default.message_error_attr
             end
           end
         end
