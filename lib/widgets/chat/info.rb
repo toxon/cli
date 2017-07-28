@@ -28,16 +28,19 @@ module Widgets
                              width: props[:name].length,
                              text: props[:name],
                              attr: Style.default.peer_info_name_attr
+
+              create_element :text_line, x: status_text.length + 1 + props[:name].length, y: 0, width: 3, text: ' : '
+
+              create_element :text_line,
+                             x: status_text.length + 1 + props[:name].length + 3,
+                             y: 0,
+                             width: props[:width] - (status_text.length + 1 + props[:name].length + 3),
+                             text: props[:status_message]
             end
           end,
 
           window,
         ).draw
-
-        setpos status_text.length + 1 + props[:name].length, 0
-
-        addstr ' : '
-        addstr props[:status_message]
 
         Curses::React::Nodes.create(
           create_element(:wrapper) do
