@@ -3,16 +3,7 @@
 module Curses
   module React
     module Nodes
-      class Wrapper
-        def initialize(element, window)
-          @element = element
-          @window = window
-        end
-
-        def props
-          @element.all_props
-        end
-
+      class Wrapper < Base
         def draw
           children.each(&:draw)
         end

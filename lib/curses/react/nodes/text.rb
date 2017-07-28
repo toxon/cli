@@ -5,20 +5,15 @@ module Curses
 
   module React
     module Nodes
-      class Text
+      class Text < Base
         attr_reader :x, :y, :max_width
 
         def initialize(element, window, x:, y:, max_width:)
-          @element = element
-          @window = window
+          super element, window
 
           self.x = x
           self.y = y
           self.max_width = max_width
-        end
-
-        def props
-          @element.all_props
         end
 
         def max_height
@@ -36,10 +31,10 @@ module Curses
         def draw
           return if props[:text].nil?
 
-          @window.setpos  y, x
-          @window.attron  props[:attr] if props[:attr]
-          @window.addstr  props[:text].ljustetc width
-          @window.attroff props[:attr] if props[:attr]
+          window.setpos  y, x
+          window.attron  props[:attr] if props[:attr]
+          window.addstr  props[:text].ljustetc width
+          window.attroff props[:attr] if props[:attr]
         end
 
       private

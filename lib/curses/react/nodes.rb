@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'curses/react/nodes/base'
 require 'curses/react/nodes/text'
 require 'curses/react/nodes/wrapper'
 require 'curses/react/nodes/line'

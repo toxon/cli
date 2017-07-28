@@ -8,9 +8,14 @@ module Curses
 
         def initialize(element, window, x:, y:, width:)
           super element, window
+
           self.x = x
           self.y = y
           self.width = width
+        end
+
+        def height
+          1
         end
 
         def children
