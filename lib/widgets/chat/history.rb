@@ -40,12 +40,7 @@ module Widgets
       def render_message(out, error, text, name, time, lines, x:, y:)
         text_width = name.length + time.length + (error ? 3 : 1)
 
-        create_element(
-          :lines,
-          x: x,
-          y: y,
-          width: message_block_width,
-        ) do
+        create_element :lines, x: x, y: y, width: message_block_width do
           create_element :line do
             if out
               create_element :text, text: ' ' * (message_block_width - text_width)
