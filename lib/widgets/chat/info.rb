@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module Widgets
-  using Helpers
-
   class Chat < VPanel
     class Info < Curses::React::Component
       PUBLIC_KEY_LABEL = 'Public key: '
