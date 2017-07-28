@@ -16,9 +16,9 @@ module Widgets
         on_menu_up:   props[:on_menu_up],
         on_menu_down: props[:on_menu_down],
 
-        active_friend_index: props[:active_friend_index],
+        active_friend_index: props[:data][:active_friend_index],
 
-        friends: props[:friends],
+        friends: props[:data][:friends],
       ).freeze
 
       @chat.props = props[:chat].merge(
@@ -34,9 +34,10 @@ module Widgets
         on_new_message_backspace: props[:on_new_message_backspace],
         on_new_message_delete:    props[:on_new_message_delete],
 
-        active_friend_index: props[:active_friend_index],
+        active_friend_index: props[:data][:active_friend_index],
 
-        friend: props[:active_friend_index] && props[:friends][props[:friends].keys[props[:active_friend_index]]],
+        friend: props[:data][:active_friend_index] &&
+                props[:data][:friends][props[:data][:friends].keys[props[:data][:active_friend_index]]],
       ).freeze
     end
 
