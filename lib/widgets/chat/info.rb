@@ -20,11 +20,11 @@ module Widgets
           create_element :line do
             create_element :text, text: status_text, attr: status_attr
 
-            create_element :text, x: status_text.length, y: 0, width: 1, text: ' '
+            create_element :text, text: ' '
 
             create_element :text, text: props[:name], attr: Style.default.peer_info_name_attr
 
-            create_element :text, y: 0, text: ' : '
+            create_element :text, text: ' : '
 
             create_element :text, text: props[:status_message]
           end
