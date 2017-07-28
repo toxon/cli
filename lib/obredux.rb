@@ -38,11 +38,11 @@ module Obredux
     attr_reader :state, :action
 
     def initial_state
-      raise NotImplementedError, "#{self.class}#initial_state"
+      {}.freeze
     end
 
     def reduce
-      raise NotImplementedError, "#{self.class}#reduce"
+      state
     end
   end
 end
