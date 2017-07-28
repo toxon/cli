@@ -25,6 +25,8 @@ module Reducers
         change_friend_status_message
       when Actions::ChangeFriendStatus
         change_friend_status
+      when Actions::AddOutFriendMessage
+        add_out_friend_message
       else
         state
       end
@@ -111,6 +113,28 @@ module Reducers
         friends: state[:friends].merge(
           action.friend.number => state[:friends][action.friend.number].merge(
             status: action.new_status,
+          ).freeze,
+        ).freeze,
+      ).freeze
+    end
+
+    def add_out_friend_message
+      state.merge(
+        friends: state[:friends].merge(
+          action.friend.number => state[:friends][action.friend.number].merge(
+            new_message: state[:friends][action.friend.number][:new_message].merge(
+              text: '',
+              cursor_pos: 0,
+            ),
+
+            history: (state[:friends][action.friend.number][:history] + [
+              error:    action.error,
+              out:      true,
+              received: false,
+              time:     Time.now.utc.freeze,
+              name:     action.friend.client.name.freeze,
+              text:     action.text,
+            ]).freeze,
           ).freeze,
         ).freeze,
       ).freeze

@@ -137,7 +137,26 @@ private
   end
 
   def on_new_message_enter
-    store.dispatch Actions::NewMessageEnter.new @tox_client
+    return if state[:data][:active_friend_index].nil?
+
+    friend_number = state[:data][:friends].keys[state[:data][:active_friend_index]]
+
+    return if friend_number.nil?
+
+    text = state[:data][:friends][friend_number][:new_message][:text].strip.freeze
+
+    return if text.empty?
+
+    friend = @tox_client.friend friend_number
+    error = false
+
+    begin
+      friend.send_message text
+    rescue
+      error = true
+    end
+
+    store.dispatch Actions::AddOutFriendMessage.new friend, text, error
   end
 
   def on_new_message_putc(char)

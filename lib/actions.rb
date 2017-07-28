@@ -8,7 +8,7 @@ require 'actions/add_friend_message'
 require 'actions/change_friend_name'
 require 'actions/change_friend_status'
 require 'actions/change_friend_status_message'
-require 'actions/new_message_enter'
+require 'actions/add_out_friend_message'
 require 'actions/new_message_putc'
 
 module Actions

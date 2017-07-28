@@ -104,8 +104,6 @@ private
       menu_up
     when Actions::MenuDown
       menu_down
-    when Actions::NewMessageEnter
-      new_message_enter
     when Actions::NewMessagePutc
       new_message_putc
     when Actions::NewMessageLeft
@@ -224,48 +222,6 @@ private
       sidebar: state[:sidebar].merge(
         menu: state[:sidebar][:menu].merge(
           top: top,
-        ).freeze,
-      ).freeze,
-    ).freeze
-  end
-
-  def new_message_enter
-    return state if state[:data][:active_friend_index].nil?
-
-    friend_number = state[:data][:friends].keys[state[:data][:active_friend_index]]
-
-    return state if friend_number.nil?
-
-    text = state[:data][:friends][friend_number][:new_message][:text].strip.freeze
-
-    return state if text.empty?
-
-    error = false
-
-    begin
-      action.tox_client.friend(friend_number).send_message text
-    rescue
-      error = true
-    end
-
-    state.merge(
-      data: state[:data].merge(
-        friends: state[:data][:friends].merge(
-          friend_number => state[:data][:friends][friend_number].merge(
-            new_message: state[:data][:friends][friend_number][:new_message].merge(
-              text: '',
-              cursor_pos: 0,
-            ),
-
-            history: (state[:data][:friends][friend_number][:history] + [
-              error:    error,
-              out:      true,
-              received: false,
-              time:     Time.now.utc.freeze,
-              name:     action.tox_client.name.freeze,
-              text:     text,
-            ]).freeze,
-          ).freeze,
         ).freeze,
       ).freeze,
     ).freeze
