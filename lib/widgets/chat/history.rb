@@ -20,7 +20,7 @@ module Widgets
           x = msg[:out] ? props[:width] - message_block_width : 0
           y = props[:height] - offset - lines - 1
 
-          elem = create_element :lines, x: 0, y: y, width: message_block_width do
+          elem = create_element :lines, x: 0, y: 0, width: message_block_width do
             render_message(
               msg[:out],
               msg[:error],
@@ -29,6 +29,7 @@ module Widgets
               msg[:time].strftime('%H:%M:%S'),
               lines,
               x: x,
+              y: y,
             )
           end
 
@@ -40,10 +41,10 @@ module Widgets
         end
       end
 
-      def render_message(out, error, text, name, time, lines, x:)
+      def render_message(out, error, text, name, time, lines, x:, y:)
         text_width = name.length + time.length + (error ? 3 : 1)
 
-        create_element :line, x: out ? x : 0, rjust: out do
+        create_element :line, x: out ? x : 0, y: y, rjust: out do
           if out
             create_element :text, text: ' ' * (message_block_width - text_width)
 
@@ -68,7 +69,7 @@ module Widgets
         end
 
         1.upto lines do |line|
-          create_element :line, x: out ? x : 0, rjust: out do
+          create_element :line, x: out ? x : 0, y: y + line, rjust: out do
             s = text[(message_block_width * (line - 1))...(message_block_width * line)].strip
             create_element :text, text: out ? s.rjust(message_block_width) : s
           end
