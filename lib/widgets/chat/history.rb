@@ -2,10 +2,10 @@
 
 module Widgets
   class Chat < VPanel
-    class History < Curses::React::Component
+    class History < React::Component
       def draw
         elem = render
-        Curses::React::Nodes.klass_for(elem).new(parent, elem).draw
+        React::Nodes.klass_for(elem).new(parent, elem).draw
       end
 
     private

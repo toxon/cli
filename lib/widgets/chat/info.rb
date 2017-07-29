@@ -2,12 +2,12 @@
 
 module Widgets
   class Chat < VPanel
-    class Info < Curses::React::Component
+    class Info < React::Component
       PUBLIC_KEY_LABEL = 'Public key: '
 
       def draw
         elem = render
-        Curses::React::Nodes.klass_for(elem).new(parent, elem).draw
+        React::Nodes.klass_for(elem).new(parent, elem).draw
       end
 
     private

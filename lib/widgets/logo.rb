@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Logo < Curses::React::Component
+  class Logo < React::Component
     LOGO = [
       '  _____ ___ _  _ ___  _   _  ',
       ' |_   _/ _ \ \/ / _ \| \ | | ',

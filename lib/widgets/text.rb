@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Widgets
-  class Text < Curses::React::Component
+  class Text < React::Component
     def trigger(event)
       case event
       when Events::Text::Enter
