@@ -5,22 +5,26 @@ module Widgets
     class History < Curses::React::Component
       def draw
         window.clear
+
         return if props[:messages].empty?
-        render
+
+        elem = render
+        Curses::React::Nodes.klass_for(elem).new(elem, window).draw
+
         window.refresh
       end
 
     private
 
       def render
-        offset = 0
+        create_element :lines, x: 0, y: 0, width: message_block_width do
+          offset = 0
 
-        props[:messages].reverse_each do |msg|
-          lines = (msg[:text].length / message_block_width.to_f).ceil
-          x = msg[:out] ? props[:width] - message_block_width : 0
-          y = props[:height] - offset - lines - 1
+          props[:messages].reverse_each do |msg|
+            lines = (msg[:text].length / message_block_width.to_f).ceil
+            x = msg[:out] ? props[:width] - message_block_width : 0
+            y = props[:height] - offset - lines - 1
 
-          elem = create_element :lines, x: 0, y: 0, width: message_block_width do
             render_message(
               msg[:out],
               msg[:error],
@@ -31,13 +35,11 @@ module Widgets
               x: x,
               y: y,
             )
+
+            offset += 1 + lines
+
+            break if offset >= props[:height]
           end
-
-          Curses::React::Nodes.klass_for(elem).new(elem, window).draw
-
-          offset += 1 + lines
-
-          break if offset >= props[:height]
         end
       end
 
