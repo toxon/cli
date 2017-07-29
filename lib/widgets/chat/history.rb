@@ -4,41 +4,37 @@ module Widgets
   class Chat < VPanel
     class History < Curses::React::Component
       def draw
-        window.clear
-
-        return if props[:messages].empty?
-
         elem = render
-        Curses::React::Nodes.klass_for(elem).new(elem, window).draw
-
-        window.refresh
+        Curses::React::Nodes.klass_for(elem).new(parent, elem).draw
       end
 
     private
 
       def render
-        create_element :lines, x: 0, y: 0, width: message_block_width do
-          offset = 0
+        create_element :window, x: props[:x], y: props[:y], width: props[:width], height: props[:height] do
+          create_element :lines do
+            offset = 0
 
-          props[:messages].reverse_each do |msg|
-            lines = (msg[:text].length / message_block_width.to_f).ceil
-            x = msg[:out] ? props[:width] - message_block_width : 0
-            y = props[:height] - offset - lines - 1
+            props[:messages].reverse_each do |msg|
+              lines = (msg[:text].length / message_block_width.to_f).ceil
+              x = msg[:out] ? props[:width] - message_block_width : 0
+              y = props[:height] - offset - lines - 1
 
-            render_message(
-              msg[:out],
-              msg[:error],
-              msg[:text],
-              msg[:name],
-              msg[:time].strftime('%H:%M:%S'),
-              lines,
-              x: x,
-              y: y,
-            )
+              render_message(
+                msg[:out],
+                msg[:error],
+                msg[:text],
+                msg[:name],
+                msg[:time].strftime('%H:%M:%S'),
+                lines,
+                x: x,
+                y: y,
+              )
 
-            offset += 1 + lines
+              offset += 1 + lines
 
-            break if offset >= props[:height]
+              break if offset >= props[:height]
+            end
           end
         end
       end
