@@ -5,7 +5,7 @@ module Widgets
     class History < React::Component
       def draw
         elem = render
-        React::Nodes.klass_for(elem).new(parent, elem).draw
+        React::Curses::Nodes.klass_for(elem).new(parent, elem).draw
       end
 
     private

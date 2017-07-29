@@ -35,7 +35,7 @@ module React
     end
 
     def window
-      @window ||= parent&.subwin(props[:x], props[:y], props[:width], props[:height]) || Curses.stdscr
+      @window ||= parent&.subwin(props[:x], props[:y], props[:width], props[:height]) || ::Curses.stdscr
     end
 
     def render
