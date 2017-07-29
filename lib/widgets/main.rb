@@ -59,7 +59,7 @@ module Widgets
 
       (0...props[:height]).each do |y|
         setpos props[:sidebar][:width], y
-        addstr '|'
+        addstr "\u2502"
       end
     end
 

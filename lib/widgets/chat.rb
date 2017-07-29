@@ -52,10 +52,10 @@ module Widgets
       super
 
       setpos 0, 2
-      addstr '-' * props[:width]
+      addstr "\u2500" * props[:width]
 
       setpos 0, props[:height] - 2
-      addstr '-' * props[:width]
+      addstr "\u2500" * props[:width]
     end
 
     def focus
