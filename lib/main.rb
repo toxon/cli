@@ -2,7 +2,7 @@
 
 require 'tox'
 
-require 'thread'
+require 'singleton'
 
 require 'helpers'
 require 'actions'
@@ -10,18 +10,11 @@ require 'reducer'
 require 'screen'
 
 class Main
+  include Singleton
+
   SAVEDATA_FILENAME = File.expand_path '../savedata', __dir__
 
-  def self.inherited(_base)
-    raise "#{self} is final"
-  end
-
-  def self.mutex
-    (@mutex ||= Mutex.new).tap { freeze }
-  end
-
   def initialize
-    raise "#{self.class} is singleton" unless self.class.mutex.try_lock
     call
   end
 
