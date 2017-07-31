@@ -5,7 +5,7 @@ module React
     module Nodes
       class Window < Wrapper
         def window
-          @window ||= parent&.window&.subwin(height, width, y, x) || ::Curses.stdscr
+          @window ||= parent.window.subwin height, width, y, x
         end
 
         def draw

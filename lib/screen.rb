@@ -45,7 +45,7 @@ class Screen
   end
 
   def render
-    React::Element.create :window, x: 0, y: 0, width: Curses.stdscr.maxx, height: Curses.stdscr.maxy do
+    React::Element.create :stdscr do
       React::Element.create :wrapper do
         React::Element.create Widgets::Main, @props
       end
