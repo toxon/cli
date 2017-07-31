@@ -13,10 +13,6 @@ module Widgets
       end
     end
 
-    def draw
-      node.draw
-    end
-
     def node
       elem = render
       React::Curses::Nodes.klass_for(elem).new nil, elem

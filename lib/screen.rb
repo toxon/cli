@@ -25,7 +25,7 @@ require 'widgets/chat/history'
 require 'widgets/chat/new_message'
 
 class Screen
-  attr_reader :window
+  attr_writer :props
 
   def initialize
     Curses.init_screen
@@ -34,20 +34,22 @@ class Screen
     Curses.curs_set 0 # invisible cursor
     Curses.timeout = 0 # non-blocking input
     Curses.stdscr.keypad = true
-
-    @window ||= Widgets::Main.new nil
   end
 
   def close
     Curses.close_screen
   end
 
-  def props=(value)
-    window.props = value
+  def draw
+    React::Curses.render render
   end
 
-  def draw
-    window.draw
+  def render
+    React::Element.create :window, x: 0, y: 0, width: Curses.stdscr.maxx, height: Curses.stdscr.maxy do
+      React::Element.create :wrapper do
+        React::Element.create Widgets::Main, @props
+      end
+    end
   end
 
   def poll
@@ -56,7 +58,8 @@ class Screen
       break if ch.nil?
       event = create_event ch
       next if event.nil?
-      window.trigger event
+      elem = render
+      React::Curses::Nodes.klass_for(elem).new(nil, elem).children[0].children[0].instance.trigger event
     end
   end
 
