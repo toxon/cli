@@ -2,17 +2,42 @@
 
 module Widgets
   class Main < Container
-    def initialize(_parent)
-      super
-
-      @sidebar = Widgets::Sidebar.new self
-      @chat    = Widgets::Chat.new    self
+    def trigger(event)
+      case event
+      when Events::Window::Left
+        props[:on_window_left].call
+      when Events::Window::Right
+        props[:on_window_right].call
+      else
+        focus&.trigger event
+      end
     end
 
-    def props=(_value)
-      super
+    def draw
+      node.draw
+    end
 
-      @sidebar.props = props[:sidebar].merge(
+    def node
+      elem = render
+      React::Curses::Nodes.klass_for(elem).new nil, elem
+    end
+
+    def render
+      create_element :window, x: props[:x], y: props[:y], width: props[:width], height: props[:height] do
+        create_element :wrapper do
+          render_sidebar
+          render_chat
+        end
+      end
+
+      # (0...props[:height]).each do |y|
+      #   setpos props[:sidebar][:width], y
+      #   addstr "\u2502"
+      # end
+    end
+
+    def render_sidebar
+      create_element Sidebar, props[:sidebar].merge(
         on_menu_up:   props[:on_menu_up],
         on_menu_down: props[:on_menu_down],
 
@@ -20,8 +45,10 @@ module Widgets
 
         friends: props[:data][:friends],
       ).freeze
+    end
 
-      @chat.props = props[:chat].merge(
+    def render_chat
+      create_element Chat, props[:chat].merge(
         on_new_message_enter: props[:on_new_message_enter],
 
         on_new_message_putc: props[:on_new_message_putc],
@@ -41,37 +68,11 @@ module Widgets
       ).freeze
     end
 
-    def trigger(event)
-      case event
-      when Events::Window::Left
-        props[:on_window_left].call
-      when Events::Window::Right
-        props[:on_window_right].call
-      else
-        focus&.trigger event
-      end
-    end
-
-  private
-
-    def render
-      super
-
-      (0...props[:height]).each do |y|
-        setpos props[:sidebar][:width], y
-        addstr "\u2502"
-      end
-    end
-
     def focus
       case props[:focus]
-      when :sidebar then @sidebar
-      when :chat    then @chat
+      when :sidebar then node.children[0].children[0].instance
+      when :chat    then node.children[0].children[1].instance
       end
-    end
-
-    def children
-      [@sidebar, @chat]
     end
   end
 end
