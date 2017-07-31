@@ -2,19 +2,30 @@
 
 module Widgets
   class Sidebar < Container
-    def initialize(_parent)
-      super
-
-      @logo = Logo.new self
-      @menu = Menu.new self
+    def trigger(event)
+      focus&.trigger event
     end
 
-    def props=(_value)
-      super
+    def draw
+      node.draw
+    end
 
-      @logo.props = props[:logo]
+    def node
+      elem = render
+      React::Curses::Nodes.klass_for(elem).new nil, elem
+    end
 
-      @menu.props = props[:menu].merge(
+    def render
+      create_element :window, x: props[:x], y: props[:y], width: props[:width], height: props[:height] do
+        create_element :wrapper do
+          create_element Logo, props[:logo]
+          render_menu
+        end
+      end
+    end
+
+    def render_menu
+      create_element Menu, props[:menu].merge(
         on_up:   props[:on_menu_up],
         on_down: props[:on_menu_down],
 
@@ -24,21 +35,10 @@ module Widgets
       ).freeze
     end
 
-    def trigger(event)
-      focus&.trigger event
-    end
-
-  private
-
     def focus
       case props[:focus]
-      when :menu
-        @menu
+      when :menu then node.children[0].children[1].instance
       end
-    end
-
-    def children
-      [@logo, @menu]
     end
   end
 end

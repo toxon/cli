@@ -13,11 +13,6 @@ module Widgets
       end
     end
 
-    def draw
-      elem = render
-      React::Curses::Nodes.klass_for(elem).new(nil, elem).draw
-    end
-
     def render
       create_element :window, x: props[:x], y: props[:y], width: props[:width], height: props[:height] do
         create_element :lines do
