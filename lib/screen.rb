@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'react'
 require 'react/curses'
 
 # Additional classes
