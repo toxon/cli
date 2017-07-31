@@ -11,7 +11,7 @@ module React
         end
 
         def draw
-          elem = instance.send :render
+          elem = instance.render
           Nodes.klass_for(elem).new(self, elem).draw
         end
       end
