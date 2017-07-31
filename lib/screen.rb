@@ -40,8 +40,12 @@ class Screen
     Curses.close_screen
   end
 
+  def engine
+    @engine ||= React::Curses.new
+  end
+
   def draw
-    React::Curses.render render
+    engine.render render
   end
 
   def render
