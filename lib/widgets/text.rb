@@ -26,11 +26,6 @@ module Widgets
       end
     end
 
-    def draw
-      elem = render
-      React::Curses::Nodes.klass_for(elem).new(parent, elem).draw
-    end
-
   private
 
     def total

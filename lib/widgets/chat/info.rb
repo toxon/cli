@@ -5,11 +5,6 @@ module Widgets
     class Info < React::Component
       PUBLIC_KEY_LABEL = 'Public key: '
 
-      def draw
-        elem = render
-        React::Curses::Nodes.klass_for(elem).new(parent, elem).draw
-      end
-
     private
 
       def render

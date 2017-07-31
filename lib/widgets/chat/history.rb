@@ -3,11 +3,6 @@
 module Widgets
   class Chat < VPanel
     class History < React::Component
-      def draw
-        elem = render
-        React::Curses::Nodes.klass_for(elem).new(parent, elem).draw
-      end
-
     private
 
       def render
