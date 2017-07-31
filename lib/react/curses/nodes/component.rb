@@ -4,20 +4,15 @@ module React
   module Curses
     module Nodes
       class Component < Base
-        def initialize(parent, element)
-          @parent = parent
-          self.element = element
-        end
-
         def instance
-          result = element.type.new @parent
+          result = element.type.new nil
           result.props = props
           result
         end
 
         def draw
           elem = instance.send :render
-          Nodes.klass_for(elem).new(@parent, elem).draw
+          Nodes.klass_for(elem).new(self, elem).draw
         end
       end
     end

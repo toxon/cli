@@ -8,7 +8,7 @@ module React
           props[:children].each_with_index.map do |child_element, index|
             node_klass = Nodes.klass_for child_element
             raise "#{self.class} can only have children of type #{Line}" unless node_klass <= Line
-            node_klass.new child_element, window, x: x, y: y + index, width: width, rjust: rjust
+            node_klass.new self, child_element, x: x, y: y + index, width: width, rjust: rjust
           end
         end
 

@@ -4,15 +4,19 @@ module React
   module Curses
     module Nodes
       class Base
-        attr_reader :element, :window
+        attr_reader :parent, :element
 
-        def initialize(element, window, options = {})
+        def initialize(parent, element, options = {})
+          self.parent = parent
           self.element = element
-          self.window = window
 
           options.each do |k, v|
             public_send :"#{k}=", v
           end
+        end
+
+        def window
+          parent.window
         end
 
         def props
@@ -21,11 +25,6 @@ module React
 
         def draw
           raise NotImplementedError, "#{self.class}#draw"
-        end
-
-        def window=(value)
-          raise TypeError, "expected window to be an #{::Curses::Window}" unless value.is_a? ::Curses::Window
-          @window = value
         end
 
         def x
@@ -83,6 +82,12 @@ module React
         end
 
       private
+
+        def parent=(value)
+          return @parent = nil if value.nil?
+          raise TypeError, "expected parent to be a #{Base}" unless value.is_a? Base
+          @parent = value
+        end
 
         def element=(value)
           raise TypeError, "expected element to be an #{Element}" unless value.is_a? Element

@@ -7,30 +7,24 @@ module Widgets
     end
 
     def draw
-      node_info.draw
-      node_history.draw
-      node_new_message.draw
+      node.draw
     end
 
   private
 
-    def node_info
-      elem = render_info
-      React::Curses::Nodes.klass_for(elem).new parent, elem
-    end
-
-    def node_history
-      elem = render_history
-      React::Curses::Nodes.klass_for(elem).new parent, elem
-    end
-
-    def node_new_message
-      elem = render_new_message
-      React::Curses::Nodes.klass_for(elem).new parent, elem
+    def node
+      elem = render
+      React::Curses::Nodes.klass_for(elem).new nil, elem
     end
 
     def render
-      super
+      create_element :window, x: props[:x], y: props[:y], width: props[:width], height: props[:height] do
+        create_element :wrapper do
+          render_info
+          render_history
+          render_new_message
+        end
+      end
 
       # setpos 0, 2
       # addstr "\u2500" * props[:width]
@@ -75,9 +69,9 @@ module Widgets
 
     def focus
       case props[:focus]
-      when :info        then node_info.instance
-      when :history     then node_history.instance
-      when :new_message then node_new_message.instance
+      when :info        then node.children[0].children[0].instance
+      when :history     then node.children[0].children[1].instance
+      when :new_message then node.children[0].children[2].instance
       end
     end
   end

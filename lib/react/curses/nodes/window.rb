@@ -4,13 +4,8 @@ module React
   module Curses
     module Nodes
       class Window < Wrapper
-        def initialize(parent, element)
-          self.element = element
-          self.window = parent&.subwin(x, y, width, height) || Curses.stdscr
-        end
-
-        def subwin(x, y, width, height)
-          window.subwin height, width, y, x
+        def window
+          @window ||= parent&.window&.subwin(height, width, y, x) || ::Curses.stdscr
         end
 
         def draw

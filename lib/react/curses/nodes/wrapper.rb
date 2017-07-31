@@ -10,7 +10,7 @@ module React
 
         def children
           props[:children].map do |child_element|
-            Nodes.klass_for(child_element).new child_element, window
+            Nodes.klass_for(child_element).new self, child_element
           end
         end
       end
