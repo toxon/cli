@@ -26,6 +26,11 @@ module Widgets
       end
     end
 
+    def draw
+      elem = render
+      React::Curses::Nodes.klass_for(elem).new(parent, elem).draw
+    end
+
   private
 
     def total
@@ -53,18 +58,18 @@ module Widgets
     end
 
     def render
-      setpos 0, 0
+      create_element :window, x: props[:x], y: props[:y], width: props[:width], height: props[:height] do
+        create_element :lines do
+          create_element :line do
+            create_element :text, text: before_cursor, attr: Style.default.editing_text_attr
 
-      Style.default.editing_text window do
-        addstr before_cursor
-      end
+            create_element :text,
+                           text: under_cursor,
+                           attr: props[:focused] ? Style.default.cursor_attr : Style.default.editing_text_attr
 
-      Style.default.public_send props[:focused] ? :cursor : :editing_text, window do
-        addstr under_cursor
-      end
-
-      Style.default.editing_text window do
-        addstr after_cursor
+            create_element :text, text: after_cursor, attr: Style.default.editing_text_attr
+          end
+        end
       end
     end
   end
