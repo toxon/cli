@@ -16,13 +16,21 @@ module Widgets
     WIDTH  = LOGO.first.length
     HEIGHT = LOGO.length
 
+    def draw
+      elem = render
+      React::Curses::Nodes.klass_for(elem).new(nil, elem).draw
+    end
+
   private
 
     def render
-      Style.default.logo window do
-        LOGO.each_with_index do |s, index|
-          setpos 0, index
-          addstr s
+      create_element :window, x: props[:x], y: props[:y], width: props[:width], height: props[:height] do
+        create_element :lines do
+          LOGO.each_with_index do |s|
+            create_element :line do
+              create_element :text, text: s, attr: Style.default.logo_attr
+            end
+          end
         end
       end
     end
