@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module React
-  module Curses
+  class Curses
     module Nodes
       class Wrapper < Base
         def draw

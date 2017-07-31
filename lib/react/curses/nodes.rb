@@ -11,7 +11,7 @@ require 'react/curses/nodes/lines'
 require 'react/curses/nodes/window'
 
 module React
-  module Curses
+  class Curses
     module Nodes
       def self.klass_for(element)
         raise TypeError, "expected element to be an #{Element}" unless element.is_a? Element

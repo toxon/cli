@@ -3,7 +3,7 @@
 module React
   using Helpers
 
-  module Curses
+  class Curses
     module Nodes
       class Text < Base
         def draw

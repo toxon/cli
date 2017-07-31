@@ -3,6 +3,6 @@
 require 'react/curses/nodes'
 
 module React
-  module Curses
+  class Curses
   end
 end
