@@ -5,7 +5,7 @@ module React
     module Nodes
       class Component < Base
         def instance
-          result = element.type.new nil
+          result = element.type.new
           result.props = props
           result
         end
