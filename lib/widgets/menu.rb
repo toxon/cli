@@ -13,44 +13,42 @@ module Widgets
       end
     end
 
-  private
+    def draw
+      elem = render
+      React::Curses::Nodes.klass_for(elem).new(nil, elem).draw
+    end
 
     def render
-      return if props[:friends].empty?
+      create_element :window, x: props[:x], y: props[:y], width: props[:width], height: props[:height] do
+        create_element :lines do
+          props[:friends].values[props[:top]...(props[:top] + props[:height])].each_with_index.each do |friend, offset|
+            create_element :line do
+              index = props[:top] + offset
 
-      props[:friends].values[props[:top]...(props[:top] + props[:height])].each_with_index.each do |friend, offset|
-        index = props[:top] + offset
+              case friend[:status]
+              when Tox::UserStatus::NONE
+                create_element :text, text: '*', attr: Style.default.online_mark_attr
+              when Tox::UserStatus::AWAY
+                create_element :text, text: '*', attr: Style.default.away_mark_attr
+              when Tox::UserStatus::BUSY
+                create_element :text, text: '*', attr: Style.default.busy_mark_attr
+              else
+                create_element :text, text: 'o'
+              end
 
-        setpos 0, offset
+              create_element :text, text: ' '
 
-        case friend[:status]
-        when Tox::UserStatus::NONE
-          Style.default.online_mark window do
-            addstr '*'
+              create_element(
+                :text,
+                text: friend[:name].ljustetc(props[:width] - 2),
+                attr: if index == props[:active_friend_index] && props[:focused]
+                        Style.default.selection_attr
+                      else
+                        Style.default.text_attr
+                      end,
+              )
+            end
           end
-        when Tox::UserStatus::AWAY
-          Style.default.away_mark window do
-            addstr '*'
-          end
-        when Tox::UserStatus::BUSY
-          Style.default.busy_mark window do
-            addstr '*'
-          end
-        else
-          addstr 'o'
-        end
-
-        addstr ' '
-
-        Style.default.public_send(
-          if index == props[:active_friend_index] && props[:focused]
-            :selection
-          else
-            :text
-          end,
-          window,
-        ) do
-          addstr friend[:name].ljustetc props[:width] - 2
         end
       end
     end
