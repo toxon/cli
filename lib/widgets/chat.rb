@@ -2,29 +2,60 @@
 
 module Widgets
   class Chat < VPanel
-    def initialize(_parent)
-      super
-
-      @info    = Info.new       self
-      @history = History.new    self
-      @message = NewMessage.new self
+    def trigger(event)
+      focus&.trigger event
     end
 
-    def props=(_value)
+    def draw
+      node_info.draw
+      node_history.draw
+      node_new_message.draw
+    end
+
+  private
+
+    def node_info
+      elem = render_info
+      React::Curses::Nodes.klass_for(elem).new parent, elem
+    end
+
+    def node_history
+      elem = render_history
+      React::Curses::Nodes.klass_for(elem).new parent, elem
+    end
+
+    def node_new_message
+      elem = render_new_message
+      React::Curses::Nodes.klass_for(elem).new parent, elem
+    end
+
+    def render
       super
 
-      @info.props = props[:info].merge(
+      # setpos 0, 2
+      # addstr "\u2500" * props[:width]
+
+      # setpos 0, props[:height] - 2
+      # addstr "\u2500" * props[:width]
+    end
+
+    def render_info
+      create_element Info, props[:info].merge(
         public_key:     props[:friend] ? props[:friend][:public_key]     : nil,
         name:           props[:friend] ? props[:friend][:name]           : nil,
         status:         props[:friend] ? props[:friend][:status]         : nil,
         status_message: props[:friend] ? props[:friend][:status_message] : nil,
       ).freeze
+    end
 
-      @history.props = props[:history].merge(
+    def render_history
+      create_element History, props[:history].merge(
         messages: props[:friend] ? props[:friend][:history] : [].freeze,
       ).freeze
+    end
 
-      @message.props = props[:new_message].merge(
+    def render_new_message
+      create_element NewMessage, props[:new_message].merge(
         on_enter: props[:on_new_message_enter],
 
         on_putc: props[:on_new_message_putc],
@@ -42,32 +73,12 @@ module Widgets
       ).freeze
     end
 
-    def trigger(event)
-      focus&.trigger event
-    end
-
-  private
-
-    def render
-      super
-
-      setpos 0, 2
-      addstr "\u2500" * props[:width]
-
-      setpos 0, props[:height] - 2
-      addstr "\u2500" * props[:width]
-    end
-
     def focus
       case props[:focus]
-      when :info        then @info
-      when :history     then @history
-      when :new_message then @message
+      when :info        then node_info.instance
+      when :history     then node_history.instance
+      when :new_message then node_new_message.instance
       end
-    end
-
-    def children
-      [@info, @history, @message]
     end
   end
 end

@@ -3,6 +3,7 @@
 require 'curses'
 
 require 'react/curses/nodes/base'
+require 'react/curses/nodes/component'
 require 'react/curses/nodes/text'
 require 'react/curses/nodes/wrapper'
 require 'react/curses/nodes/line'
@@ -14,6 +15,8 @@ module React
     module Nodes
       def self.klass_for(element)
         raise TypeError, "expected element to be an #{Element}" unless element.is_a? Element
+
+        return Component if element.type.is_a?(Class) && element.type < React::Component
 
         case element.type
         when :text    then Text
