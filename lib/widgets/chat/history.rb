@@ -3,8 +3,6 @@
 module Widgets
   class Chat < VPanel
     class History < React::Component
-    private
-
       def render
         create_element :window, x: props[:x], y: props[:y], width: props[:width], height: props[:height] do
           create_element :lines do

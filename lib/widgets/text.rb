@@ -26,8 +26,6 @@ module Widgets
       end
     end
 
-  private
-
     def total
       props[:width] - 1
     end

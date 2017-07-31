@@ -21,8 +21,6 @@ module Widgets
       React::Curses::Nodes.klass_for(elem).new(nil, elem).draw
     end
 
-  private
-
     def render
       create_element :window, x: props[:x], y: props[:y], width: props[:width], height: props[:height] do
         create_element :lines do

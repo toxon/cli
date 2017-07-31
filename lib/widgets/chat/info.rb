@@ -5,8 +5,6 @@ module Widgets
     class Info < React::Component
       PUBLIC_KEY_LABEL = 'Public key: '
 
-    private
-
       def render
         create_element :window, x: props[:x], y: props[:y], width: props[:width], height: props[:height] do
           create_element :lines do
