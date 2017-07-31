@@ -28,17 +28,32 @@ module Widgets
 
   private
 
+    def total
+      props[:width] - 1
+    end
+
+    def start
+      [0, props[:cursor_pos] - total].max
+    end
+
+    def cut
+      props[:text][start...start + total]
+    end
+
+    def before_cursor
+      cut[0...props[:cursor_pos]]
+    end
+
+    def under_cursor
+      cut[props[:cursor_pos]] || ' '
+    end
+
+    def after_cursor
+      cut[(1 + props[:cursor_pos])..-1] || ''
+    end
+
     def render
-      total = props[:width] - 1
-      start = [0, props[:cursor_pos] - total].max
-
-      cut = props[:text][start...start + total]
-
       setpos 0, 0
-
-      before_cursor = cut[0...props[:cursor_pos]]
-      under_cursor  = cut[props[:cursor_pos]] || ' '
-      after_cursor  = cut[(1 + props[:cursor_pos])..-1] || ''
 
       Style.default.editing_text window do
         addstr before_cursor
