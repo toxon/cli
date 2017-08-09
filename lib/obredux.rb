@@ -11,13 +11,28 @@ module Obredux
     attr_reader :reducer_klass, :state
 
     def initialize(reducer_klass)
-      @reducer_klass = reducer_klass
-      @state = UNDEFINED
+      self.reducer_klass = reducer_klass
+      self.state = UNDEFINED
+
       dispatch Init.new
     end
 
     def dispatch(action)
-      @state = reducer_klass.new(state, action).call
+      self.state = reducer_klass.new(state, action).call
+    end
+
+  private
+
+    def reducer_klass=(value)
+      raise TypeError, "expected #reducer_klass to be a #{Class}"      unless value.is_a? Class
+      raise TypeError, "expected #reducer_klass to inherit #{Reducer}" unless value < Reducer
+      @reducer_klass = value
+    end
+
+    def state=(value)
+      raise TypeError, "expected #state to be a #{Hash}" unless value.is_a? Hash
+      raise TypeError, 'expected #state to be frozen'    unless value.frozen?
+      @state = value
     end
   end
 
