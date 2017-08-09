@@ -70,7 +70,7 @@ module Obredux
 
       @state = state.merge initial_state if init
 
-      reduce
+      reduce.freeze
     end
 
   private
