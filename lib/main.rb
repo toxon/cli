@@ -88,9 +88,7 @@ private
   end
 
   def on_friend_request(public_key, _text)
-    friend = @tox_client.friend_add_norequest public_key
-
-    store.dispatch Actions::AddFriend.new friend
+    store.dispatch Actions::AddFriend.new @tox_client, public_key
   end
 
   def on_friend_message(friend, text)

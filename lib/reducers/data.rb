@@ -15,7 +15,7 @@ module Reducers
       case action
       when Actions::LoadFriends
         load_friends
-      when Actions::AddFriend
+      when Actions::AddFriend::Done
         add_friend
       when Actions::AddFriendMessage
         add_friend_message
