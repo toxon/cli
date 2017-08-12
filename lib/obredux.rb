@@ -7,17 +7,32 @@ module Obredux
 
   class Init < Action; end
 
-  class Store
-    attr_reader :reducer_klass, :state
+  class Middleware
+    def initialize(store)
+      self.store = store
+    end
 
-    def initialize(reducer_klass)
+  private
+
+    def store=(value)
+      raise TypeError, "expected #store to be a #{Store}" unless value.is_a? Store
+      @store = value
+    end
+  end
+
+  class Store
+    attr_reader :reducer_klass, :state, :middleware
+
+    def initialize(reducer_klass, middleware = [])
       self.reducer_klass = reducer_klass
       self.state = UNDEFINED
+      self.middleware = middleware
 
       dispatch Init.new
     end
 
     def dispatch(action)
+      action = middleware.inject(action) { |old_action, fn| fn.call old_action }
       self.state = reducer_klass.new(state, action).call
     end
 
@@ -33,6 +48,15 @@ module Obredux
       raise TypeError, "expected #state to be a #{Hash}" unless value.is_a? Hash
       raise TypeError, 'expected #state to be frozen'    unless value.frozen?
       @state = value
+    end
+
+    def middleware=(value)
+      @middleware = value.map do |middleware_klass|
+        unless middleware_klass.is_a?(Class) && middleware_klass << Middleware
+          raise TypeError, "expected #middleware to be an array of #{Middleware} classes"
+        end
+        middleware_klass.new self
+      end.freeze
     end
   end
 
