@@ -16,7 +16,7 @@ module React
         end
 
         def width
-          [props[:text].length, max_width].min
+          [text.length, max_width].min
         end
 
         def height
@@ -28,7 +28,7 @@ module React
         end
 
         def text
-          props[:text]
+          props[:text] || ''
         end
 
         def attr
