@@ -32,6 +32,7 @@ module Obredux
     end
 
     def dispatch(action)
+      raise TypeError, "expected action to be an #{Action}" unless action.is_a? Action
       action = middleware.inject(action) { |old_action, fn| fn.call old_action }
       self.state = reducer_klass.new(state, action).call
     end
