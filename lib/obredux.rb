@@ -8,34 +8,19 @@ module Obredux
   class Init < Action; end
 
   class Middleware
-    def initialize(store)
-      self.store = store
-    end
-
-    def call(_action)
+    def call(_store, _action)
       raise NotImplementedError, "#{self.class}#call"
-    end
-
-  private
-
-    def store=(value)
-      raise TypeError, "expected #store to be a #{Store}" unless value.is_a? Store
-      @store = value
     end
   end
 
   class Thunk < Middleware
-    def call(action)
+    def call(store, action)
       return action unless action.is_a? Action
-      action.call dispatch_method
-    end
-
-    def dispatch_method
-      store.public_method :dispatch
+      action.call store.public_method :dispatch
     end
 
     class Action < Action
-      def call(dispatch)
+      def call(_dispatch)
         raise NotImplementedError, "#{self.class}#call"
       end
     end
@@ -56,7 +41,7 @@ module Obredux
       raise TypeError, "expected action to be an #{Action}" unless action.is_a? Action
 
       action = middleware.inject(action) do |old_action, fn|
-        new_action = fn.call old_action
+        new_action = fn.call self, old_action
         break if new_action.nil?
         new_action
       end
@@ -81,11 +66,9 @@ module Obredux
     end
 
     def middleware=(value)
-      @middleware = value.map do |middleware_klass|
-        unless middleware_klass.is_a?(Class) && middleware_klass < Middleware
-          raise TypeError, "expected #middleware to be an array of #{Middleware} classes"
-        end
-        middleware_klass.new self
+      @middleware = value.map do |item|
+        raise TypeError, "expected #middleware to be an array of #{Middleware} classes" unless item.is_a? Middleware
+        item
       end.freeze
     end
   end
