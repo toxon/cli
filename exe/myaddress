@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+
+lib = File.expand_path('../lib', __dir__).freeze
+$LOAD_PATH.unshift lib unless $LOAD_PATH.include? lib
+
+require 'tox'
+
+SAVEDATA_FILENAME = File.expand_path '../savedata', __dir__
+
+tox_options = Tox::Options.new
+tox_options.savedata = File.binread SAVEDATA_FILENAME
+tox_client = Tox::Client.new tox_options
+puts tox_client.address.to_hex
