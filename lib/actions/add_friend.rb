@@ -2,11 +2,12 @@
 
 module Actions
   class AddFriend < Obredux::Thunk::Action
-    attr_reader :tox_client, :public_key
+    attr_reader :tox_client, :public_key, :text
 
-    def initialize(tox_client, public_key)
+    def initialize(tox_client, public_key, text)
       self.tox_client = tox_client
       self.public_key = public_key
+      self.text       = text
     end
 
     def call(dispatch)
@@ -23,6 +24,11 @@ module Actions
     def public_key=(value)
       raise TypeError, "expected #public_key to be a #{Tox::PublicKey}" unless value.is_a? Tox::PublicKey
       @public_key = value
+    end
+
+    def text=(value)
+      raise TypeError, "expected #text to be a #{String}" unless value.is_a? String
+      @text = value
     end
 
     class Done < Obredux::Action
