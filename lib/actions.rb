@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'obredux'
-
 require 'actions/load_friends'
 require 'actions/add_friend'
 require 'actions/add_friend_message'

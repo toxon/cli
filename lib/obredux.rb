@@ -13,19 +13,6 @@ module Obredux
     end
   end
 
-  class Thunk < Middleware
-    def call(store, action)
-      return action unless action.is_a? Action
-      action.call store.public_method :dispatch
-    end
-
-    class Action < Action
-      def call(_dispatch)
-        raise NotImplementedError, "#{self.class}#call"
-      end
-    end
-  end
-
   class Store
     attr_reader :reducer_klass, :state, :middleware
 

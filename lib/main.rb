@@ -4,6 +4,9 @@ require 'tox'
 
 require 'singleton'
 
+require 'obredux'
+require 'obredux/thunk'
+
 require 'helpers'
 require 'actions'
 require 'reducer'
