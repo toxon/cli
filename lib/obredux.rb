@@ -68,9 +68,9 @@ module Obredux
         ).freeze
       end
 
-      @state = state.merge initial_state if init
+      @state = state.merge(initial_state).freeze if init
 
-      reduce.freeze
+      reduce
     end
 
   private
