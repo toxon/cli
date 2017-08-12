@@ -21,7 +21,7 @@ class Main
 private
 
   def store
-    @store ||= Obredux::Store.new Reducer
+    @store ||= Obredux::Store.new Reducer, [Obredux::Thunk]
   end
 
   def state
