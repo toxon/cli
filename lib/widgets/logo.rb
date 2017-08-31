@@ -2,7 +2,7 @@
 
 module Widgets
   class Logo < React::Component
-    LOGO = [
+    TMP_LOGO = [
       '  _____ ___ _  _ ___  _   _  ',
       ' |_   _/ _ \ \/ / _ \| \ | | ',
       '   | || | | \  / | | |  \| | ',
@@ -10,13 +10,15 @@ module Widgets
       '   |_| \___/_/\_\___/|_| \_| ',
       '                             ',
       '        Version 0.0.0        ',
-      "          API #{Tox::Version::API_VERSION}          ",
-      "          ABI #{Tox::Version::abi_version}          ",
+      "          API #{Tox::Version::API_VERSION}",
+      "          ABI #{Tox::Version::abi_version}",
       '                             ',
     ].freeze
 
-    WIDTH  = LOGO.first.length
-    HEIGHT = LOGO.length
+    WIDTH  = TMP_LOGO.first.length
+    HEIGHT = TMP_LOGO.length
+
+    LOGO = TMP_LOGO.map { |s| s.ljust WIDTH }.freeze
 
     def render
       create_element :window, x: props[:x], y: props[:y], width: props[:width], height: props[:height] do
