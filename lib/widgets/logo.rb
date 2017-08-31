@@ -10,6 +10,9 @@ module Widgets
       '   |_| \___/_/\_\___/|_| \_| ',
       '                             ',
       '        Version 0.0.0        ',
+      "        Tox gem #{Tox::Version::GEM_VERSION}        ",
+      "        Tox API #{Tox::Version::TOX_VERSION}        ",
+      "        Tox ABI #{Tox::Version::tox_version}        ",
       '                             ',
     ].freeze
 
