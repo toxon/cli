@@ -11,7 +11,7 @@ module Widgets
       '                             ',
       '        Version 0.0.0        ',
       "          API #{Tox::Version::API_VERSION}",
-      "          ABI #{Tox::Version::abi_version}",
+      "          ABI #{Tox::Version.abi_version}",
       '                             ',
     ].freeze
 
