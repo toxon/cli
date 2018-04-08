@@ -39,7 +39,7 @@ module Reducers
         friends: action.friends.map do |friend|
           [
             friend.number,
-            public_key:     friend.public_key.to_hex.freeze,
+            public_key:     friend.public_key.to_s,
             name:           friend.name.freeze,
             status:         friend.status,
             status_message: friend.status_message.freeze,
@@ -59,7 +59,7 @@ module Reducers
 
         friends: state[:friends].merge(
           action.friend.number => {
-            public_key:     action.friend.public_key.to_hex.freeze,
+            public_key:     action.friend.public_key.to_s,
             name:           action.friend.name.freeze,
             status:         action.friend.status,
             status_message: action.friend.status_message.freeze,
